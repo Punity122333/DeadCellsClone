@@ -1,0 +1,3 @@
+/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles/SideScroller.dir
+/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles/edit_cache.dir
+/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles/rebuild_cache.dir

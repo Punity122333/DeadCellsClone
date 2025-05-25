@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/SideScroller.dir/main.cpp.o CMakeFiles/SideScroller.dir/src/Game.cpp.o CMakeFiles/SideScroller.dir/src/Player.cpp.o CMakeFiles/SideScroller.dir/src/Map.cpp.o CMakeFiles/SideScroller.dir/src/Camera.cpp.o -o SideScroller  /usr/local/lib/libraylib.a -L/usr/local/lib -lraylib 
