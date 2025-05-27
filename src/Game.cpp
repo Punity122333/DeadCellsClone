@@ -1,7 +1,7 @@
 #include "../include/Game.hpp"
 #include "raylib.h"
 
-Game::Game():map(100, 30), player(map), camera(screenWidth, screenHeight, player) {
+Game::Game():map(500, 300), player(map), camera(screenWidth, screenHeight, player) {
     InitWindow(screenWidth, screenHeight, "Dead Cells Cpp Clone");
     SetTargetFPS(60);
 }

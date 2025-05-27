@@ -9,7 +9,8 @@ public:
     bool collidesWithGround(Vector2 pos) const;
     // Map.hpp
     bool isSolidTile(int x, int y) const;
-
+    bool isLadderTile(int x, int y) const;
+    int getHeight() const;
 
 private:
     int width, height;
