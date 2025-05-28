@@ -1,24 +1,19 @@
 #include "Map.hpp"
 #include <random>
+#include <vector>
+#include <algorithm>
 
 struct Map::Ladder { int x, y1, y2; };
 struct Map::Rope { int x, y1, y2; };
 struct Map::Platform { int startX, endX, y; };
+struct Room { int startX, startY, endX, endY; };
 
 Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    std::vector<Ladder> allLadders;
-    std::vector<Rope> allRopes;
-    std::vector<Platform> allPlatforms;
-
     placeBorders();
-    placeLadders(allLadders, gen);
-    placeRopes(allLadders, allRopes, gen);
-    connectAllPlatforms(allLadders, allRopes, allPlatforms, gen);
-    placeExtraPlatforms(allLadders, allPlatforms, gen);
-    placeWalls(gen);
+    generateRoomsAndConnections(gen);
 }
 
 void Map::placeBorders() {
@@ -32,191 +27,126 @@ void Map::placeBorders() {
     }
 }
 
-void Map::placeLadders(std::vector<Ladder>& allLadders, std::mt19937& gen) {
-    int laddersToPlace = std::max(40, height / 2);
-    std::uniform_int_distribution<> ladderXDist(2, width - 3);
-    std::uniform_int_distribution<> ladderYDist(3, height - 6);
-    std::uniform_int_distribution<> ladderLenDist(14, 25);
-    const int minHorizontalSpacing = 4;
+void Map::generateRoomsAndConnections(std::mt19937& gen) {
+    int roomHeight = 16;
+    std::uniform_int_distribution<> roomWidthDist(20, 30);
 
-    for (int i = 0; i < laddersToPlace; ++i) {
-        int x = ladderXDist(gen);
-        int y1 = ladderYDist(gen);
-        int len = ladderLenDist(gen);
-        int y2 = y1 + len;
-        if (y2 >= height - 2) y2 = height - 3;
-        if (y2 <= y1) continue;
-
-        bool overlaps = false;
-        for (const Ladder& ladder : allLadders) {
-            if (std::abs(ladder.x - x) < minHorizontalSpacing) {
-                overlaps = true;
-                break;
-            }
+    std::vector<Room> rooms;
+    int y = 1;
+    while (y + roomHeight < height - 1) {
+        int x = 1;
+        while (x + 8 < width - 1) {
+            int rw = roomWidthDist(gen);
+            if (x + rw >= width - 1) rw = width - 2 - x;
+            if (rw < 8) break;
+            int sx = x;
+            int sy = y;
+            int ex = x + rw - 1;
+            int ey = y + roomHeight - 1;
+            rooms.push_back({sx, sy, ex, ey});
+            x += rw;
         }
-        if (overlaps) continue;
-
-        allLadders.push_back({x, y1, y2});
-        for (int y = y1; y <= y2; ++y) {
-            if (tiles[x][y] == 0) tiles[x][y] = 2;
-        }
-    }
-}
-
-void Map::placeRopes(const std::vector<Ladder>& allLadders, std::vector<Rope>& allRopes, std::mt19937& gen) {
-    int ropesToPlace = std::max(40, height / 10);
-    std::uniform_int_distribution<> ropeXDist(2, width - 3);
-    std::uniform_int_distribution<> ropeYDist(3, height - 6);
-    std::uniform_int_distribution<> ropeLenDist(8, 14);
-    const int minHorizontalSpacing = 4;
-
-    for (int i = 0; i < ropesToPlace; ++i) {
-        int x = ropeXDist(gen);
-        int y1 = ropeYDist(gen);
-        int len = ropeLenDist(gen);
-        int y2 = y1 + len;
-        if (y2 >= height - 2) y2 = height - 3;
-        if (y2 <= y1) continue;
-
-        bool overlaps = false;
-        for (const Ladder& ladder : allLadders) {
-            if (std::abs(ladder.x - x) < minHorizontalSpacing) {
-                overlaps = true;
-                break;
-            }
-        }
-        if (!overlaps) {
-            for (const Rope& rope : allRopes) {
-                if (std::abs(rope.x - x) < minHorizontalSpacing) {
-                    overlaps = true;
-                    break;
-                }
-            }
-        }
-        if (overlaps) continue;
-
-        allRopes.push_back({x, y1, y2});
-        for (int y = y1; y <= y2; ++y) {
-            if (tiles[x][y] == 0) tiles[x][y] = 3;
-        }
-    }
-}
-
-void Map::connectPlatforms(int x, int y1, int y2, std::vector<Platform>& allPlatforms, std::mt19937& gen, std::uniform_int_distribution<>& platLenDist) {
-    int platLenTop = platLenDist(gen);
-    int platStartTop = std::max(1, x - platLenTop / 2);
-    int platEndTop = std::min(width - 2, platStartTop + platLenTop - 1);
-    platStartTop = std::max(1, platEndTop - platLenTop + 1);
-
-    int platformY = std::min(height - 2, y1 + 1);
-
-    if (x > platStartTop) {
-        for (int px = platStartTop; px < x; ++px) {
-            tiles[px][platformY] = 1;
-        }
-        if (x - 1 >= platStartTop)
-            allPlatforms.push_back({platStartTop, x - 1, platformY});
-    }
-    if (x < platEndTop) {
-        for (int px = x + 1; px <= platEndTop; ++px) {
-            tiles[px][platformY] = 1;
-        }
-        if (x + 1 <= platEndTop)
-            allPlatforms.push_back({x + 1, platEndTop, platformY});
+        y += roomHeight;
     }
 
-    int platLenBot = platLenDist(gen);
-    int platStartBot = std::max(1, x - platLenBot / 2);
-    int platEndBot = std::min(width - 2, platStartBot + platLenBot - 1);
-    platStartBot = std::max(1, platEndBot - platLenBot + 1);
-
-    for (int px = platStartBot; px <= platEndBot; ++px) {
-        tiles[px][y2] = 1;
+    for (const Room& room : rooms) {
+        generateRoomContent(room, gen);
     }
-    allPlatforms.push_back({platStartBot, platEndBot, y2});
-}
 
-void Map::connectAllPlatforms(const std::vector<Ladder>& allLadders, const std::vector<Rope>& allRopes, std::vector<Platform>& allPlatforms, std::mt19937& gen) {
-    std::uniform_int_distribution<> platLenDist(4, 8);
-    for (const Ladder& ladder : allLadders) {
-        connectPlatforms(ladder.x, ladder.y1, ladder.y2, allPlatforms, gen, platLenDist);
-    }
-    for (const Rope& rope : allRopes) {
-        connectPlatforms(rope.x, rope.y1, rope.y2, allPlatforms, gen, platLenDist);
-    }
-}
-
-void Map::placeExtraPlatforms(const std::vector<Ladder>& allLadders, std::vector<Platform>& allPlatforms, std::mt19937& gen) {
-    std::uniform_int_distribution<> platLenDist(4, 8);
-    std::uniform_int_distribution<> platYDist(3, height - 6);
-    std::uniform_int_distribution<> ladderXDist(2, width - 3);
-    int extraPlatformCount = (width * height) / 80;
-    const int playerHeightTiles = 3;
-    const int minVerticalSpace = playerHeightTiles * 4;
-
-    for (int i = 0; i < extraPlatformCount; ++i) {
-        int platLen = platLenDist(gen);
-        int platY = platYDist(gen);
-        int platStart = ladderXDist(gen) - platLen / 2;
-        platStart = std::max(1, std::min(width - platLen - 1, platStart));
-        int platEnd = platStart + platLen - 1;
-
-        bool overlaps = false;
-        for (int x = platStart; x <= platEnd; ++x) {
-            if (tiles[x][platY] != 0) {
-                overlaps = true;
-                break;
-            }
-            for (int y = platY + 1; y <= platY + playerHeightTiles && y < height - 1; ++y) {
-                if (tiles[x][y] != 0) {
-                    overlaps = true;
-                    break;
-                }
-            }
-            if (overlaps) break;
-        }
-        if (!overlaps) {
-            for (const Ladder& ladder : allLadders) {
-                if (ladder.x >= platStart && ladder.x <= platEnd && platY >= ladder.y1 && platY <= ladder.y2) {
-                    overlaps = true;
-                    break;
-                }
-            }
-        }
-        if (!overlaps) {
-            for (const Platform& plat : allPlatforms) {
-                if (!(platEnd < plat.startX || platStart > plat.endX)) {
-                    if (std::abs(platY - plat.y) < minVerticalSpace) {
-                        overlaps = true;
-                        break;
+    for (size_t i = 0; i < rooms.size(); ++i) {
+        for (size_t j = 0; j < rooms.size(); ++j) {
+            if (rooms[j].startY == rooms[i].startY && rooms[j].startX == rooms[i].endX + 1) {
+                int doorYCenter = (rooms[i].startY + rooms[i].endY) / 2;
+                for (int dy = -1; dy <= 1; ++dy) {
+                    int doorY = doorYCenter + dy;
+                    if (doorY > rooms[i].startY && doorY < rooms[i].endY) {
+                        tiles[rooms[i].endX][doorY] = 0;
+                        tiles[rooms[j].startX][doorY] = 0;
                     }
                 }
             }
         }
-        if (overlaps) continue;
+    }
 
-        for (int x = platStart; x <= platEnd; ++x) {
-            tiles[x][platY] = 1;
+    std::uniform_int_distribution<> vertConnDist(1, 2);
+    for (size_t i = 0; i < rooms.size(); ++i) {
+        for (size_t j = i + 1; j < rooms.size(); ++j) {
+            if (rooms[j].startY == rooms[i].endY + 1 &&
+                !(rooms[j].endX < rooms[i].startX || rooms[j].startX > rooms[i].endX)) {
+                int connType = vertConnDist(gen);
+                int connX = std::max(rooms[i].startX, rooms[j].startX) +
+                            (std::min(rooms[i].endX, rooms[j].endX) - std::max(rooms[i].startX, rooms[j].startX)) / 2;
+                int connY1 = rooms[i].endY - 1;
+                int connY2 = rooms[j].startY + 5;
+                int tileType = (connType == 1) ? 2 : 3;
+                for (int y = connY1; y <= connY2; ++y) {
+                    tiles[connX][y] = tileType;
+                }
+            }
         }
-        allPlatforms.push_back({platStart, platEnd, platY});
     }
 }
+void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
+    for (int x = room.startX; x <= room.endX; ++x) {
+        tiles[x][room.startY] = 1;
+        tiles[x][room.endY] = 1;
+    }
+    for (int y = room.startY; y <= room.endY; ++y) {
+        tiles[room.startX][y] = 1;
+        tiles[room.endX][y] = 1;
+    }
 
-void Map::placeWalls(std::mt19937& gen) {
-    std::uniform_int_distribution<> wallXDist(3, width - 4);
-    std::uniform_int_distribution<> wallYDist(2, height - 4);
-    std::uniform_int_distribution<> tallWallHeightDist(4, 20);
+    int platY = (room.startY + room.endY) / 2;
+    for (int x = room.startX + 2; x <= room.endX - 2; ++x) {
+        if (platY >= room.startY + 2 && platY <= room.endY - 2)
+            tiles[x][platY] = 1;
+    }
 
-    // Dramatically increase the number of walls
-    int wallCount = std::max(100, (width * height) / 250);
+    std::uniform_int_distribution<> platCountDist(1, 2);
+    int extraPlats = platCountDist(gen);
+    int platMinLen = 4;
+    int platMaxLen = std::max(platMinLen, (room.endX - room.startX) / 2);
+    std::uniform_int_distribution<> platLenDist(platMinLen, platMaxLen);
+    std::uniform_int_distribution<> platYDist(room.startY + 2, room.endY - 2);
 
-    for (int i = 0; i < wallCount; ++i) {
-        int x = wallXDist(gen);
-        int baseY = wallYDist(gen);
-        int wallHeight = tallWallHeightDist(gen);
+    for (int i = 0; i < extraPlats; ++i) {
+        int platLen = platLenDist(gen);
+        int platStartMin = room.startX + 2;
+        int platStartMax = room.endX - 2 - platLen + 1;
+        if (platStartMax < platStartMin) continue;
+        std::uniform_int_distribution<> platStartDist(platStartMin, platStartMax);
+        int pxStart = platStartDist(gen);
+        int py = platYDist(gen);
+        for (int x = pxStart; x < pxStart + platLen && x <= room.endX - 2; ++x) {
+            if (py >= room.startY + 2 && py <= room.endY - 2 && tiles[x][py] == 0)
+                tiles[x][py] = 1;
+        }
+    }
 
-        for (int y = baseY; y < baseY + wallHeight && y < height - 1; ++y) {
-            if (tiles[x][y] == 0) tiles[x][y] = 1;
+    std::uniform_int_distribution<> wallChance(0, 2);
+    if (wallChance(gen) == 0) {
+        int wxMin = room.startX + 2;
+        int wxMax = room.endX - 2;
+        if (wxMax >= wxMin) {
+            std::uniform_int_distribution<> wxDist(wxMin, wxMax);
+            int wx = wxDist(gen);
+
+            std::uniform_int_distribution<> gapSizeDist(2, 3);
+            int gapSize = gapSizeDist(gen);
+
+            int gapStartMin = room.startY + 5;
+            int gapStartMax = room.endY - 5 - (gapSize - 1);
+            if (gapStartMax >= gapStartMin) {
+                std::uniform_int_distribution<> gapDist(gapStartMin, gapStartMax);
+                int gapStart = gapDist(gen);
+
+                for (int y = room.startY + 4; y <= room.endY - 4; ++y) {
+                    bool inGap = (y >= gapStart && y < gapStart + gapSize);
+                    if (inGap) continue;
+                    if (tiles[wx][y] == 0)
+                        tiles[wx][y] = 1;
+                }
+            }
         }
     }
 }
