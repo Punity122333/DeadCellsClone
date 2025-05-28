@@ -5,7 +5,6 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    // Borders
     for (int x = 0; x < width; x++) {
         tiles[x][height - 1] = 1;
         tiles[x][0] = 1;
@@ -20,8 +19,7 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
     std::vector<Ladder> allLadders;
     std::vector<Platform> allPlatforms;
 
-    // --- Place ladders first ---
-    int laddersToPlace = std::max(401, h / 2); // Place at least 401 ladders
+    int laddersToPlace = std::max(401, h / 2);
     std::uniform_int_distribution<> ladderXDist(2, width - 3);
     std::uniform_int_distribution<> ladderYDist(3, height - 6);
     std::uniform_int_distribution<> ladderLenDist(3, 6);
@@ -39,21 +37,30 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
         }
     }
 
-    // --- Place platforms connected by ladders ---
     std::uniform_int_distribution<> platLenDist(4, 8);
     for (const Ladder& ladder : allLadders) {
-        // Place a platform at the top of the ladder
         int platLenTop = platLenDist(gen);
         int platStartTop = std::max(1, ladder.x - platLenTop / 2);
         int platEndTop = std::min(width - 2, platStartTop + platLenTop - 1);
-        platStartTop = std::max(1, platEndTop - platLenTop + 1); // ensure length
+        platStartTop = std::max(1, platEndTop - platLenTop + 1);
 
-        for (int x = platStartTop; x <= platEndTop; ++x) {
-            tiles[x][ladder.y1] = 1;
+        int platformY = std::min(height - 2, ladder.y1 + 1);
+
+        if (ladder.x - 1 > platStartTop) {
+            for (int x = platStartTop; x < ladder.x - 1; ++x) {
+            tiles[x][platformY] = 1;
+            }
+            if (ladder.x - 2 >= platStartTop)
+            allPlatforms.push_back({platStartTop, ladder.x - 2, platformY});
         }
-        allPlatforms.push_back({platStartTop, platEndTop, ladder.y1});
+        if (ladder.x + 1 < platEndTop) {
+            for (int x = ladder.x + 2; x <= platEndTop; ++x) {
+            tiles[x][platformY] = 1;
+            }
+            if (ladder.x + 2 <= platEndTop)
+            allPlatforms.push_back({ladder.x + 2, platEndTop, platformY});
+        }
 
-        // Place a platform at the bottom of the ladder
         int platLenBot = platLenDist(gen);
         int platStartBot = std::max(1, ladder.x - platLenBot / 2);
         int platEndBot = std::min(width - 2, platStartBot + platLenBot - 1);
@@ -65,7 +72,6 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
         allPlatforms.push_back({platStartBot, platEndBot, ladder.y2});
     }
 
-    // --- Optionally, add a few random platforms not connected to ladders ---
     int extraPlatformCount = (width * height) / 80;
     std::uniform_int_distribution<> platYDist(3, height - 6);
     for (int i = 0; i < extraPlatformCount; ++i) {
@@ -89,7 +95,7 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
         }
         allPlatforms.push_back({platStart, platEnd, platY});
     }
-    
+
     std::uniform_int_distribution<> wallXDist(3, width - 4);
     std::uniform_int_distribution<> wallYDist(2, height - 4);
     std::uniform_int_distribution<> shortWallHeightDist(1, 1);

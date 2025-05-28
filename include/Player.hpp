@@ -12,6 +12,9 @@ class Player {
 
     private :   
         Vector2 position;
+        bool ledgeGrabbed = false;
+        Vector2 ledgeGrabPos = {0};
+
         Vector2 velocity;
         float dropTimer = 0.0f;
         const float DROP_TIME = 0.5f;

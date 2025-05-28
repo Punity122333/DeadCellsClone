@@ -46,6 +46,23 @@ void Player::update(float dt, const Map& map) {
     }
 
     
+    if (!onGround && !onLadder && velocity.y > 0 && !ledgeGrabbed) {
+        int dir = (IsKeyDown(KEY_A) ? -1 : (IsKeyDown(KEY_D) ? 1 : 0));
+        if (dir != 0) {
+            int handX = (int)((position.x + width / 2 + dir * width * 0.5f) / 32);
+            int chestY = (int)((position.y + height * 0.5f) / 32);
+            int headY = (int)((position.y + height * 0.3f) / 32);
+
+            if (map.isSolidTile(handX, chestY) &&
+                !map.isSolidTile(handX, headY)) {
+                ledgeGrabbed = true;
+                velocity = {0};
+                ledgeGrabPos.x = handX * 32.0f - (dir == -1 ? width : 0);
+                ledgeGrabPos.y = chestY * 32.0f - height + 2;
+            }
+        }
+    }
+
     float targetVelX = 0.0f;
     if (onLadder) {
         if (IsKeyDown(KEY_W)) {
@@ -70,7 +87,6 @@ void Player::update(float dt, const Map& map) {
         if (onGround) {
             velocity.x = targetVelX;
         } else {
-        
             const float airAccel = 2000.0f;
             if (velocity.x < targetVelX)
                 velocity.x = fmin(velocity.x + airAccel * dt, targetVelX);
@@ -79,7 +95,7 @@ void Player::update(float dt, const Map& map) {
         }
     }
 
-    if (onGround && IsKeyPressed(KEY_S)) {
+    if (onGround && IsKeyDown(KEY_S) && IsKeyPressed(KEY_SPACE)) {
         int belowTileY = (int)((position.y + height + 1) / 32);
         int belowTileX = (int)((position.x + width / 2) / 32);
         if (belowTileY < map.getHeight() - 1 && map.isSolidTile(belowTileX, belowTileY)) {
@@ -104,11 +120,14 @@ void Player::update(float dt, const Map& map) {
     if (dropTimer <= 0.0f) {
         for (int y = tileYStart; y <= tileYEnd; y++) {
             for (int x = tileXStart; x <= tileXEnd; x++) {
-
                 if (!map.isSolidTile(x, y)) continue;
 
+                bool climbingUp = onLadder && (velocity.y < 0);
+                bool headInsideTile = (playerRect.y <= y * 32.0f + 31) && (playerRect.y > y * 32.0f - height + 1);
+                if (climbingUp && headInsideTile) continue;
+
                 bool isBelowTile = (y * 32.0f >= position.y + height) &&
-                                (x == (int)((position.x + width / 2) / 32));
+                                   (x == (int)((position.x + width / 2) / 32));
                 if (dropTimer > 0.0f && isBelowTile) continue;
 
                 Rectangle tileRect = { x * 32.0f, y * 32.0f, 32.0f, 32.0f };
@@ -136,7 +155,6 @@ void Player::update(float dt, const Map& map) {
                 }
             }
         }
-
     }
 
     if (onGround)
@@ -146,9 +164,24 @@ void Player::update(float dt, const Map& map) {
 
     bool canJump = (coyoteTimer > 0.0f) || canLadderJump;
 
-    if (IsKeyPressed(KEY_SPACE) && canJump) {
+    if (IsKeyPressed(KEY_SPACE) && canJump && !IsKeyDown(KEY_S)) {
         velocity.y = -700;
         coyoteTimer = 0.0f;
+    }
+
+    
+    if (ledgeGrabbed) {
+        position = ledgeGrabPos;
+
+        if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_W)) {
+            velocity.y = -700;
+            ledgeGrabbed = false;
+        } else if (IsKeyPressed(KEY_S)) {
+            velocity.y = 100;
+            ledgeGrabbed = false;
+        } else {
+            return; 
+        }
     }
 
     position = nextPos;
