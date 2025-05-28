@@ -89,8 +89,7 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
         }
         allPlatforms.push_back({platStart, platEnd, platY});
     }
-
-    // --- Random short walls ---
+    
     std::uniform_int_distribution<> wallXDist(3, width - 4);
     std::uniform_int_distribution<> wallYDist(2, height - 4);
     std::uniform_int_distribution<> shortWallHeightDist(1, 1);
