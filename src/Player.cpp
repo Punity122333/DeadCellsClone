@@ -3,10 +3,9 @@
 #include <raylib.h>
 
 Player::Player(const Map &map) {
-    position = {50, 7000};
+    position = map.findEmptySpawn();
     velocity = {0, 0};
 }
-
 void Player::update(float dt, const Map& map) {
     applyGravity(dt);
     updateLadderState(map);

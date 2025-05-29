@@ -18,6 +18,11 @@ public:
     bool isLadderTile(int x, int y) const;
     bool isRopeTile(int x, int y) const;
     int getHeight() const;
+    std::vector<Texture2D> tileTextures;
+    Vector2 findEmptySpawn() const;
+    bool isTileEmpty(int x, int y) const;
+    int countEmptyTiles() const;
+    int countReachableEmptyTiles(int startX, int startY) const;
 
 private:
     int width, height;

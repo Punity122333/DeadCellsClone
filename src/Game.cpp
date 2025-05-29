@@ -7,11 +7,11 @@ Game::Game() {
 
     map = std::make_unique<Map>(500, 300); // Construct map first
     player = std::make_unique<Player>(*map); // Then player, passing map by reference
-    camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player); // Then camera
+    camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player); 
 }
 
 Game::~Game() {
-    // Make sure to destroy player and camera before map (unique_ptrs are destroyed in reverse order of declaration)
+    
     camera.reset();
     player.reset();
     map.reset();

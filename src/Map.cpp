@@ -1,5 +1,7 @@
 #include "Map.hpp"
 #include <random>
+#include <raylib.h>
+#include <stack>
 #include <vector>
 #include <algorithm>
 
@@ -20,7 +22,23 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
         }
     }
     
-    tileTexture = LoadTexture("../resources/tile000.png");
+    int numTiles = 0;
+    {
+        // Count number of tile images in ../resources/ named tileXXX.png
+        for (int i = 0; ; ++i) {
+            char path[64];
+            snprintf(path, sizeof(path), "../resources/tile%03d.png", i);
+            FILE* f = fopen(path, "r");
+            if (!f) break;
+            fclose(f);
+            numTiles++;
+        }
+    }
+    for (int i = 0; i < numTiles; ++i) {
+        char path[64];
+        snprintf(path, sizeof(path), "../resources/tile%03d.png", i);
+        tileTextures.push_back(LoadTexture(path));
+    }
     placeBorders();
     generateRoomsAndConnections(gen);
 }
@@ -370,12 +388,45 @@ void Map::draw() const {
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y) {
             if (tiles[x][y] == 1) {
-                DrawTexture(tileTexture, x * 32, y * 32, WHITE);
+                
+                bool top    = (y > 0)            && tiles[x][y - 1] == 1;
+                bool bottom = (y < height - 1)   && tiles[x][y + 1] == 1;
+                bool left   = (x > 0)            && tiles[x - 1][y] == 1;
+                bool right  = (x < width - 1)    && tiles[x + 1][y] == 1;
+                bool topLeft     = (x > 0 && y > 0)                   && tiles[x - 1][y - 1] == 1;
+                bool topRight    = (x < width - 1 && y > 0)           && tiles[x + 1][y - 1] == 1;
+                bool bottomLeft  = (x > 0 && y < height - 1)          && tiles[x - 1][y + 1] == 1;
+                bool bottomRight = (x < width - 1 && y < height - 1)  && tiles[x + 1][y + 1] == 1;
+
+                int idx = 0;
+                
+                if (!top && !left && !right && !bottom) idx = 15; 
+                else if (!top && !left && !right)       idx = 4;
+                else if (!top && !left && !bottom)      idx = 5;
+                else if (!top && !right && !bottom)     idx = 7;
+                else if (!left && !right && !bottom)    idx = 24;
+                else if (!top && !left)                 idx = 101;    
+                else if (!top && !right)                idx = 102;
+                else if (!top && !bottom)               idx = 6;
+                else if (!right && !bottom)             idx = 33;
+                else if (!left && !bottom)              idx = 30;
+                else if (!top)                          idx = 100;
+                else if (!right && !left)               idx = 14;
+                else if (!right)                        idx = 13;
+                else if (!left)                         idx = 10; 
+                else if (!bottom) idx = 31;
+
+                else                                    idx = 11;
+
+                
+
+                DrawTexture(tileTextures[idx], x * 32, y * 32, WHITE);
             } else if (tiles[x][y] == 2) {
                 DrawRectangle(x * 32 + 10, y * 32, 12, 32, GOLD);
             } else if (tiles[x][y] == 3) {
                 DrawRectangle(x * 32 + 14, y * 32, 4, 32, SKYBLUE);
-            }
+            }   
+
         }
     }
 }
@@ -410,4 +461,55 @@ int Map::getHeight() const {
 
 Map::~Map() {
     UnloadTexture(tileTexture);
+}
+
+Vector2 Map::findEmptySpawn() const {
+    int totalEmpty = countEmptyTiles();
+    for (int y = 1; y < height - 1; ++y) {
+        for (int x = 1; x < width - 1; ++x) {
+            if (tiles[x][y] == 0 && y + 1 < height && tiles[x][y + 1] == 1) {
+                int reachable = countReachableEmptyTiles(x, y);
+                if (reachable >= totalEmpty * 0.8f) {
+                    return { x * 32.0f, y * 32.0f };
+                }
+            }
+        }
+    }
+    // Fallback: top-left
+    return { 32.0f, 32.0f };
+}
+
+bool Map::isTileEmpty(int x, int y) const {
+    if (x < 0 || x >= width || y < 0 || y >= height) return false;
+    return tiles[x][y] == 0;
+}
+
+int Map::countEmptyTiles() const {
+    int count = 0;
+    for (int y = 0; y < height; ++y)
+        for (int x = 0; x < width; ++x)
+            if (tiles[x][y] == 0) count++;
+    return count;
+}
+
+int Map::countReachableEmptyTiles(int startX, int startY) const {
+    std::vector<std::vector<bool>> visited(width, std::vector<bool>(height, false));
+    std::stack<std::pair<int, int>> s;
+    s.push({startX, startY});
+    int reachable = 0;
+
+    while (!s.empty()) {
+        auto [x, y] = s.top(); s.pop();
+        if (x < 0 || x >= width || y < 0 || y >= height) continue;
+        if (visited[x][y]) continue;
+        if (tiles[x][y] != 0) continue;
+        visited[x][y] = true;
+        reachable++;
+
+        s.push({x+1, y});
+        s.push({x-1, y});
+        s.push({x, y+1});
+        s.push({x, y-1});
+    }
+    return reachable;
 }
