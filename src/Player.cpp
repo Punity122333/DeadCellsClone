@@ -3,7 +3,7 @@
 #include <raylib.h>
 
 Player::Player(const Map &map) {
-    position = {50, 8500};
+    position = {50, 7000};
     velocity = {0, 0};
 }
 

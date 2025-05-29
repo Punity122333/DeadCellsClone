@@ -1,21 +1,21 @@
-#pragma once 
+#pragma once
 
 #include "Map.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
+#include <memory>
 
 class Game {
-    public : 
-        Game();
-        ~Game();
-        
-        void run();
-    private:
-        const int screenWidth = 1280;
-        const int screenHeight = 720;
+public:
+    Game();
+    ~Game();
 
-        Player player;
-        Map map;
-        GameCamera camera;
+    void run();
+private:
+    const int screenWidth = 1280;
+    const int screenHeight = 720;
 
+    std::unique_ptr<Map> map;
+    std::unique_ptr<Player> player;
+    std::unique_ptr<GameCamera> camera;
 };

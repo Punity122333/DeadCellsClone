@@ -1,5 +1,6 @@
 #pragma once 
 #include "Map.hpp"
+// ...existing code...
 #include "raylib.h"
 
 class Player {
@@ -28,6 +29,9 @@ class Player {
         float coyoteTimer = 0.0f;
         static constexpr float COYOTE_TIME = 0.1f;
 
+        // Add texture for player sprite
+        Texture2D playerTexture;
+
         void applyGravity(float dt);
         void updateLadderState(const Map& map);
         void updateWallState(const Map& map);
@@ -47,4 +51,4 @@ class Player {
         bool touchingWallRight = false;
         bool canWallJump = false;
 };
-
+// ...existing code...
