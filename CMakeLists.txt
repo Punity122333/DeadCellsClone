@@ -13,6 +13,7 @@ add_executable(SideScroller
     src/Player.cpp
     src/Map.cpp
     src/Camera.cpp
+    src/FishEyeGradient.cpp
 )
 
 target_link_libraries(SideScroller raylib)

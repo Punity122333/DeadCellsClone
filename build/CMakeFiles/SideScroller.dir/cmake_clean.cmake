@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SideScroller.dir/main.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/Camera.cpp.o"
   "CMakeFiles/SideScroller.dir/src/Camera.cpp.o.d"
+  "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o"
+  "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/Game.cpp.o"
   "CMakeFiles/SideScroller.dir/src/Game.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/Map.cpp.o"

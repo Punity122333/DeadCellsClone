@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "Camera.hpp"
 #include <memory>
+#include <raylib.h>
 
 class Game {
 public:
@@ -18,4 +19,6 @@ private:
     std::unique_ptr<Map> map;
     std::unique_ptr<Player> player;
     std::unique_ptr<GameCamera> camera;
+
+    Texture2D fisheyeBackground;
 };

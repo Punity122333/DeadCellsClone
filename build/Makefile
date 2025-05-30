@@ -177,6 +177,30 @@ src/Camera.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Camera.cpp.s
 .PHONY : src/Camera.cpp.s
 
+src/FishEyeGradient.o: src/FishEyeGradient.cpp.o
+.PHONY : src/FishEyeGradient.o
+
+# target to build an object file
+src/FishEyeGradient.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o
+.PHONY : src/FishEyeGradient.cpp.o
+
+src/FishEyeGradient.i: src/FishEyeGradient.cpp.i
+.PHONY : src/FishEyeGradient.i
+
+# target to preprocess a source file
+src/FishEyeGradient.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.i
+.PHONY : src/FishEyeGradient.cpp.i
+
+src/FishEyeGradient.s: src/FishEyeGradient.cpp.s
+.PHONY : src/FishEyeGradient.s
+
+# target to generate assembly for a file
+src/FishEyeGradient.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.s
+.PHONY : src/FishEyeGradient.cpp.s
+
 src/Game.o: src/Game.cpp.o
 .PHONY : src/Game.o
 
@@ -264,6 +288,9 @@ help:
 	@echo "... src/Camera.o"
 	@echo "... src/Camera.i"
 	@echo "... src/Camera.s"
+	@echo "... src/FishEyeGradient.o"
+	@echo "... src/FishEyeGradient.i"
+	@echo "... src/FishEyeGradient.s"
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"

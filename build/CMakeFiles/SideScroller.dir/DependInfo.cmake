@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/main.cpp" "CMakeFiles/SideScroller.dir/main.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/main.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Camera.cpp" "CMakeFiles/SideScroller.dir/src/Camera.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Camera.cpp.o.d"
+  "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/FishEyeGradient.cpp" "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp" "CMakeFiles/SideScroller.dir/src/Game.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Game.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Map.cpp" "CMakeFiles/SideScroller.dir/src/Map.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Map.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp" "CMakeFiles/SideScroller.dir/src/Player.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Player.cpp.o.d"
