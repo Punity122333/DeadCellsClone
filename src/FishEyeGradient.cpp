@@ -1,8 +1,7 @@
 #include "../include/FishEyeGradient.hpp"
-#include <math.h> // For sqrtf
+#include <math.h> 
 #include <raymath.h>
 
-// Function definition for linear color interpolation
 Color MyColorLerp(Color c1, Color c2, float t) {
     return (Color){
         (unsigned char)(c1.r + (c2.r - c1.r) * t),
@@ -12,7 +11,7 @@ Color MyColorLerp(Color c1, Color c2, float t) {
     };
 }
 
-// Function definition for creating the fisheye gradient texture
+
 Texture2D CreateFisheyeGradient(int width, int height, Color innerColor, Color outerColor) {
     Image image = GenImageColor(width, height, BLANK);
 

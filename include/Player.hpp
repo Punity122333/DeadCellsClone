@@ -1,6 +1,6 @@
 #pragma once 
 #include "Map.hpp"
-// ...existing code...
+
 #include "raylib.h"
 
 class Player {
@@ -51,4 +51,3 @@ class Player {
         bool touchingWallRight = false;
         bool canWallJump = false;
 };
-// ...existing code...

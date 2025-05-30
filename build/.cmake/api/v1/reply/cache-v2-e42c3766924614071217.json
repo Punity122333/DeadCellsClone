@@ -139,10 +139,10 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "CXX compiler"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "STRING",
+			"type" : "FILEPATH",
 			"value" : "/usr/bin/g++"
 		},
 		{
@@ -267,10 +267,10 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "C compiler"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "STRING",
+			"type" : "FILEPATH",
 			"value" : "/usr/bin/gcc"
 		},
 		{
@@ -831,7 +831,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "SideScroller"
+			"value" : "DeadCellsClone"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1128,6 +1128,42 @@
 			],
 			"type" : "BOOL",
 			"value" : "FALSE"
+		},
+		{
+			"name" : "DeadCellsClone_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build"
+		},
+		{
+			"name" : "DeadCellsClone_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "DeadCellsClone_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_raylib",

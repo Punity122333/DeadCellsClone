@@ -23,8 +23,8 @@ CMAKE_AR:FILEPATH=/usr/bin/ar
 //No help, variable specified on the command line.
 CMAKE_BUILD_TYPE:STRING=Debug
 
-//CXX compiler
-CMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+//No help, variable specified on the command line.
+CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -49,8 +49,8 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 //Flags used by the CXX compiler during RELWITHDEBINFO builds.
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//C compiler
-CMAKE_C_COMPILER:STRING=/usr/bin/gcc
+//No help, variable specified on the command line.
+CMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -144,7 +144,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=SideScroller
+CMAKE_PROJECT_NAME:STATIC=DeadCellsClone
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -210,6 +210,15 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 // during the make.  This is useful for debugging only. With Visual
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
+
+//Value Computed by CMake
+DeadCellsClone_BINARY_DIR:STATIC=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build
+
+//Value Computed by CMake
+DeadCellsClone_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+DeadCellsClone_SOURCE_DIR:STATIC=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone
 
 //Arguments to supply to pkg-config
 PKG_CONFIG_ARGN:STRING=
