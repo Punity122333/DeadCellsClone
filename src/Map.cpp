@@ -25,7 +25,7 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
     {
         for (int i = 0; ; ++i) {
             char path[64];
-            snprintf(path, sizeof(path), "../resources/tile%03d.png", i);
+            snprintf(path, sizeof(path), "../resources/tiles/tile%03d.png", i);
             FILE* f = fopen(path, "r");
             if (!f) break;
             fclose(f);
@@ -34,7 +34,7 @@ Map::Map(int w, int h) : width(w), height(h), tiles(w, std::vector<int>(h, 0)) {
     }
     for (int i = 0; i < numTiles; ++i) {
         char path[64];
-        snprintf(path, sizeof(path), "../resources/tile%03d.png", i);
+        snprintf(path, sizeof(path), "../resources/tiles/tile%03d.png", i);
         tileTextures.push_back(LoadTexture(path));
     }
     placeBorders();

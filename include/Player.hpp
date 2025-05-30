@@ -2,6 +2,14 @@
 #include "Map.hpp"
 
 #include "raylib.h"
+#include <vector>
+
+struct Particle {
+    Vector2 position;
+    Vector2 velocity;
+    float lifetime;
+    float age;
+};
 
 class Player {
     public :
@@ -15,7 +23,7 @@ class Player {
         Vector2 position;
         bool ledgeGrabbed = false;
         Vector2 ledgeGrabPos = {0};
-
+        std::vector<Particle> dustParticles;
         Vector2 velocity;
         float dropTimer = 0.0f;
         const float DROP_TIME = 0.5f;

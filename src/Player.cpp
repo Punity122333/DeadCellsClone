@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "raymath.h"
+#include <algorithm>
 #include <raylib.h>
 
 Player::Player(const Map &map) {
@@ -20,6 +21,18 @@ void Player::update(float dt, const Map& map) {
     handleJumpInput(map, dt);
     handleLedgeGrabInput();
     position = nextPos;
+
+    // Update dust particles
+    for (auto& p : dustParticles) {
+        p.position = Vector2Add(p.position, Vector2Scale(p.velocity, dt));
+        p.velocity.y += 600 * dt; // gravity
+        p.age += dt;
+    }
+    dustParticles.erase(
+        std::remove_if(dustParticles.begin(), dustParticles.end(),
+            [](const Particle& p) { return p.age > p.lifetime; }),
+        dustParticles.end()
+    );
 }
 
 void Player::applyGravity(float dt) {
@@ -141,6 +154,8 @@ void Player::updateLedgeGrab(const Map& map) {
 
 void Player::handleMovementInput(float dt) {
     float targetVelX = 0.0f;
+    static float dustTimer = 0.0f;
+
     if (onLadder || onRope) { // Allow climbing on both
         if (IsKeyDown(KEY_W)) {
             velocity.y = -speed;
@@ -163,6 +178,23 @@ void Player::handleMovementInput(float dt) {
         }
         if (onGround) {
             velocity.x = targetVelX;
+
+            // --- Dust particle effect when running on ground ---
+            if (fabs(velocity.x) > 0.1f) {
+                dustTimer -= dt;
+                if (dustTimer <= 0.0f) {
+                    Particle p;
+                    p.position = { position.x + width/2, position.y + height - 4 };
+                    p.velocity = { (float)GetRandomValue(-20, 20), (float)GetRandomValue(-60, -20) };
+                    p.lifetime = 0.25f;
+                    p.age = 0.0f;
+                    dustParticles.push_back(p);
+                    dustTimer = 0.04f; // spawn rate
+                }
+            } else {
+                dustTimer = 0.0f;
+            }
+            // ---------------------------------------------------
         } else {
             const float airAccel = 2000.0f;
             if (velocity.x < targetVelX)
@@ -292,6 +324,14 @@ void Player::handleLedgeGrabInput() {
 
 
 void Player::draw() const {
+
+    for (auto& p : dustParticles) {
+        float alpha = 1.0f - (p.age / p.lifetime);
+        Color c = { 200, 200, 180, (unsigned char)(alpha * 180) };
+        DrawCircleV(p.position, 4, c);
+    }
+    // Do not erase particles here, as draw() is const and should not modify state
+
     DrawRectangle((int)position.x, (int)position.y, width, height, GREEN);
     DrawText(onGround ? "ON GROUND" : "IN AIR", 10, 180, 20, RED);
     DrawText(dropTimer > 0.0f ? "DROPPING" : "NOT DROPPING", 10, 210, 20, RED);

@@ -152,4 +152,9 @@ CMakeFiles/SideScroller.dir/src/Player.cpp.o: \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
  /usr/include/c++/13/pstl/execution_defs.h /usr/local/include/raylib.h \
- /usr/local/include/raymath.h /usr/include/c++/13/math.h
+ /usr/local/include/raymath.h /usr/include/c++/13/math.h \
+ /usr/include/c++/13/algorithm /usr/include/c++/13/bits/stl_algo.h \
+ /usr/include/c++/13/bits/algorithmfwd.h \
+ /usr/include/c++/13/bits/stl_heap.h \
+ /usr/include/c++/13/bits/stl_tempbuf.h \
+ /usr/include/c++/13/pstl/glue_algorithm_defs.h
