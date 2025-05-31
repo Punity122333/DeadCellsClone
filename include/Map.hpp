@@ -19,7 +19,8 @@ public:
     bool isLadderTile(int x, int y) const;
     bool isRopeTile(int x, int y) const;
     int getHeight() const;
-
+    
+    void applyConwayAutomata() const;
     Vector2 findEmptySpawn() const;
 
 private:
@@ -30,6 +31,7 @@ private:
     std::vector<std::vector<float>> transitionTimers;
 
     std::vector<std::vector<bool>> isOriginalSolid;
+    std::vector<std::vector<bool>> isConwayProtected; // <-- bug fix: add this line
 
     struct Ladder { int x, y1, y2; };
     struct Rope { int x, y1, y2; };

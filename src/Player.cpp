@@ -22,10 +22,9 @@ void Player::update(float dt, const Map& map) {
     handleLedgeGrabInput();
     position = nextPos;
 
-    // Update dust particles
     for (auto& p : dustParticles) {
         p.position = Vector2Add(p.position, Vector2Scale(p.velocity, dt));
-        p.velocity.y += 600 * dt; // gravity
+        p.velocity.y += 600 * dt; 
         p.age += dt;
     }
     dustParticles.erase(
@@ -37,13 +36,12 @@ void Player::update(float dt, const Map& map) {
 
 void Player::applyGravity(float dt) {
     if (onLadder) {
-        velocity.y = 0; // No gravity on ladder
+        velocity.y = 0; 
     } else if (onRope) {
-        // Slide down rope slowly unless pressing up or jumping
         if (IsKeyDown(KEY_W) || IsKeyPressed(KEY_SPACE)) {
             velocity.y = 0;
         } else {
-            velocity.y = 60; // Slow slide down (adjust as needed)
+            velocity.y = 60; 
         }
     } else {
         velocity.y += 1000 * dt;
@@ -81,7 +79,6 @@ void Player::updateLadderState(const Map& map) {
         }
     }
 
-    // Store rope state for use in gravity
     this->onRope = onRope && !onLadder;
 }
 
@@ -114,7 +111,7 @@ void Player::updateLedgeGrab(const Map& map) {
     static Vector2 climbStartPos = {0, 0};
     static Vector2 climbEndPos = {0, 0};
     static float climbTimer = 0.0f;
-    const float climbDuration = 0.25f; // seconds
+    const float climbDuration = 0.25f; 
 
     if (climbingLedge) {
         climbTimer += GetFrameTime();
@@ -140,7 +137,6 @@ void Player::updateLedgeGrab(const Map& map) {
 
             if (map.isSolidTile(handX, chestY) &&
                 !map.isSolidTile(handX, headY)) {
-                // Start smooth ledge climb
                 climbStartPos = position;
                 climbEndPos.x = handX * 32.0f - (dir == -1 ? width : 0);
                 climbEndPos.y = (chestY * 32.0f) - height + 2;
@@ -156,7 +152,7 @@ void Player::handleMovementInput(float dt) {
     float targetVelX = 0.0f;
     static float dustTimer = 0.0f;
 
-    if (onLadder || onRope) { // Allow climbing on both
+    if (onLadder || onRope) { 
         if (IsKeyDown(KEY_W)) {
             velocity.y = -speed;
         } else if (IsKeyDown(KEY_S)) {
@@ -179,7 +175,6 @@ void Player::handleMovementInput(float dt) {
         if (onGround) {
             velocity.x = targetVelX;
 
-            // --- Dust particle effect when running on ground ---
             if (fabs(velocity.x) > 0.1f) {
                 dustTimer -= dt;
                 if (dustTimer <= 0.0f) {
@@ -189,12 +184,11 @@ void Player::handleMovementInput(float dt) {
                     p.lifetime = 0.25f;
                     p.age = 0.0f;
                     dustParticles.push_back(p);
-                    dustTimer = 0.04f; // spawn rate
+                    dustTimer = 0.04f; 
                 }
             } else {
                 dustTimer = 0.0f;
             }
-            // ---------------------------------------------------
         } else {
             const float airAccel = 2000.0f;
             if (velocity.x < targetVelX)
@@ -251,13 +245,47 @@ void Player::handleCollisions(Vector2& nextPos, const Map& map, float dt) {
                 if (CheckCollisionRecs(playerRect, tileRect)) {
                     Rectangle intersection = GetCollisionRec(playerRect, tileRect);
 
-                    if (intersection.width < intersection.height) {
+                    // NEW STEP-UP LOGIC: Allows player to step over 1-tile bumps
+                    bool isHorizontalCollision = intersection.width < intersection.height;
+                    bool isMovingTowardsTile = (velocity.x > 0 && playerRect.x < tileRect.x) ||
+                                               (velocity.x < 0 && playerRect.x > tileRect.x);
+                    // Check if player's feet are near the top of the colliding tile
+                    bool isNearGroundLevelOfTile = (playerRect.y + playerRect.height >= tileRect.y) &&
+                                                   (playerRect.y + playerRect.height <= tileRect.y + 32 + 5); 
+
+                    if (isHorizontalCollision && isMovingTowardsTile && isNearGroundLevelOfTile && onGround) {
+                        // Check if the tile directly above the colliding tile is empty
+                        if (!map.isSolidTile(x, y - 1)) {
+                            // Calculate the tile where the player's center would be after horizontal movement
+                            int targetXTile = (int)((nextPos.x + width / 2) / 32); 
+                            // Check if the tile at the new horizontal position, one tile up, is also empty
+                            if (!map.isSolidTile(targetXTile, y - 1)) { 
+                                // Attempt to step up
+                                nextPos.y = tileRect.y - height; // Move player to stand on top of the tile
+                                // Adjust horizontal position to be just outside the tile
+                                if (velocity.x > 0) { // Moving right
+                                    nextPos.x = tileRect.x - width;
+                                } else { // Moving left
+                                    nextPos.x = tileRect.x + 32;
+                                }
+                                velocity.y = 0; // Stop vertical velocity
+                                onGround = true; // Player is now on ground
+                                playerRect.x = nextPos.x; // Update playerRect for subsequent checks
+                                playerRect.y = nextPos.y;
+                                continue; // Skip further collision resolution for this tile
+                            }
+                        }
+                    }
+                    // END NEW STEP-UP LOGIC
+
+                    // Original collision resolution if no step-up occurred
+                    if (isHorizontalCollision) {
                         if (playerRect.x < tileRect.x)
                             nextPos.x -= intersection.width;
                         else
                             nextPos.x += intersection.width;
                         velocity.x = 0;
-                    } else {
+                    } else { 
                         if (playerRect.y < tileRect.y) {
                             nextPos.y -= intersection.height;
                             onGround = true;
@@ -316,7 +344,6 @@ void Player::handleLedgeGrabInput() {
             velocity.y = 100;
             ledgeGrabbed = false;
         } else {
-            // Stay grabbed
             return;
         }
     }
@@ -330,7 +357,6 @@ void Player::draw() const {
         Color c = { 200, 200, 180, (unsigned char)(alpha * 180) };
         DrawCircleV(p.position, 4, c);
     }
-    // Do not erase particles here, as draw() is const and should not modify state
 
     DrawRectangle((int)position.x, (int)position.y, width, height, GREEN);
     DrawText(onGround ? "ON GROUND" : "IN AIR", 10, 180, 20, RED);
@@ -340,3 +366,4 @@ void Player::draw() const {
 Vector2 Player::getPosition() const {
     return position;
 }
+    
