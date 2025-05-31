@@ -34,7 +34,7 @@ Game::Game() {
 Game::~Game() {
     UnloadTexture(fisheyeBackground);
 
-    // Unload the bloom shader
+    
     UnloadShader(bloomShader);
 
     camera.reset();
@@ -44,13 +44,22 @@ Game::~Game() {
 }
 
 void Game::run() {
+    float automataTimer = 0.0f;
+    const float automataInterval = 5.0f;
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
+        automataTimer += dt;
 
+        if (automataTimer >= automataInterval) {
+            map->applyConwayAutomata();
+            automataTimer = 0.0f;
+        }
+
+        map->updateTransitions(dt);
         player->update(dt, *map);
         camera->update();
 
-        // Draw scene to texture
+        
         BeginTextureMode(sceneTexture);
         ClearBackground(BLACK);
         DrawTexture(fisheyeBackground, 0, 0, WHITE);
@@ -60,7 +69,7 @@ void Game::run() {
         EndMode2D();
         EndTextureMode();
 
-        // Draw scene texture to screen with bloom shader, flipping vertically
+        
         BeginDrawing();
         ClearBackground(BLACK);
         BeginShaderMode(bloomShader);
