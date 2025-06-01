@@ -119,6 +119,13 @@ build CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o: CXX_COMPILER__SideS
   OBJECT_DIR = CMakeFiles/SideScroller.dir
   OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src
 
+build CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/ScrapHound.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target SideScroller
@@ -127,7 +134,7 @@ build CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o: CXX_COMPILER__SideS
 #############################################
 # Link the executable SideScroller
 
-build SideScroller: CXX_EXECUTABLE_LINKER__SideScroller_Debug CMakeFiles/SideScroller.dir/main.cpp.o CMakeFiles/SideScroller.dir/src/Game.cpp.o CMakeFiles/SideScroller.dir/src/Player.cpp.o CMakeFiles/SideScroller.dir/src/Map.cpp.o CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o CMakeFiles/SideScroller.dir/src/Camera.cpp.o CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o | /usr/local/lib/libraylib.a
+build SideScroller: CXX_EXECUTABLE_LINKER__SideScroller_Debug CMakeFiles/SideScroller.dir/main.cpp.o CMakeFiles/SideScroller.dir/src/Game.cpp.o CMakeFiles/SideScroller.dir/src/Player.cpp.o CMakeFiles/SideScroller.dir/src/Map.cpp.o CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o CMakeFiles/SideScroller.dir/src/Camera.cpp.o CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o | /usr/local/lib/libraylib.a
   FLAGS = -g
   LINK_LIBRARIES = /usr/local/lib/libraylib.a  -L/usr/local/lib -lraylib
   OBJECT_DIR = CMakeFiles/SideScroller.dir

@@ -18,6 +18,7 @@ add_executable(SideScroller
     src/MapCollisionSpawn.cpp
     src/Camera.cpp
     src/FishEyeGradient.cpp
+    src/ScrapHound.cpp
 )
 
 target_link_libraries(SideScroller raylib)

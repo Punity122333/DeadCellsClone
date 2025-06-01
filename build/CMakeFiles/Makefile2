@@ -81,12 +81,12 @@ clean: CMakeFiles/SideScroller.dir/clean
 CMakeFiles/SideScroller.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11 "Built target SideScroller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12 "Built target SideScroller"
 .PHONY : CMakeFiles/SideScroller.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/SideScroller.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles 12
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SideScroller.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles 0
 .PHONY : CMakeFiles/SideScroller.dir/rule

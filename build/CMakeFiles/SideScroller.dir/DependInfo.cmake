@@ -18,6 +18,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapGeneration.cpp" "CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapRendering.cpp" "CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp" "CMakeFiles/SideScroller.dir/src/Player.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Player.cpp.o.d"
+  "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/ScrapHound.cpp" "CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

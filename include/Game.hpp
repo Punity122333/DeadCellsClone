@@ -3,8 +3,10 @@
 #include "Map.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
+#include "ScrapHound.hpp"
 #include <memory>
 #include <raylib.h>
+#include <vector>
 
 class Game {
 public:
@@ -21,4 +23,5 @@ private:
     std::unique_ptr<GameCamera> camera;
     RenderTexture2D sceneTexture;
     Texture2D fisheyeBackground;
+    std::vector<ScrapHound> scrapHounds;
 };

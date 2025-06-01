@@ -19,6 +19,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/Player.cpp.o"
   "CMakeFiles/SideScroller.dir/src/Player.cpp.o.d"
+  "CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o"
+  "CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o.d"
   "SideScroller"
   "SideScroller.pdb"
 )

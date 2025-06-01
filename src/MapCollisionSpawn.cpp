@@ -28,7 +28,7 @@ bool Map::isRopeTile(int x, int y) const {
 
 bool Map::isTileEmpty(int x, int y) const {
     if (x < 0 || x >= width || y < 0 || y >= height) return false;
-    return tiles[x][y] == 0;
+    return tiles[x][y] == 0 || tiles[x][y] == TILE_HIGHLIGHT_CREATE;
 }
 
 Vector2 Map::findEmptySpawn() const {

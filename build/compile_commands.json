@@ -58,5 +58,11 @@
   "command": "/usr/bin/g++ -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include -g -std=gnu++17 -I/usr/local/include -o CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/FishEyeGradient.cpp",
   "file": "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/FishEyeGradient.cpp",
   "output": "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o"
+},
+{
+  "directory": "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build",
+  "command": "/usr/bin/g++ -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include -g -std=gnu++17 -I/usr/local/include -o CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/ScrapHound.cpp",
+  "file": "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/ScrapHound.cpp",
+  "output": "CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o"
 }
 ]

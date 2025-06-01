@@ -369,6 +369,30 @@ src/Player.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Player.cpp.s
 .PHONY : src/Player.cpp.s
 
+src/ScrapHound.o: src/ScrapHound.cpp.o
+.PHONY : src/ScrapHound.o
+
+# target to build an object file
+src/ScrapHound.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o
+.PHONY : src/ScrapHound.cpp.o
+
+src/ScrapHound.i: src/ScrapHound.cpp.i
+.PHONY : src/ScrapHound.i
+
+# target to preprocess a source file
+src/ScrapHound.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.i
+.PHONY : src/ScrapHound.cpp.i
+
+src/ScrapHound.s: src/ScrapHound.cpp.s
+.PHONY : src/ScrapHound.s
+
+# target to generate assembly for a file
+src/ScrapHound.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.s
+.PHONY : src/ScrapHound.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -408,6 +432,9 @@ help:
 	@echo "... src/Player.o"
 	@echo "... src/Player.i"
 	@echo "... src/Player.s"
+	@echo "... src/ScrapHound.o"
+	@echo "... src/ScrapHound.i"
+	@echo "... src/ScrapHound.s"
 .PHONY : help
 
 
