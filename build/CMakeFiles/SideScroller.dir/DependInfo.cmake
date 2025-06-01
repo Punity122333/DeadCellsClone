@@ -13,6 +13,10 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/FishEyeGradient.cpp" "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp" "CMakeFiles/SideScroller.dir/src/Game.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Game.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Map.cpp" "CMakeFiles/SideScroller.dir/src/Map.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Map.cpp.o.d"
+  "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapAutomata.cpp" "CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o.d"
+  "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapCollisionSpawn.cpp" "CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o.d"
+  "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapGeneration.cpp" "CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o.d"
+  "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapRendering.cpp" "CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp" "CMakeFiles/SideScroller.dir/src/Player.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Player.cpp.o.d"
   )
 

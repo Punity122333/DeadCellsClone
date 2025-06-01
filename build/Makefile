@@ -249,6 +249,102 @@ src/Map.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Map.cpp.s
 .PHONY : src/Map.cpp.s
 
+src/MapAutomata.o: src/MapAutomata.cpp.o
+.PHONY : src/MapAutomata.o
+
+# target to build an object file
+src/MapAutomata.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o
+.PHONY : src/MapAutomata.cpp.o
+
+src/MapAutomata.i: src/MapAutomata.cpp.i
+.PHONY : src/MapAutomata.i
+
+# target to preprocess a source file
+src/MapAutomata.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.i
+.PHONY : src/MapAutomata.cpp.i
+
+src/MapAutomata.s: src/MapAutomata.cpp.s
+.PHONY : src/MapAutomata.s
+
+# target to generate assembly for a file
+src/MapAutomata.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.s
+.PHONY : src/MapAutomata.cpp.s
+
+src/MapCollisionSpawn.o: src/MapCollisionSpawn.cpp.o
+.PHONY : src/MapCollisionSpawn.o
+
+# target to build an object file
+src/MapCollisionSpawn.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o
+.PHONY : src/MapCollisionSpawn.cpp.o
+
+src/MapCollisionSpawn.i: src/MapCollisionSpawn.cpp.i
+.PHONY : src/MapCollisionSpawn.i
+
+# target to preprocess a source file
+src/MapCollisionSpawn.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.i
+.PHONY : src/MapCollisionSpawn.cpp.i
+
+src/MapCollisionSpawn.s: src/MapCollisionSpawn.cpp.s
+.PHONY : src/MapCollisionSpawn.s
+
+# target to generate assembly for a file
+src/MapCollisionSpawn.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.s
+.PHONY : src/MapCollisionSpawn.cpp.s
+
+src/MapGeneration.o: src/MapGeneration.cpp.o
+.PHONY : src/MapGeneration.o
+
+# target to build an object file
+src/MapGeneration.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o
+.PHONY : src/MapGeneration.cpp.o
+
+src/MapGeneration.i: src/MapGeneration.cpp.i
+.PHONY : src/MapGeneration.i
+
+# target to preprocess a source file
+src/MapGeneration.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.i
+.PHONY : src/MapGeneration.cpp.i
+
+src/MapGeneration.s: src/MapGeneration.cpp.s
+.PHONY : src/MapGeneration.s
+
+# target to generate assembly for a file
+src/MapGeneration.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.s
+.PHONY : src/MapGeneration.cpp.s
+
+src/MapRendering.o: src/MapRendering.cpp.o
+.PHONY : src/MapRendering.o
+
+# target to build an object file
+src/MapRendering.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o
+.PHONY : src/MapRendering.cpp.o
+
+src/MapRendering.i: src/MapRendering.cpp.i
+.PHONY : src/MapRendering.i
+
+# target to preprocess a source file
+src/MapRendering.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapRendering.cpp.i
+.PHONY : src/MapRendering.cpp.i
+
+src/MapRendering.s: src/MapRendering.cpp.s
+.PHONY : src/MapRendering.s
+
+# target to generate assembly for a file
+src/MapRendering.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapRendering.cpp.s
+.PHONY : src/MapRendering.cpp.s
+
 src/Player.o: src/Player.cpp.o
 .PHONY : src/Player.o
 
@@ -297,6 +393,18 @@ help:
 	@echo "... src/Map.o"
 	@echo "... src/Map.i"
 	@echo "... src/Map.s"
+	@echo "... src/MapAutomata.o"
+	@echo "... src/MapAutomata.i"
+	@echo "... src/MapAutomata.s"
+	@echo "... src/MapCollisionSpawn.o"
+	@echo "... src/MapCollisionSpawn.i"
+	@echo "... src/MapCollisionSpawn.s"
+	@echo "... src/MapGeneration.o"
+	@echo "... src/MapGeneration.i"
+	@echo "... src/MapGeneration.s"
+	@echo "... src/MapRendering.o"
+	@echo "... src/MapRendering.i"
+	@echo "... src/MapRendering.s"
 	@echo "... src/Player.o"
 	@echo "... src/Player.i"
 	@echo "... src/Player.s"

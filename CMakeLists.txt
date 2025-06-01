@@ -12,6 +12,10 @@ add_executable(SideScroller
     src/Game.cpp
     src/Player.cpp
     src/Map.cpp
+    src/MapGeneration.cpp
+    src/MapRendering.cpp
+    src/MapAutomata.cpp
+    src/MapCollisionSpawn.cpp
     src/Camera.cpp
     src/FishEyeGradient.cpp
 )

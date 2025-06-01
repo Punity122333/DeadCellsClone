@@ -33,13 +33,13 @@ cd DeadCellsClone
 
 To build the project:
 
-#### Using Makefile:
+#### Using Makefile
 
 ```bash
 make
 ```
 
-#### Using CMake:
+#### Using CMake
 
 ```bash
 mkdir build && cd build

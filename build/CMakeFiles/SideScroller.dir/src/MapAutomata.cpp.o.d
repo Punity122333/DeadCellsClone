@@ -1,7 +1,6 @@
-CMakeFiles/SideScroller.dir/src/Player.cpp.o: \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp \
+CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o: \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapAutomata.cpp \
  /usr/include/stdc-predef.h \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Player.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Map.hpp \
  /usr/local/include/raylib.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
@@ -152,8 +151,7 @@ CMakeFiles/SideScroller.dir/src/Player.cpp.o: \
  /usr/include/c++/13/bits/random.tcc /usr/include/c++/13/numeric \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
- /usr/include/c++/13/pstl/execution_defs.h /usr/local/include/raymath.h \
- /usr/include/c++/13/math.h /usr/include/c++/13/algorithm \
+ /usr/include/c++/13/pstl/execution_defs.h /usr/include/c++/13/algorithm \
  /usr/include/c++/13/bits/stl_algo.h \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
