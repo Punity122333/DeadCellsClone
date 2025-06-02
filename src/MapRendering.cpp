@@ -1,159 +1,83 @@
 #include "Map.hpp"
-#include <cmath> // For fmod, std::max, std::min
+#include <cmath>
+#include <algorithm>
+
+namespace {
+    int getTileIndex(const std::vector<std::vector<int>>& tiles, int x, int y, int width, int height) {
+        bool top    = (y > 0)            && (tiles[x][y - 1] == 1 || tiles[x][y - 1] == 6);
+        bool bottom = (y < height - 1)   && (tiles[x][y + 1] == 1 || tiles[x][y + 1] == 6);
+        bool left   = (x > 0)            && (tiles[x - 1][y] == 1 || tiles[x - 1][y] == 6);
+        bool right  = (x < width - 1)    && (tiles[x + 1][y] == 1 || tiles[x + 1][y] == 6);
+
+        if (!top && !left && !right && !bottom) return 15;
+        if (!top && !left && !right)            return 4;
+        if (!top && !left && !bottom)           return 5;
+        if (!top && !right && !bottom)          return 7;
+        if (!left && !right && !bottom)         return 24;
+        if (!top && !left)                      return 0;
+        if (!top && !right)                     return 3;
+        if (!top)                               return 1;
+        if (!right && !left)                    return 14;
+        if (!right && !bottom)                  return 103;
+        if (!left && !bottom)                   return 104;
+        if (!right)                             return 13;
+        if (!left)                              return 10;
+        if (!bottom)                            return 105;
+        return 11;
+    }
+
+    float getBlinkAlpha(float timer, float blinkCycle, float minOpacity) {
+        float blinkProgress = std::fmod(timer, blinkCycle);
+        float alphaNorm = blinkProgress < blinkCycle / 2.0f
+            ? blinkProgress / (blinkCycle / 2.0f)
+            : 1.0f - ((blinkProgress - blinkCycle / 2.0f) / (blinkCycle / 2.0f));
+        alphaNorm = std::clamp(alphaNorm, 0.0f, 1.0f);
+
+        float alpha = alphaNorm < 0.5f
+            ? 1.0f - (alphaNorm / 0.5f) * (1.0f - minOpacity)
+            : minOpacity + ((alphaNorm - 0.5f) / 0.5f) * (1.0f - minOpacity);
+        return std::clamp(alpha, minOpacity, 1.0f);
+    }
+}
 
 void Map::draw() const {
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < height; ++y) {
-            if (tiles[x][y] == 1 || tiles[x][y] == 6) {
-                bool top    = (y > 0)            && (tiles[x][y - 1] == 1 || tiles[x][y - 1] == 6);
-                bool bottom = (y < height - 1)   && (tiles[x][y + 1] == 1 || tiles[x][y + 1] == 6);
-                bool left   = (x > 0)            && (tiles[x - 1][y] == 1 || tiles[x - 1][y] == 6);
-                bool right  = (x < width - 1)    && (tiles[x + 1][y] == 1 || tiles[x + 1][y] == 6);
-                bool topLeft     = (x > 0 && y > 0)                   && (tiles[x - 1][y - 1] == 1 || tiles[x - 1][y - 1] == 6);
-                bool topRight    = (x < width - 1 && y > 0)           && (tiles[x + 1][y - 1] == 1 || tiles[x + 1][y - 1] == 6);
-                bool bottomLeft  = (x > 0 && y < height - 1)          && (tiles[x - 1][y + 1] == 1 || tiles[x - 1][y + 1] == 6);
-                bool bottomRight = (x < width - 1 && y < height - 1)  && (tiles[x + 1][y + 1] == 1 || tiles[x + 1][y + 1] == 6);
-
-                int idx = 0;
-
-                if (!top && !left && !right && !bottom) idx = 15;
-                else if (!top && !left && !right)       idx = 4;
-                else if (!top && !left && !bottom)      idx = 5;
-                else if (!top && !right && !bottom)     idx = 7;
-                else if (!left && !right && !bottom)    idx = 24;
-                else if (!top && !left)                 idx = 0;
-                else if (!top && !right)                idx = 3;
-                else if (!top)                          idx = 1;
-                else if (!right && !left)               idx = 14;
-                else if (!right && !bottom)             idx = 103;
-                else if (!left && !bottom)              idx = 104;
-                else if (!right)                        idx = 13;
-                else if (!left)                         idx = 10;
-                else if (!bottom)                       idx = 105;
-                else                                    idx = 11;
-
-                DrawTexture(tileTextures[idx], x * 32, y * 32, WHITE);
-            }
-            else if (tiles[x][y] == 4 || tiles[x][y] == 7) {
-                float alpha = transitionTimers[x][y] / GLITCH_TIME;
-                if (alpha > 1.0f) alpha = 1.0f;
-                int r = GetRandomValue(180, 255);
-                int g = GetRandomValue(0, 255);
-                int b = GetRandomValue(180, 255);
-                Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
-                DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
-            }
-            else if (tiles[x][y] == 5) {
-                float alpha = 1.0f - (transitionTimers[x][y] / GLITCH_TIME);
-                if (alpha < 0.0f) alpha = 0.0f;
-                int r = GetRandomValue(0, 255);
-                int g = GetRandomValue(180, 255);
-                int b = GetRandomValue(0, 180);
-                Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
-                DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
-            }
-            else if (tiles[x][y] == TILE_HIGHLIGHT_CREATE) {
-                float blink_progress = fmod(transitionTimers[x][y], BLINK_CYCLE_TIME);
-                float alpha_normalized;
-                if (blink_progress < BLINK_CYCLE_TIME / 2.0f) {
-                    alpha_normalized = blink_progress / (BLINK_CYCLE_TIME / 2.0f);
-                } else {
-                    alpha_normalized = 1.0f - ((blink_progress - BLINK_CYCLE_TIME / 2.0f) / (BLINK_CYCLE_TIME / 2.0f));
+    for (const auto& chunk : chunks) {
+        for (int x = chunk.startX; x <= chunk.endX; ++x) {
+            for (int y = chunk.startY; y <= chunk.endY; ++y) {
+                int tile = tiles[x][y];
+                if (tile == 1 || tile == 6) {
+                    int idx = getTileIndex(tiles, x, y, width, height);
+                    DrawTexture(tileTextures[idx], x * 32, y * 32, WHITE);
+                } else if (tile == 4 || tile == 7) {
+                    float alpha = std::min(transitionTimers[x][y] / GLITCH_TIME, 1.0f);
+                    int r = GetRandomValue(180, 255);
+                    int g = GetRandomValue(0, 255);
+                    int b = GetRandomValue(180, 255);
+                    Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
+                    DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
+                } else if (tile == 5) {
+                    float alpha = 1.0f - (transitionTimers[x][y] / GLITCH_TIME);
+                    alpha = std::max(alpha, 0.0f);
+                    int r = GetRandomValue(0, 255);
+                    int g = GetRandomValue(180, 255);
+                    int b = GetRandomValue(0, 180);
+                    Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
+                    DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
+                } else if (tile == TILE_HIGHLIGHT_CREATE) {
+                    float alpha = getBlinkAlpha(transitionTimers[x][y], BLINK_CYCLE_TIME, MIN_HIGHLIGHT_OPACITY);
+                    Color highlightColor = { 0, 255, 0, (unsigned char)(alpha * 255) };
+                    int idx = getTileIndex(tiles, x, y, width, height);
+                    DrawTexture(tileTextures[idx], x * 32, y * 32, highlightColor);
+                } else if (tile == TILE_HIGHLIGHT_DELETE) {
+                    float alpha = getBlinkAlpha(transitionTimers[x][y], BLINK_CYCLE_TIME, MIN_HIGHLIGHT_OPACITY);
+                    Color highlightColor = { 255, 0, 0, (unsigned char)(alpha * 255) };
+                    int idx = getTileIndex(tiles, x, y, width, height);
+                    DrawTexture(tileTextures[idx], x * 32, y * 32, highlightColor);
+                } else if (tile == 2) {
+                    DrawRectangle(x * 32 + 10, y * 32, 12, 32, GOLD);
+                } else if (tile == 3) {
+                    DrawRectangle(x * 32 + 14, y * 32, 4, 32, SKYBLUE);
                 }
-                alpha_normalized = std::max(0.0f, std::min(1.0f, alpha_normalized));
-
-                float alpha;
-                if (alpha_normalized < 0.5f) {
-                    alpha = 1.0f - (alpha_normalized / 0.5f) * (1.0f - MIN_HIGHLIGHT_OPACITY);
-                } else {
-                    alpha = MIN_HIGHLIGHT_OPACITY + ((alpha_normalized - 0.5f) / 0.5f) * (1.0f - MIN_HIGHLIGHT_OPACITY);
-                }
-                alpha = std::max(MIN_HIGHLIGHT_OPACITY, std::min(1.0f, alpha));
-
-                Color highlightColor = { 0, 255, 0, (unsigned char)(alpha * 255) };
-                
-                bool top    = (y > 0)            && (tiles[x][y - 1] == 1 || tiles[x][y - 1] == 6);
-                bool bottom = (y < height - 1)   && (tiles[x][y + 1] == 1 || tiles[x][y + 1] == 6);
-                bool left   = (x > 0)            && (tiles[x - 1][y] == 1 || tiles[x - 1][y] == 6);
-                bool right  = (x < width - 1)    && (tiles[x + 1][y] == 1 || tiles[x + 1][y] == 6);
-                bool topLeft     = (x > 0 && y > 0)                   && (tiles[x - 1][y - 1] == 1 || tiles[x - 1][y - 1] == 6);
-                bool topRight    = (x < width - 1 && y > 0)           && (tiles[x + 1][y - 1] == 1 || tiles[x + 1][y - 1] == 6);
-                bool bottomLeft  = (x > 0 && y < height - 1)          && (tiles[x - 1][y + 1] == 1 || tiles[x - 1][y + 1] == 6);
-                bool bottomRight = (x < width - 1 && y < height - 1)  && (tiles[x + 1][y + 1] == 1 || tiles[x + 1][y + 1] == 6);
-
-                int idx = 0;
-
-                if (!top && !left && !right && !bottom) idx = 15;
-                else if (!top && !left && !right)       idx = 4;
-                else if (!top && !left && !bottom)      idx = 5;
-                else if (!top && !right && !bottom)     idx = 7;
-                else if (!left && !right && !bottom)    idx = 24;
-                else if (!top && !left)                 idx = 0;
-                else if (!top && !right)                idx = 3;
-                else if (!top)                          idx = 1;
-                else if (!right && !left)               idx = 14;
-                else if (!right && !bottom)             idx = 103;
-                else if (!left && !bottom)              idx = 104;
-                else if (!right)                        idx = 13;
-                else if (!left)                         idx = 10;
-                else if (!bottom)                       idx = 105;
-                else                                    idx = 11;
-
-                DrawTexture(tileTextures[idx], x * 32, y * 32, highlightColor);
-            }
-            else if (tiles[x][y] == TILE_HIGHLIGHT_DELETE) {
-                float blink_progress = fmod(transitionTimers[x][y], BLINK_CYCLE_TIME);
-                float alpha_normalized;
-                if (blink_progress < BLINK_CYCLE_TIME / 2.0f) {
-                    alpha_normalized = blink_progress / (BLINK_CYCLE_TIME / 2.0f);
-                } else {
-                    alpha_normalized = 1.0f - ((blink_progress - BLINK_CYCLE_TIME / 2.0f) / (BLINK_CYCLE_TIME / 2.0f));
-                }
-                alpha_normalized = std::max(0.0f, std::min(1.0f, alpha_normalized));
-
-                float alpha;
-                if (alpha_normalized < 0.5f) {
-                    alpha = 1.0f - (alpha_normalized / 0.5f) * (1.0f - MIN_HIGHLIGHT_OPACITY);
-                } else {
-                    alpha = MIN_HIGHLIGHT_OPACITY + ((alpha_normalized - 0.5f) / 0.5f) * (1.0f - MIN_HIGHLIGHT_OPACITY);
-                }
-                alpha = std::max(MIN_HIGHLIGHT_OPACITY, std::min(1.0f, alpha));
-
-                Color highlightColor = { 255, 0, 0, (unsigned char)(alpha * 255) };
-                
-                bool top    = (y > 0)            && (tiles[x][y - 1] == 1 || tiles[x][y - 1] == 6);
-                bool bottom = (y < height - 1)   && (tiles[x][y + 1] == 1 || tiles[x][y + 1] == 6);
-                bool left   = (x > 0)            && (tiles[x - 1][y] == 1 || tiles[x - 1][y] == 6);
-                bool right  = (x < width - 1)    && (tiles[x + 1][y] == 1 || tiles[x + 1][y] == 6);
-                bool topLeft     = (x > 0 && y > 0)                   && (tiles[x - 1][y - 1] == 1 || tiles[x - 1][y - 1] == 6);
-                bool topRight    = (x < width - 1 && y > 0)           && (tiles[x + 1][y - 1] == 1 || tiles[x + 1][y - 1] == 6);
-                bool bottomLeft  = (x > 0 && y < height - 1)          && (tiles[x - 1][y + 1] == 1 || tiles[x - 1][y + 1] == 6);
-                bool bottomRight = (x < width - 1 && y < height - 1)  && (tiles[x + 1][y + 1] == 1 || tiles[x + 1][y + 1] == 6);
-
-                int idx = 0;
-
-                if (!top && !left && !right && !bottom) idx = 15;
-                else if (!top && !left && !right)       idx = 4;
-                else if (!top && !left && !bottom)      idx = 5;
-                else if (!top && !right && !bottom)     idx = 7;
-                else if (!left && !right && !bottom)    idx = 24;
-                else if (!top && !left)                 idx = 0;
-                else if (!top && !right)                idx = 3;
-                else if (!top)                          idx = 1;
-                else if (!right && !left)               idx = 14;
-                else if (!right && !bottom)             idx = 103;
-                else if (!left && !bottom)              idx = 104;
-                else if (!right)                        idx = 13;
-                else if (!left)                         idx = 10;
-                else if (!bottom)                       idx = 105;
-                else                                    idx = 11;
-
-                DrawTexture(tileTextures[idx], x * 32, y * 32, highlightColor);
-            } else if (tiles[x][y] == 2) {
-                DrawRectangle(x * 32 + 10, y * 32, 12, 32, GOLD);
-            }
-            else if (tiles[x][y] == 3) {
-                DrawRectangle(x * 32 + 14, y * 32, 4, 32, SKYBLUE);
             }
         }
     }

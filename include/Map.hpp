@@ -53,6 +53,12 @@ public:
     Vector2 findEmptySpawn() const;
     int countEmptyTiles() const;
     int countReachableEmptyTiles(int startX, int startY) const;
+    static constexpr int CHUNK_SIZE = 16;
+    struct Chunk {
+        int startX, startY;
+        int endX, endY;
+    };
+    std::vector<Chunk> chunks;
 
 private:
     int width;

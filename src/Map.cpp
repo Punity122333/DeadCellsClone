@@ -1,11 +1,10 @@
 #include "Map.hpp"
-#include <cstdio> // For snprintf
+#include <cstdio>
 #include <vector>
-#include <random> // For std::random_device, std::mt19937
+#include <random> 
 
+constexpr int CHUNK_SIZE = 16;
 
-// Constants from the anonymous namespace in Map.hpp are accessible here
-// as they are defined in the header that is included.
 
 Map::Map(int w, int h) :
     width(w),
@@ -53,6 +52,20 @@ Map::Map(int w, int h) :
     }
 
     generateRoomsAndConnections(gen);
+
+
+    chunks.clear();
+    for (int cx = 0; cx < width; cx += CHUNK_SIZE) {
+        for (int cy = 0; cy < height; cy += CHUNK_SIZE) {
+            Chunk chunk;
+            chunk.startX = cx;
+            chunk.startY = cy;
+            chunk.endX = std::min(cx + CHUNK_SIZE, width) - 1;
+            chunk.endY = std::min(cy + CHUNK_SIZE, height) - 1;
+            chunks.push_back(chunk);
+        }
+    }
+    
 
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y) {
