@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Map.hpp"
+#include "map/Map.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
-#include "ScrapHound.hpp"
+#include "enemies/ScrapHound.hpp"
 #include <memory>
 #include <raylib.h>
 #include <vector>
@@ -14,6 +14,7 @@ public:
     ~Game();
 
     void run();
+    
 private:
     const int screenWidth = 1280;
     const int screenHeight = 720;
@@ -23,5 +24,7 @@ private:
     std::unique_ptr<GameCamera> camera;
     RenderTexture2D sceneTexture;
     Texture2D fisheyeBackground;
+    Shader chromaticAberrationShader;
+    Shader* activeShader;
     std::vector<ScrapHound> scrapHounds;
 };

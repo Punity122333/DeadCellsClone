@@ -7,18 +7,20 @@ find_package(raylib REQUIRED)
 
 include_directories(include)
 
-add_executable(SideScroller
-    main.cpp
-    src/Game.cpp
-    src/Player.cpp
-    src/Map.cpp
-    src/MapGeneration.cpp
-    src/MapRendering.cpp
-    src/MapAutomata.cpp
-    src/MapCollisionSpawn.cpp
-    src/Camera.cpp
-    src/FishEyeGradient.cpp
-    src/ScrapHound.cpp
+# Find all source files
+file(GLOB_RECURSE SOURCES 
+    "src/*.cpp"
+    "main.cpp"
 )
+
+# Add shaders
+file(GLOB SHADERS "shader/*.fs")
+
+# Create executable
+add_executable(SideScroller ${SOURCES})
+
+# Include resources
+file(COPY ${SHADERS} DESTINATION ${CMAKE_BINARY_DIR}/shader)
+file(COPY resources DESTINATION ${CMAKE_BINARY_DIR})
 
 target_link_libraries(SideScroller raylib)

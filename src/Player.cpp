@@ -1,13 +1,31 @@
 #include "Player.hpp"
+#include "enemies/ScrapHound.hpp"
 #include "raymath.h"
 #include <algorithm>
 #include <raylib.h>
+#include "weapons/WeaponTypes.hpp"  // Ensure this path is correct
 
 Player::Player(const Map &map) {
     position = map.findEmptySpawn();
     velocity = {0, 0};
+    
+    // Initialize combat variables
+    health = 100.0f;
+    maxHealth = 100.0f;
+    invincibilityTimer = 0.0f;
+    facingRight = true;
+    
+    // Initialize weapon system with a default sword
+    weapons.push_back(std::make_unique<Sword>());
+    currentWeaponIndex = 0;
 }
+
 void Player::update(float dt, const Map& map) {
+    // Update invincibility timer
+    if (invincibilityTimer > 0.0f) {
+        invincibilityTimer -= dt;
+    }
+
     applyGravity(dt);
     updateLadderState(map);
     updateWallState(map);
@@ -21,12 +39,37 @@ void Player::update(float dt, const Map& map) {
     handleJumpInput(map, dt);
     handleLedgeGrabInput();
     position = nextPos;
-
+    
+    // Update current weapon
+    if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
+        weapons[currentWeaponIndex]->update(dt);
+    }
+    
+    // Handle input for attacks
+    if (IsKeyPressed(KEY_J) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        attack();
+    }
+    
+    // Handle weapon switching with number keys 1-9
+    for (int i = 0; i < 9; i++) {
+        if (IsKeyPressed(KEY_ONE + i) && i < weapons.size()) {
+            switchWeapon(i);
+        }
+    }
+    
+    // Update facing direction based on movement
+    if (velocity.x > 10.0f || IsKeyDown(KEY_D)) {
+        facingRight = true;
+    } else if (velocity.x < -10.0f || IsKeyDown(KEY_A)) {
+        facingRight = false;
+    }
+    
     for (auto& p : dustParticles) {
         p.position = Vector2Add(p.position, Vector2Scale(p.velocity, dt));
         p.velocity.y += 600 * dt; 
         p.age += dt;
     }
+    
     dustParticles.erase(
         std::remove_if(dustParticles.begin(), dustParticles.end(),
             [](const Particle& p) { return p.age > p.lifetime; }),
@@ -245,40 +288,31 @@ void Player::handleCollisions(Vector2& nextPos, const Map& map, float dt) {
                 if (CheckCollisionRecs(playerRect, tileRect)) {
                     Rectangle intersection = GetCollisionRec(playerRect, tileRect);
 
-                    // NEW STEP-UP LOGIC: Allows player to step over 1-tile bumps
                     bool isHorizontalCollision = intersection.width < intersection.height;
                     bool isMovingTowardsTile = (velocity.x > 0 && playerRect.x < tileRect.x) ||
                                                (velocity.x < 0 && playerRect.x > tileRect.x);
-                    // Check if player's feet are near the top of the colliding tile
                     bool isNearGroundLevelOfTile = (playerRect.y + playerRect.height >= tileRect.y) &&
                                                    (playerRect.y + playerRect.height <= tileRect.y + 32 + 5); 
 
                     if (isHorizontalCollision && isMovingTowardsTile && isNearGroundLevelOfTile && onGround) {
-                        // Check if the tile directly above the colliding tile is empty
                         if (!map.isSolidTile(x, y - 1)) {
-                            // Calculate the tile where the player's center would be after horizontal movement
                             int targetXTile = (int)((nextPos.x + width / 2) / 32); 
-                            // Check if the tile at the new horizontal position, one tile up, is also empty
                             if (!map.isSolidTile(targetXTile, y - 1)) { 
-                                // Attempt to step up
-                                nextPos.y = tileRect.y - height; // Move player to stand on top of the tile
-                                // Adjust horizontal position to be just outside the tile
-                                if (velocity.x > 0) { // Moving right
+                                nextPos.y = tileRect.y - height;
+                                if (velocity.x > 0) {
                                     nextPos.x = tileRect.x - width;
-                                } else { // Moving left
+                                } else {
                                     nextPos.x = tileRect.x + 32;
                                 }
-                                velocity.y = 0; // Stop vertical velocity
-                                onGround = true; // Player is now on ground
-                                playerRect.x = nextPos.x; // Update playerRect for subsequent checks
+                                velocity.y = 0;
+                                onGround = true;
+                                playerRect.x = nextPos.x;
                                 playerRect.y = nextPos.y;
-                                continue; // Skip further collision resolution for this tile
+                                continue;
                             }
                         }
                     }
-                    // END NEW STEP-UP LOGIC
 
-                    // Original collision resolution if no step-up occurred
                     if (isHorizontalCollision) {
                         if (playerRect.x < tileRect.x)
                             nextPos.x -= intersection.width;
@@ -349,21 +383,154 @@ void Player::handleLedgeGrabInput() {
     }
 }
 
-
 void Player::draw() const {
-
+    // Draw dust particles
     for (auto& p : dustParticles) {
         float alpha = 1.0f - (p.age / p.lifetime);
         Color c = { 200, 200, 180, (unsigned char)(alpha * 180) };
         DrawCircleV(p.position, 4, c);
     }
 
-    DrawRectangle((int)position.x, (int)position.y, width, height, GREEN);
-    DrawText(onGround ? "ON GROUND" : "IN AIR", 10, 180, 20, RED);
-    DrawText(dropTimer > 0.0f ? "DROPPING" : "NOT DROPPING", 10, 210, 20, RED);
+    // Draw player rectangle with flash effect when hit
+    Color playerColor = GREEN;
+    if (invincibilityTimer > 0.0f && (int)(invincibilityTimer * 10) % 2 == 0) {
+        playerColor = RED;
+    }
+    DrawRectangle((int)position.x, (int)position.y, width, height, playerColor);
+    
+    // Draw current weapon
+    if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
+        weapons[currentWeaponIndex]->draw(position, facingRight);
+    }
+    
+    // Draw facing direction indicator
+    Color dirColor = BLUE;
+    if (facingRight) {
+        DrawTriangle(
+            (Vector2){position.x + width, position.y + height/2},
+            (Vector2){position.x + width - 8, position.y + height/2 - 8},
+            (Vector2){position.x + width - 8, position.y + height/2 + 8},
+            dirColor
+        );
+    } else {
+        // Make left triangle more visible with different color and slightly larger
+        // Adjusted coordinates to draw the triangle outside the player's left edge
+        DrawTriangle(
+            (Vector2){position.x, position.y + height/2}, // Tip of the triangle at player's left edge
+            (Vector2){position.x - 12, position.y + height/2 - 10}, // Top point of the base, 12 pixels to the left
+            (Vector2){position.x - 12, position.y + height/2 + 10}, // Bottom point of the base, 12 pixels to the left
+            RED  // Use a different color to make it stand out
+        );
+    }
 }
 
 Vector2 Player::getPosition() const {
     return position;
 }
+
+void Player::attack() {
+    if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
+        weapons[currentWeaponIndex]->startAttack();
+    }
+}
+
+bool Player::isAttacking() const {
+    if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
+        return weapons[currentWeaponIndex]->isAttacking();
+    }
+    return false;
+}
+
+Rectangle Player::getWeaponHitbox() const {
+    if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
+        return weapons[currentWeaponIndex]->getHitbox(position, facingRight);
+    }
+    return Rectangle{0, 0, 0, 0};
+}
+
+void Player::switchWeapon(int index) {
+    if (index >= 0 && index < weapons.size()) {
+        currentWeaponIndex = index;
+    }
+}
+
+void Player::addWeapon(std::unique_ptr<Weapon> weapon) {
+    weapons.push_back(std::move(weapon));
+}
+
+void Player::checkWeaponHits(std::vector<ScrapHound>& enemies) {
+    if (!isAttacking()) return;
     
+    // Check for special case of bow
+    if (weapons[currentWeaponIndex]->getType() == WeaponType::BOW) {
+        dynamic_cast<Bow*>(weapons[currentWeaponIndex].get())->checkArrowCollisions(enemies);
+        return;
+    }
+    
+    // Regular melee weapon collision check
+    Rectangle hitbox = getWeaponHitbox();
+    
+    for (auto& enemy : enemies) {
+        if (!enemy.isAlive()) continue;
+        
+        Vector2 enemyPos = enemy.getPosition();
+        Rectangle enemyRect = {
+            enemyPos.x - 16.0f,
+            enemyPos.y - 16.0f,
+            32.0f,
+            32.0f
+        };
+        
+        if (CheckCollisionRecs(hitbox, enemyRect)) {
+            float damage = weapons[currentWeaponIndex]->getDamage();
+            enemy.takeDamage(damage);
+            
+            // Apply knockback based on weapon type
+            float knockbackForce = 100.0f;
+            if (weapons[currentWeaponIndex]->getType() == WeaponType::SWORD) {
+                knockbackForce = 150.0f;
+            } else if (weapons[currentWeaponIndex]->getType() == WeaponType::SPEAR) {
+                knockbackForce = 200.0f;
+            }
+            
+            Vector2 knockbackDir = {
+                facingRight ? 1.0f : -1.0f,
+                -0.5f
+            };
+            Vector2 knockback = {
+                knockbackDir.x * knockbackForce,
+                knockbackDir.y * knockbackForce
+            };
+            enemy.applyKnockback(knockback);
+        }
+    }
+}
+
+bool Player::isSwordAttacking() const {
+    return isAttacking();
+}
+
+Rectangle Player::getSwordHitbox() const {
+    return getWeaponHitbox();
+}
+
+bool Player::canTakeDamage() const {
+    return invincibilityTimer <= 0.0f;
+}
+
+void Player::takeDamage(int amount) {
+    if (canTakeDamage()) {
+        health -= amount;
+        invincibilityTimer = 1.0f;
+        
+        // Apply knockback when damaged
+        velocity.y = -300.0f;
+        velocity.x = (facingRight ? -200.0f : 200.0f);
+        
+        // Check if player died
+        if (health <= 0) {
+            health = 0;
+            // Handle player death (respawn, game over, etc.)
+        }
+    }
+}

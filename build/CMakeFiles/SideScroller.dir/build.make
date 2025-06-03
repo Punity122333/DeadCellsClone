@@ -83,108 +83,10 @@ CMakeFiles/SideScroller.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/main.cpp -o CMakeFiles/SideScroller.dir/main.cpp.s
 
-CMakeFiles/SideScroller.dir/src/Game.cpp.o: CMakeFiles/SideScroller.dir/flags.make
-CMakeFiles/SideScroller.dir/src/Game.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp
-CMakeFiles/SideScroller.dir/src/Game.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SideScroller.dir/src/Game.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/Game.cpp.o -MF CMakeFiles/SideScroller.dir/src/Game.cpp.o.d -o CMakeFiles/SideScroller.dir/src/Game.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp
-
-CMakeFiles/SideScroller.dir/src/Game.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/Game.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp > CMakeFiles/SideScroller.dir/src/Game.cpp.i
-
-CMakeFiles/SideScroller.dir/src/Game.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/Game.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp -o CMakeFiles/SideScroller.dir/src/Game.cpp.s
-
-CMakeFiles/SideScroller.dir/src/Player.cpp.o: CMakeFiles/SideScroller.dir/flags.make
-CMakeFiles/SideScroller.dir/src/Player.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp
-CMakeFiles/SideScroller.dir/src/Player.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SideScroller.dir/src/Player.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/Player.cpp.o -MF CMakeFiles/SideScroller.dir/src/Player.cpp.o.d -o CMakeFiles/SideScroller.dir/src/Player.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp
-
-CMakeFiles/SideScroller.dir/src/Player.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/Player.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp > CMakeFiles/SideScroller.dir/src/Player.cpp.i
-
-CMakeFiles/SideScroller.dir/src/Player.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/Player.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp -o CMakeFiles/SideScroller.dir/src/Player.cpp.s
-
-CMakeFiles/SideScroller.dir/src/Map.cpp.o: CMakeFiles/SideScroller.dir/flags.make
-CMakeFiles/SideScroller.dir/src/Map.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Map.cpp
-CMakeFiles/SideScroller.dir/src/Map.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SideScroller.dir/src/Map.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/Map.cpp.o -MF CMakeFiles/SideScroller.dir/src/Map.cpp.o.d -o CMakeFiles/SideScroller.dir/src/Map.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Map.cpp
-
-CMakeFiles/SideScroller.dir/src/Map.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/Map.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Map.cpp > CMakeFiles/SideScroller.dir/src/Map.cpp.i
-
-CMakeFiles/SideScroller.dir/src/Map.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/Map.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Map.cpp -o CMakeFiles/SideScroller.dir/src/Map.cpp.s
-
-CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o: CMakeFiles/SideScroller.dir/flags.make
-CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapGeneration.cpp
-CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o -MF CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o.d -o CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapGeneration.cpp
-
-CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapGeneration.cpp > CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.i
-
-CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapGeneration.cpp -o CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.s
-
-CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o: CMakeFiles/SideScroller.dir/flags.make
-CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapRendering.cpp
-CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o -MF CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o.d -o CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapRendering.cpp
-
-CMakeFiles/SideScroller.dir/src/MapRendering.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/MapRendering.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapRendering.cpp > CMakeFiles/SideScroller.dir/src/MapRendering.cpp.i
-
-CMakeFiles/SideScroller.dir/src/MapRendering.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/MapRendering.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapRendering.cpp -o CMakeFiles/SideScroller.dir/src/MapRendering.cpp.s
-
-CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o: CMakeFiles/SideScroller.dir/flags.make
-CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapAutomata.cpp
-CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o -MF CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o.d -o CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapAutomata.cpp
-
-CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapAutomata.cpp > CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.i
-
-CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapAutomata.cpp -o CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.s
-
-CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o: CMakeFiles/SideScroller.dir/flags.make
-CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapCollisionSpawn.cpp
-CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o -MF CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o.d -o CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapCollisionSpawn.cpp
-
-CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapCollisionSpawn.cpp > CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.i
-
-CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/MapCollisionSpawn.cpp -o CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.s
-
 CMakeFiles/SideScroller.dir/src/Camera.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/Camera.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Camera.cpp
 CMakeFiles/SideScroller.dir/src/Camera.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SideScroller.dir/src/Camera.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SideScroller.dir/src/Camera.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/Camera.cpp.o -MF CMakeFiles/SideScroller.dir/src/Camera.cpp.o.d -o CMakeFiles/SideScroller.dir/src/Camera.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Camera.cpp
 
 CMakeFiles/SideScroller.dir/src/Camera.cpp.i: cmake_force
@@ -198,7 +100,7 @@ CMakeFiles/SideScroller.dir/src/Camera.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/FishEyeGradient.cpp
 CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o -MF CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o.d -o CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/FishEyeGradient.cpp
 
 CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.i: cmake_force
@@ -209,52 +111,182 @@ CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/FishEyeGradient.cpp -o CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.s
 
-CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o: CMakeFiles/SideScroller.dir/flags.make
-CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/ScrapHound.cpp
-CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o -MF CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o.d -o CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/ScrapHound.cpp
+CMakeFiles/SideScroller.dir/src/Game.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/Game.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp
+CMakeFiles/SideScroller.dir/src/Game.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SideScroller.dir/src/Game.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/Game.cpp.o -MF CMakeFiles/SideScroller.dir/src/Game.cpp.o.d -o CMakeFiles/SideScroller.dir/src/Game.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp
 
-CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/ScrapHound.cpp > CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.i
+CMakeFiles/SideScroller.dir/src/Game.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/Game.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp > CMakeFiles/SideScroller.dir/src/Game.cpp.i
 
-CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/ScrapHound.cpp -o CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.s
+CMakeFiles/SideScroller.dir/src/Game.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/Game.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp -o CMakeFiles/SideScroller.dir/src/Game.cpp.s
+
+CMakeFiles/SideScroller.dir/src/Player.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/Player.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp
+CMakeFiles/SideScroller.dir/src/Player.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SideScroller.dir/src/Player.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/Player.cpp.o -MF CMakeFiles/SideScroller.dir/src/Player.cpp.o.d -o CMakeFiles/SideScroller.dir/src/Player.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp
+
+CMakeFiles/SideScroller.dir/src/Player.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/Player.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp > CMakeFiles/SideScroller.dir/src/Player.cpp.i
+
+CMakeFiles/SideScroller.dir/src/Player.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/Player.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp -o CMakeFiles/SideScroller.dir/src/Player.cpp.s
+
+CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHound.cpp
+CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o -MF CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o.d -o CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHound.cpp
+
+CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHound.cpp > CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.i
+
+CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHound.cpp -o CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.s
+
+CMakeFiles/SideScroller.dir/src/map/Map.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/map/Map.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/Map.cpp
+CMakeFiles/SideScroller.dir/src/map/Map.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SideScroller.dir/src/map/Map.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/Map.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/Map.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/Map.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/Map.cpp
+
+CMakeFiles/SideScroller.dir/src/map/Map.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/map/Map.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/Map.cpp > CMakeFiles/SideScroller.dir/src/map/Map.cpp.i
+
+CMakeFiles/SideScroller.dir/src/map/Map.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/map/Map.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/Map.cpp -o CMakeFiles/SideScroller.dir/src/map/Map.cpp.s
+
+CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapAutomata.cpp
+CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapAutomata.cpp
+
+CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapAutomata.cpp > CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.i
+
+CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapAutomata.cpp -o CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.s
+
+CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapCollisionSpawn.cpp
+CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapCollisionSpawn.cpp
+
+CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapCollisionSpawn.cpp > CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.i
+
+CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapCollisionSpawn.cpp -o CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.s
+
+CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapGeneration.cpp
+CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapGeneration.cpp
+
+CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapGeneration.cpp > CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.i
+
+CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapGeneration.cpp -o CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.s
+
+CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapRendering.cpp
+CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapRendering.cpp
+
+CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapRendering.cpp > CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.i
+
+CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapRendering.cpp -o CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.s
+
+CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Weapon.cpp
+CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o -MF CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o.d -o CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Weapon.cpp
+
+CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Weapon.cpp > CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.i
+
+CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Weapon.cpp -o CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.s
+
+CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/WeaponTypes.cpp
+CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o -MF CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o.d -o CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/WeaponTypes.cpp
+
+CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/WeaponTypes.cpp > CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.i
+
+CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/WeaponTypes.cpp -o CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.s
 
 # Object files for target SideScroller
 SideScroller_OBJECTS = \
 "CMakeFiles/SideScroller.dir/main.cpp.o" \
-"CMakeFiles/SideScroller.dir/src/Game.cpp.o" \
-"CMakeFiles/SideScroller.dir/src/Player.cpp.o" \
-"CMakeFiles/SideScroller.dir/src/Map.cpp.o" \
-"CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o" \
-"CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o" \
-"CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o" \
-"CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o" \
 "CMakeFiles/SideScroller.dir/src/Camera.cpp.o" \
 "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o" \
-"CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o"
+"CMakeFiles/SideScroller.dir/src/Game.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/Player.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/map/Map.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o"
 
 # External object files for target SideScroller
 SideScroller_EXTERNAL_OBJECTS =
 
 SideScroller: CMakeFiles/SideScroller.dir/main.cpp.o
-SideScroller: CMakeFiles/SideScroller.dir/src/Game.cpp.o
-SideScroller: CMakeFiles/SideScroller.dir/src/Player.cpp.o
-SideScroller: CMakeFiles/SideScroller.dir/src/Map.cpp.o
-SideScroller: CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o
-SideScroller: CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o
-SideScroller: CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o
-SideScroller: CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/src/Camera.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o
-SideScroller: CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/Game.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/Player.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/map/Map.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/build.make
 SideScroller: /usr/local/lib/libraylib.a
 SideScroller: CMakeFiles/SideScroller.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable SideScroller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable SideScroller"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SideScroller.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -225,126 +225,6 @@ src/Game.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Game.cpp.s
 .PHONY : src/Game.cpp.s
 
-src/Map.o: src/Map.cpp.o
-.PHONY : src/Map.o
-
-# target to build an object file
-src/Map.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Map.cpp.o
-.PHONY : src/Map.cpp.o
-
-src/Map.i: src/Map.cpp.i
-.PHONY : src/Map.i
-
-# target to preprocess a source file
-src/Map.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Map.cpp.i
-.PHONY : src/Map.cpp.i
-
-src/Map.s: src/Map.cpp.s
-.PHONY : src/Map.s
-
-# target to generate assembly for a file
-src/Map.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Map.cpp.s
-.PHONY : src/Map.cpp.s
-
-src/MapAutomata.o: src/MapAutomata.cpp.o
-.PHONY : src/MapAutomata.o
-
-# target to build an object file
-src/MapAutomata.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.o
-.PHONY : src/MapAutomata.cpp.o
-
-src/MapAutomata.i: src/MapAutomata.cpp.i
-.PHONY : src/MapAutomata.i
-
-# target to preprocess a source file
-src/MapAutomata.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.i
-.PHONY : src/MapAutomata.cpp.i
-
-src/MapAutomata.s: src/MapAutomata.cpp.s
-.PHONY : src/MapAutomata.s
-
-# target to generate assembly for a file
-src/MapAutomata.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapAutomata.cpp.s
-.PHONY : src/MapAutomata.cpp.s
-
-src/MapCollisionSpawn.o: src/MapCollisionSpawn.cpp.o
-.PHONY : src/MapCollisionSpawn.o
-
-# target to build an object file
-src/MapCollisionSpawn.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.o
-.PHONY : src/MapCollisionSpawn.cpp.o
-
-src/MapCollisionSpawn.i: src/MapCollisionSpawn.cpp.i
-.PHONY : src/MapCollisionSpawn.i
-
-# target to preprocess a source file
-src/MapCollisionSpawn.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.i
-.PHONY : src/MapCollisionSpawn.cpp.i
-
-src/MapCollisionSpawn.s: src/MapCollisionSpawn.cpp.s
-.PHONY : src/MapCollisionSpawn.s
-
-# target to generate assembly for a file
-src/MapCollisionSpawn.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapCollisionSpawn.cpp.s
-.PHONY : src/MapCollisionSpawn.cpp.s
-
-src/MapGeneration.o: src/MapGeneration.cpp.o
-.PHONY : src/MapGeneration.o
-
-# target to build an object file
-src/MapGeneration.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.o
-.PHONY : src/MapGeneration.cpp.o
-
-src/MapGeneration.i: src/MapGeneration.cpp.i
-.PHONY : src/MapGeneration.i
-
-# target to preprocess a source file
-src/MapGeneration.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.i
-.PHONY : src/MapGeneration.cpp.i
-
-src/MapGeneration.s: src/MapGeneration.cpp.s
-.PHONY : src/MapGeneration.s
-
-# target to generate assembly for a file
-src/MapGeneration.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapGeneration.cpp.s
-.PHONY : src/MapGeneration.cpp.s
-
-src/MapRendering.o: src/MapRendering.cpp.o
-.PHONY : src/MapRendering.o
-
-# target to build an object file
-src/MapRendering.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapRendering.cpp.o
-.PHONY : src/MapRendering.cpp.o
-
-src/MapRendering.i: src/MapRendering.cpp.i
-.PHONY : src/MapRendering.i
-
-# target to preprocess a source file
-src/MapRendering.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapRendering.cpp.i
-.PHONY : src/MapRendering.cpp.i
-
-src/MapRendering.s: src/MapRendering.cpp.s
-.PHONY : src/MapRendering.s
-
-# target to generate assembly for a file
-src/MapRendering.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/MapRendering.cpp.s
-.PHONY : src/MapRendering.cpp.s
-
 src/Player.o: src/Player.cpp.o
 .PHONY : src/Player.o
 
@@ -369,29 +249,197 @@ src/Player.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Player.cpp.s
 .PHONY : src/Player.cpp.s
 
-src/ScrapHound.o: src/ScrapHound.cpp.o
-.PHONY : src/ScrapHound.o
+src/enemies/ScrapHound.o: src/enemies/ScrapHound.cpp.o
+.PHONY : src/enemies/ScrapHound.o
 
 # target to build an object file
-src/ScrapHound.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.o
-.PHONY : src/ScrapHound.cpp.o
+src/enemies/ScrapHound.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o
+.PHONY : src/enemies/ScrapHound.cpp.o
 
-src/ScrapHound.i: src/ScrapHound.cpp.i
-.PHONY : src/ScrapHound.i
+src/enemies/ScrapHound.i: src/enemies/ScrapHound.cpp.i
+.PHONY : src/enemies/ScrapHound.i
 
 # target to preprocess a source file
-src/ScrapHound.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.i
-.PHONY : src/ScrapHound.cpp.i
+src/enemies/ScrapHound.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.i
+.PHONY : src/enemies/ScrapHound.cpp.i
 
-src/ScrapHound.s: src/ScrapHound.cpp.s
-.PHONY : src/ScrapHound.s
+src/enemies/ScrapHound.s: src/enemies/ScrapHound.cpp.s
+.PHONY : src/enemies/ScrapHound.s
 
 # target to generate assembly for a file
-src/ScrapHound.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ScrapHound.cpp.s
-.PHONY : src/ScrapHound.cpp.s
+src/enemies/ScrapHound.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.s
+.PHONY : src/enemies/ScrapHound.cpp.s
+
+src/map/Map.o: src/map/Map.cpp.o
+.PHONY : src/map/Map.o
+
+# target to build an object file
+src/map/Map.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/Map.cpp.o
+.PHONY : src/map/Map.cpp.o
+
+src/map/Map.i: src/map/Map.cpp.i
+.PHONY : src/map/Map.i
+
+# target to preprocess a source file
+src/map/Map.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/Map.cpp.i
+.PHONY : src/map/Map.cpp.i
+
+src/map/Map.s: src/map/Map.cpp.s
+.PHONY : src/map/Map.s
+
+# target to generate assembly for a file
+src/map/Map.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/Map.cpp.s
+.PHONY : src/map/Map.cpp.s
+
+src/map/MapAutomata.o: src/map/MapAutomata.cpp.o
+.PHONY : src/map/MapAutomata.o
+
+# target to build an object file
+src/map/MapAutomata.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o
+.PHONY : src/map/MapAutomata.cpp.o
+
+src/map/MapAutomata.i: src/map/MapAutomata.cpp.i
+.PHONY : src/map/MapAutomata.i
+
+# target to preprocess a source file
+src/map/MapAutomata.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.i
+.PHONY : src/map/MapAutomata.cpp.i
+
+src/map/MapAutomata.s: src/map/MapAutomata.cpp.s
+.PHONY : src/map/MapAutomata.s
+
+# target to generate assembly for a file
+src/map/MapAutomata.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.s
+.PHONY : src/map/MapAutomata.cpp.s
+
+src/map/MapCollisionSpawn.o: src/map/MapCollisionSpawn.cpp.o
+.PHONY : src/map/MapCollisionSpawn.o
+
+# target to build an object file
+src/map/MapCollisionSpawn.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o
+.PHONY : src/map/MapCollisionSpawn.cpp.o
+
+src/map/MapCollisionSpawn.i: src/map/MapCollisionSpawn.cpp.i
+.PHONY : src/map/MapCollisionSpawn.i
+
+# target to preprocess a source file
+src/map/MapCollisionSpawn.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.i
+.PHONY : src/map/MapCollisionSpawn.cpp.i
+
+src/map/MapCollisionSpawn.s: src/map/MapCollisionSpawn.cpp.s
+.PHONY : src/map/MapCollisionSpawn.s
+
+# target to generate assembly for a file
+src/map/MapCollisionSpawn.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.s
+.PHONY : src/map/MapCollisionSpawn.cpp.s
+
+src/map/MapGeneration.o: src/map/MapGeneration.cpp.o
+.PHONY : src/map/MapGeneration.o
+
+# target to build an object file
+src/map/MapGeneration.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o
+.PHONY : src/map/MapGeneration.cpp.o
+
+src/map/MapGeneration.i: src/map/MapGeneration.cpp.i
+.PHONY : src/map/MapGeneration.i
+
+# target to preprocess a source file
+src/map/MapGeneration.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.i
+.PHONY : src/map/MapGeneration.cpp.i
+
+src/map/MapGeneration.s: src/map/MapGeneration.cpp.s
+.PHONY : src/map/MapGeneration.s
+
+# target to generate assembly for a file
+src/map/MapGeneration.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.s
+.PHONY : src/map/MapGeneration.cpp.s
+
+src/map/MapRendering.o: src/map/MapRendering.cpp.o
+.PHONY : src/map/MapRendering.o
+
+# target to build an object file
+src/map/MapRendering.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o
+.PHONY : src/map/MapRendering.cpp.o
+
+src/map/MapRendering.i: src/map/MapRendering.cpp.i
+.PHONY : src/map/MapRendering.i
+
+# target to preprocess a source file
+src/map/MapRendering.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.i
+.PHONY : src/map/MapRendering.cpp.i
+
+src/map/MapRendering.s: src/map/MapRendering.cpp.s
+.PHONY : src/map/MapRendering.s
+
+# target to generate assembly for a file
+src/map/MapRendering.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.s
+.PHONY : src/map/MapRendering.cpp.s
+
+src/weapons/Weapon.o: src/weapons/Weapon.cpp.o
+.PHONY : src/weapons/Weapon.o
+
+# target to build an object file
+src/weapons/Weapon.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o
+.PHONY : src/weapons/Weapon.cpp.o
+
+src/weapons/Weapon.i: src/weapons/Weapon.cpp.i
+.PHONY : src/weapons/Weapon.i
+
+# target to preprocess a source file
+src/weapons/Weapon.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.i
+.PHONY : src/weapons/Weapon.cpp.i
+
+src/weapons/Weapon.s: src/weapons/Weapon.cpp.s
+.PHONY : src/weapons/Weapon.s
+
+# target to generate assembly for a file
+src/weapons/Weapon.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.s
+.PHONY : src/weapons/Weapon.cpp.s
+
+src/weapons/WeaponTypes.o: src/weapons/WeaponTypes.cpp.o
+.PHONY : src/weapons/WeaponTypes.o
+
+# target to build an object file
+src/weapons/WeaponTypes.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o
+.PHONY : src/weapons/WeaponTypes.cpp.o
+
+src/weapons/WeaponTypes.i: src/weapons/WeaponTypes.cpp.i
+.PHONY : src/weapons/WeaponTypes.i
+
+# target to preprocess a source file
+src/weapons/WeaponTypes.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.i
+.PHONY : src/weapons/WeaponTypes.cpp.i
+
+src/weapons/WeaponTypes.s: src/weapons/WeaponTypes.cpp.s
+.PHONY : src/weapons/WeaponTypes.s
+
+# target to generate assembly for a file
+src/weapons/WeaponTypes.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.s
+.PHONY : src/weapons/WeaponTypes.cpp.s
 
 # Help Target
 help:
@@ -414,27 +462,33 @@ help:
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
-	@echo "... src/Map.o"
-	@echo "... src/Map.i"
-	@echo "... src/Map.s"
-	@echo "... src/MapAutomata.o"
-	@echo "... src/MapAutomata.i"
-	@echo "... src/MapAutomata.s"
-	@echo "... src/MapCollisionSpawn.o"
-	@echo "... src/MapCollisionSpawn.i"
-	@echo "... src/MapCollisionSpawn.s"
-	@echo "... src/MapGeneration.o"
-	@echo "... src/MapGeneration.i"
-	@echo "... src/MapGeneration.s"
-	@echo "... src/MapRendering.o"
-	@echo "... src/MapRendering.i"
-	@echo "... src/MapRendering.s"
 	@echo "... src/Player.o"
 	@echo "... src/Player.i"
 	@echo "... src/Player.s"
-	@echo "... src/ScrapHound.o"
-	@echo "... src/ScrapHound.i"
-	@echo "... src/ScrapHound.s"
+	@echo "... src/enemies/ScrapHound.o"
+	@echo "... src/enemies/ScrapHound.i"
+	@echo "... src/enemies/ScrapHound.s"
+	@echo "... src/map/Map.o"
+	@echo "... src/map/Map.i"
+	@echo "... src/map/Map.s"
+	@echo "... src/map/MapAutomata.o"
+	@echo "... src/map/MapAutomata.i"
+	@echo "... src/map/MapAutomata.s"
+	@echo "... src/map/MapCollisionSpawn.o"
+	@echo "... src/map/MapCollisionSpawn.i"
+	@echo "... src/map/MapCollisionSpawn.s"
+	@echo "... src/map/MapGeneration.o"
+	@echo "... src/map/MapGeneration.i"
+	@echo "... src/map/MapGeneration.s"
+	@echo "... src/map/MapRendering.o"
+	@echo "... src/map/MapRendering.i"
+	@echo "... src/map/MapRendering.s"
+	@echo "... src/weapons/Weapon.o"
+	@echo "... src/weapons/Weapon.i"
+	@echo "... src/weapons/Weapon.s"
+	@echo "... src/weapons/WeaponTypes.o"
+	@echo "... src/weapons/WeaponTypes.i"
+	@echo "... src/weapons/WeaponTypes.s"
 .PHONY : help
 
 
