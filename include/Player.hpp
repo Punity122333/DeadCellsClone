@@ -17,6 +17,7 @@ struct Particle {
 class Player {
 public:
     Player(const Map &map);
+    ~Player();
     void update(float dt, const Map& map);
     void draw() const;
     
@@ -42,6 +43,13 @@ public:
     void takeDamage(int amount);
 
 private:   
+    
+    float hitboxOffsetX = 0;    // X offset from left edge of sprite
+    float hitboxOffsetY = 0;    // Y offset from top edge of sprite
+    float hitboxWidth = 0;      // Width of hitbox (will be initialized in constructor)
+    float hitboxHeight = 0;     // Height of hitbox (will be initialized in constructor)
+    
+    
     float health = 100.0f;
     float maxHealth = 100.0f;
     float invincibilityTimer = 0.0f;
@@ -65,25 +73,24 @@ private:
     bool canWallJump;
     bool onLadder;
     bool canLadderJump;
-    float width = 32;
-    float height = 60;
+    float width = 60;
+    float height = 80;
     float speed = 450;
     bool onGround = false;
     bool onRope = false;
     float coyoteTimer = 0.0f;
     static constexpr float COYOTE_TIME = 0.1f;
     bool facingRight;
+    Texture2D texture;
+    bool textureLoaded;
     
-    // Remove these as they're replaced by the weapon system
-    // bool isAttacking;
-    // float attackTimer;
-    // float attackDuration;
-    // float attackCooldown;
-    // float attackCooldownTimer;
-    // int attackComboCount;
-    // Rectangle swordHitbox;
-    // Vector2 swordDirection;
+    Rectangle frameRec;
     
+    int frameWidth;      // Width of a single frame
+    int frameHeight;     // Height of a single frame
+    int currentFrame;    // Current animation frame
+    int framesCounter;   // Animation timing counter
+    int framesSpeed;
     void applyGravity(float dt);
     void updateLadderState(const Map& map);
     void updateWallState(const Map& map);
