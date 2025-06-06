@@ -105,7 +105,14 @@
 				9,
 				10,
 				11,
-				12
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19
 			]
 		}
 	],
@@ -160,7 +167,14 @@
 				9,
 				10,
 				11,
-				12
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19
 			]
 		}
 	],
@@ -188,12 +202,6 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/Game.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "src/Player.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -235,13 +243,61 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/weapons/Weapon.cpp",
+			"path" : "src/player/Player.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/weapons/WeaponTypes.cpp",
+			"path" : "src/player/PlayerCombat.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/player/PlayerMovement.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/player/PlayerPhysics.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/player/PlayerRenderer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/weapons/Bow.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/weapons/Dagger.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/weapons/Spear.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/weapons/Sword.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/weapons/Weapon.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

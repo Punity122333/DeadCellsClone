@@ -1,5 +1,5 @@
-CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o: \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/WeaponTypes.cpp \
+CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o: \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Bow.cpp \
  /usr/include/stdc-predef.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/WeaponTypes.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/Weapon.hpp \
@@ -182,4 +182,5 @@ CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o: \
  /usr/include/c++/13/tr1/modified_bessel_func.tcc \
  /usr/include/c++/13/tr1/poly_hermite.tcc \
  /usr/include/c++/13/tr1/poly_laguerre.tcc \
- /usr/include/c++/13/tr1/riemann_zeta.tcc
+ /usr/include/c++/13/tr1/riemann_zeta.tcc /usr/include/c++/13/cfloat \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/float.h

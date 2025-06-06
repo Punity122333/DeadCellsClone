@@ -225,30 +225,6 @@ src/Game.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Game.cpp.s
 .PHONY : src/Game.cpp.s
 
-src/Player.o: src/Player.cpp.o
-.PHONY : src/Player.o
-
-# target to build an object file
-src/Player.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Player.cpp.o
-.PHONY : src/Player.cpp.o
-
-src/Player.i: src/Player.cpp.i
-.PHONY : src/Player.i
-
-# target to preprocess a source file
-src/Player.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Player.cpp.i
-.PHONY : src/Player.cpp.i
-
-src/Player.s: src/Player.cpp.s
-.PHONY : src/Player.s
-
-# target to generate assembly for a file
-src/Player.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Player.cpp.s
-.PHONY : src/Player.cpp.s
-
 src/enemies/ScrapHound.o: src/enemies/ScrapHound.cpp.o
 .PHONY : src/enemies/ScrapHound.o
 
@@ -393,6 +369,222 @@ src/map/MapRendering.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.s
 .PHONY : src/map/MapRendering.cpp.s
 
+src/player/Player.o: src/player/Player.cpp.o
+.PHONY : src/player/Player.o
+
+# target to build an object file
+src/player/Player.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/Player.cpp.o
+.PHONY : src/player/Player.cpp.o
+
+src/player/Player.i: src/player/Player.cpp.i
+.PHONY : src/player/Player.i
+
+# target to preprocess a source file
+src/player/Player.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/Player.cpp.i
+.PHONY : src/player/Player.cpp.i
+
+src/player/Player.s: src/player/Player.cpp.s
+.PHONY : src/player/Player.s
+
+# target to generate assembly for a file
+src/player/Player.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/Player.cpp.s
+.PHONY : src/player/Player.cpp.s
+
+src/player/PlayerCombat.o: src/player/PlayerCombat.cpp.o
+.PHONY : src/player/PlayerCombat.o
+
+# target to build an object file
+src/player/PlayerCombat.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o
+.PHONY : src/player/PlayerCombat.cpp.o
+
+src/player/PlayerCombat.i: src/player/PlayerCombat.cpp.i
+.PHONY : src/player/PlayerCombat.i
+
+# target to preprocess a source file
+src/player/PlayerCombat.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.i
+.PHONY : src/player/PlayerCombat.cpp.i
+
+src/player/PlayerCombat.s: src/player/PlayerCombat.cpp.s
+.PHONY : src/player/PlayerCombat.s
+
+# target to generate assembly for a file
+src/player/PlayerCombat.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.s
+.PHONY : src/player/PlayerCombat.cpp.s
+
+src/player/PlayerMovement.o: src/player/PlayerMovement.cpp.o
+.PHONY : src/player/PlayerMovement.o
+
+# target to build an object file
+src/player/PlayerMovement.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o
+.PHONY : src/player/PlayerMovement.cpp.o
+
+src/player/PlayerMovement.i: src/player/PlayerMovement.cpp.i
+.PHONY : src/player/PlayerMovement.i
+
+# target to preprocess a source file
+src/player/PlayerMovement.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.i
+.PHONY : src/player/PlayerMovement.cpp.i
+
+src/player/PlayerMovement.s: src/player/PlayerMovement.cpp.s
+.PHONY : src/player/PlayerMovement.s
+
+# target to generate assembly for a file
+src/player/PlayerMovement.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.s
+.PHONY : src/player/PlayerMovement.cpp.s
+
+src/player/PlayerPhysics.o: src/player/PlayerPhysics.cpp.o
+.PHONY : src/player/PlayerPhysics.o
+
+# target to build an object file
+src/player/PlayerPhysics.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o
+.PHONY : src/player/PlayerPhysics.cpp.o
+
+src/player/PlayerPhysics.i: src/player/PlayerPhysics.cpp.i
+.PHONY : src/player/PlayerPhysics.i
+
+# target to preprocess a source file
+src/player/PlayerPhysics.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.i
+.PHONY : src/player/PlayerPhysics.cpp.i
+
+src/player/PlayerPhysics.s: src/player/PlayerPhysics.cpp.s
+.PHONY : src/player/PlayerPhysics.s
+
+# target to generate assembly for a file
+src/player/PlayerPhysics.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.s
+.PHONY : src/player/PlayerPhysics.cpp.s
+
+src/player/PlayerRenderer.o: src/player/PlayerRenderer.cpp.o
+.PHONY : src/player/PlayerRenderer.o
+
+# target to build an object file
+src/player/PlayerRenderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o
+.PHONY : src/player/PlayerRenderer.cpp.o
+
+src/player/PlayerRenderer.i: src/player/PlayerRenderer.cpp.i
+.PHONY : src/player/PlayerRenderer.i
+
+# target to preprocess a source file
+src/player/PlayerRenderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.i
+.PHONY : src/player/PlayerRenderer.cpp.i
+
+src/player/PlayerRenderer.s: src/player/PlayerRenderer.cpp.s
+.PHONY : src/player/PlayerRenderer.s
+
+# target to generate assembly for a file
+src/player/PlayerRenderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.s
+.PHONY : src/player/PlayerRenderer.cpp.s
+
+src/weapons/Bow.o: src/weapons/Bow.cpp.o
+.PHONY : src/weapons/Bow.o
+
+# target to build an object file
+src/weapons/Bow.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o
+.PHONY : src/weapons/Bow.cpp.o
+
+src/weapons/Bow.i: src/weapons/Bow.cpp.i
+.PHONY : src/weapons/Bow.i
+
+# target to preprocess a source file
+src/weapons/Bow.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.i
+.PHONY : src/weapons/Bow.cpp.i
+
+src/weapons/Bow.s: src/weapons/Bow.cpp.s
+.PHONY : src/weapons/Bow.s
+
+# target to generate assembly for a file
+src/weapons/Bow.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.s
+.PHONY : src/weapons/Bow.cpp.s
+
+src/weapons/Dagger.o: src/weapons/Dagger.cpp.o
+.PHONY : src/weapons/Dagger.o
+
+# target to build an object file
+src/weapons/Dagger.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o
+.PHONY : src/weapons/Dagger.cpp.o
+
+src/weapons/Dagger.i: src/weapons/Dagger.cpp.i
+.PHONY : src/weapons/Dagger.i
+
+# target to preprocess a source file
+src/weapons/Dagger.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.i
+.PHONY : src/weapons/Dagger.cpp.i
+
+src/weapons/Dagger.s: src/weapons/Dagger.cpp.s
+.PHONY : src/weapons/Dagger.s
+
+# target to generate assembly for a file
+src/weapons/Dagger.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.s
+.PHONY : src/weapons/Dagger.cpp.s
+
+src/weapons/Spear.o: src/weapons/Spear.cpp.o
+.PHONY : src/weapons/Spear.o
+
+# target to build an object file
+src/weapons/Spear.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o
+.PHONY : src/weapons/Spear.cpp.o
+
+src/weapons/Spear.i: src/weapons/Spear.cpp.i
+.PHONY : src/weapons/Spear.i
+
+# target to preprocess a source file
+src/weapons/Spear.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.i
+.PHONY : src/weapons/Spear.cpp.i
+
+src/weapons/Spear.s: src/weapons/Spear.cpp.s
+.PHONY : src/weapons/Spear.s
+
+# target to generate assembly for a file
+src/weapons/Spear.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.s
+.PHONY : src/weapons/Spear.cpp.s
+
+src/weapons/Sword.o: src/weapons/Sword.cpp.o
+.PHONY : src/weapons/Sword.o
+
+# target to build an object file
+src/weapons/Sword.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o
+.PHONY : src/weapons/Sword.cpp.o
+
+src/weapons/Sword.i: src/weapons/Sword.cpp.i
+.PHONY : src/weapons/Sword.i
+
+# target to preprocess a source file
+src/weapons/Sword.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.i
+.PHONY : src/weapons/Sword.cpp.i
+
+src/weapons/Sword.s: src/weapons/Sword.cpp.s
+.PHONY : src/weapons/Sword.s
+
+# target to generate assembly for a file
+src/weapons/Sword.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.s
+.PHONY : src/weapons/Sword.cpp.s
+
 src/weapons/Weapon.o: src/weapons/Weapon.cpp.o
 .PHONY : src/weapons/Weapon.o
 
@@ -417,30 +609,6 @@ src/weapons/Weapon.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.s
 .PHONY : src/weapons/Weapon.cpp.s
 
-src/weapons/WeaponTypes.o: src/weapons/WeaponTypes.cpp.o
-.PHONY : src/weapons/WeaponTypes.o
-
-# target to build an object file
-src/weapons/WeaponTypes.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o
-.PHONY : src/weapons/WeaponTypes.cpp.o
-
-src/weapons/WeaponTypes.i: src/weapons/WeaponTypes.cpp.i
-.PHONY : src/weapons/WeaponTypes.i
-
-# target to preprocess a source file
-src/weapons/WeaponTypes.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.i
-.PHONY : src/weapons/WeaponTypes.cpp.i
-
-src/weapons/WeaponTypes.s: src/weapons/WeaponTypes.cpp.s
-.PHONY : src/weapons/WeaponTypes.s
-
-# target to generate assembly for a file
-src/weapons/WeaponTypes.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.s
-.PHONY : src/weapons/WeaponTypes.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -462,9 +630,6 @@ help:
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
-	@echo "... src/Player.o"
-	@echo "... src/Player.i"
-	@echo "... src/Player.s"
 	@echo "... src/enemies/ScrapHound.o"
 	@echo "... src/enemies/ScrapHound.i"
 	@echo "... src/enemies/ScrapHound.s"
@@ -483,12 +648,36 @@ help:
 	@echo "... src/map/MapRendering.o"
 	@echo "... src/map/MapRendering.i"
 	@echo "... src/map/MapRendering.s"
+	@echo "... src/player/Player.o"
+	@echo "... src/player/Player.i"
+	@echo "... src/player/Player.s"
+	@echo "... src/player/PlayerCombat.o"
+	@echo "... src/player/PlayerCombat.i"
+	@echo "... src/player/PlayerCombat.s"
+	@echo "... src/player/PlayerMovement.o"
+	@echo "... src/player/PlayerMovement.i"
+	@echo "... src/player/PlayerMovement.s"
+	@echo "... src/player/PlayerPhysics.o"
+	@echo "... src/player/PlayerPhysics.i"
+	@echo "... src/player/PlayerPhysics.s"
+	@echo "... src/player/PlayerRenderer.o"
+	@echo "... src/player/PlayerRenderer.i"
+	@echo "... src/player/PlayerRenderer.s"
+	@echo "... src/weapons/Bow.o"
+	@echo "... src/weapons/Bow.i"
+	@echo "... src/weapons/Bow.s"
+	@echo "... src/weapons/Dagger.o"
+	@echo "... src/weapons/Dagger.i"
+	@echo "... src/weapons/Dagger.s"
+	@echo "... src/weapons/Spear.o"
+	@echo "... src/weapons/Spear.i"
+	@echo "... src/weapons/Spear.s"
+	@echo "... src/weapons/Sword.o"
+	@echo "... src/weapons/Sword.i"
+	@echo "... src/weapons/Sword.s"
 	@echo "... src/weapons/Weapon.o"
 	@echo "... src/weapons/Weapon.i"
 	@echo "... src/weapons/Weapon.s"
-	@echo "... src/weapons/WeaponTypes.o"
-	@echo "... src/weapons/WeaponTypes.i"
-	@echo "... src/weapons/WeaponTypes.s"
 .PHONY : help
 
 

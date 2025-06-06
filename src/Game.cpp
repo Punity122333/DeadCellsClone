@@ -25,12 +25,10 @@ Game::Game() {
     player = std::make_unique<Player>(*map);
     camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
 
-    // Spawn 5 ScrapHounds at random empty spawns
     Vector2 playerSpawn = player->getPosition();
     int spawned = 0;
     int tryCount = 0;
     while (spawned < 5 && tryCount < 50) {
-        // Try random offsets within a 5-tile radius
         int dx = GetRandomValue(-5, 5);
         int dy = GetRandomValue(-3, 3);
         int tx = (int)(playerSpawn.x / 32) + dx;
@@ -44,9 +42,7 @@ Game::Game() {
 
     sceneTexture = LoadRenderTexture(screenWidth, screenHeight);
 
-    // --- Load bloom fragment shader ---
     bloomShader = LoadShader(0, "../shader/bloom.fs");
-    // ----------------------------------
     chromaticAberrationShader = LoadShader(0, "../shader/chromatic_aberration.fs");
     activeShader = &bloomShader;
 }
@@ -74,46 +70,19 @@ void Game::run() {
         }
 
         map->updateTransitions(dt);
-        player->update(dt, *map);
+        player->update(dt, *map, camera->getCamera());
         camera->update();
-        
-        // Check for sword collisions with enemies
-        if (player->isSwordAttacking()) {
-            Rectangle swordHitbox = player->getSwordHitbox();
-            
-            for (auto& enemy : scrapHounds) {
-                if (enemy.isAlive()) {  // Only check collision with alive enemies
-                    Vector2 enemyPos = enemy.getPosition();
-                    Rectangle enemyRect = { enemyPos.x, enemyPos.y, 32, 32 };
-                    
-                    if (CheckCollisionRecs(swordHitbox, enemyRect)) {
-                        // Enemy hit by sword!
-                        enemy.takeDamage(10); // Apply 10 damage to enemy
-                        
-                        // Apply knockback direction based on player position
-                        Vector2 playerPos = player->getPosition();
-                        float knockbackDirX = enemyPos.x < playerPos.x ? -1.0f : 1.0f;
-                        enemy.applyKnockback({knockbackDirX * 200.0f, -100.0f});
-                        
-                        // Play hit sound (if implemented)
-                        // PlaySound(enemyHitSound);
-                    }
-                }
-            }
-        }
+        player->checkWeaponHits(scrapHounds);
 
-        // Clean up dead enemies
         scrapHounds.erase(
             std::remove_if(scrapHounds.begin(), scrapHounds.end(),
                 [](const ScrapHound& enemy) { return !enemy.isAlive(); }),
             scrapHounds.end()
         );
 
-        // Update enemies and check for player collision
         for (auto& enemy : scrapHounds) {
             enemy.update(*map, player->getPosition(), dt);
             
-            // Check for enemy collisions with player (player takes damage)
             if (enemy.isAlive()) {
                 Vector2 enemyPos = enemy.getPosition();
                 Rectangle enemyRect = { enemyPos.x, enemyPos.y, 32, 32 };
@@ -122,7 +91,7 @@ void Game::run() {
                 Rectangle playerRect = { playerPos.x, playerPos.y, 32, 32 };
                 
                 if (CheckCollisionRecs(enemyRect, playerRect) && player->canTakeDamage()) {
-                    player->takeDamage(5);  // Player takes 5 damage from enemy contact
+                    player->takeDamage(5);
                 }
             }
         }
@@ -137,15 +106,13 @@ void Game::run() {
         for (const auto& enemy : scrapHounds) {
             enemy.draw();
             
-            // Debug visualization (optional)
-            if (IsKeyDown(KEY_TAB)) {  // Hold TAB to see hitboxes
+            if (IsKeyDown(KEY_TAB)) {
                 Vector2 enemyPos = enemy.getPosition();
                 DrawRectangleLines((int)enemyPos.x, (int)enemyPos.y, 32, 32, RED);
             }
         }
         
-        // Debug: visualize sword hitbox when active
-        if (IsKeyDown(KEY_TAB) && player->isSwordAttacking()) {
+        if (IsKeyDown(KEY_TAB) && player->isAttacking()) {
             Rectangle swordHitbox = player->getSwordHitbox();
             DrawRectangleRec(swordHitbox, ColorAlpha(GREEN, 0.5f));
         }
@@ -166,12 +133,12 @@ void Game::run() {
         float barWidth = 300.0f;
         float barHeight = 24.0f;
         float healthRatio = player->getHealth() / player->getMaxHealth();
-        int barX = screenWidth - (int)barWidth - 40; // 40px from right edge
-        int barY = 30; // 30px from top
+        int barX = screenWidth - (int)barWidth - 40;
+        int barY = 30;
 
-        DrawRectangle(barX, barY, (int)barWidth, (int)barHeight, DARKGRAY); // background
-        DrawRectangle(barX, barY, (int)(barWidth * healthRatio), (int)barHeight, RED); // health
-        DrawRectangleLines(barX, barY, (int)barWidth, (int)barHeight, BLACK); // border
+        DrawRectangle(barX, barY, (int)barWidth, (int)barHeight, DARKGRAY);
+        DrawRectangle(barX, barY, (int)(barWidth * healthRatio), (int)barHeight, RED);
+        DrawRectangleLines(barX, barY, (int)barWidth, (int)barHeight, BLACK);
         DrawText("HEALTH", barX, barY - 22, 22, WHITE);
         EndDrawing();
     }

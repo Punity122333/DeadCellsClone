@@ -1,5 +1,5 @@
-CMakeFiles/SideScroller.dir/src/Player.cpp.o: \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp \
+CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o: \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerCombat.cpp \
  /usr/include/stdc-predef.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Player.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
@@ -192,10 +192,5 @@ CMakeFiles/SideScroller.dir/src/Player.cpp.o: \
  /usr/include/c++/13/ctime /usr/include/c++/13/bits/parse_numbers.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h \
  /usr/include/c++/13/bits/std_mutex.h \
- /usr/include/c++/13/bits/unique_lock.h /usr/local/include/raymath.h \
- /usr/include/c++/13/math.h /usr/include/c++/13/algorithm \
- /usr/include/c++/13/bits/stl_algo.h \
- /usr/include/c++/13/bits/algorithmfwd.h \
- /usr/include/c++/13/bits/stl_heap.h \
- /usr/include/c++/13/pstl/glue_algorithm_defs.h \
+ /usr/include/c++/13/bits/unique_lock.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/WeaponTypes.hpp

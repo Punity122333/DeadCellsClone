@@ -5,7 +5,7 @@
 class Sword : public Weapon {
 public:
     Sword();
-    void update(float dt) override;
+    void update(float dt, const Camera2D& gameCamera, bool playerFacingRight) override;
     void draw(Vector2 playerPosition, bool facingRight) const override;
     Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
@@ -14,47 +14,45 @@ public:
 class Dagger : public Weapon {
 public:
     Dagger();
-    void update(float dt) override;
+    void update(float dt, const Camera2D& gameCamera, bool playerFacingRight) override;
     void draw(Vector2 playerPosition, bool facingRight) const override;
     Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
     
 private:
-    float attackSpeedMultiplier = 2.0f; // Daggers attack faster
+    float attackSpeedMultiplier = 2.0f;
 };
 
 class Spear : public Weapon {
 public:
     Spear();
-    void update(float dt) override;
+    void update(float dt, const Camera2D& gameCamera, bool playerFacingRight) override;
     void draw(Vector2 playerPosition, bool facingRight) const override;
     Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
     
 private:
-    float extraRange = 1.5f; // Spears have more range
+    float extraRange = 1.5f;
 };
 
 class Bow : public Weapon {
 public:
     Bow();
-    void update(float dt) override;
+    void update(float dt, const Camera2D& gameCamera, bool playerFacingRight) override;
     void draw(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
     Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
-    
-    // Arrow management
+    bool isCharging() const ;
     void fireArrow(Vector2 position, Vector2 direction);
     void updateArrows(float dt);
     void drawArrows() const;
     void checkArrowCollisions(std::vector<class ScrapHound>& enemies);
-    
+    void updatePosition(Vector2 newPosition);
 private:
     float chargeTime = 0.0f;
     bool charging = false;
     float maxChargeTime = 1.0f;
-    mutable Vector2 position; // Add this to store player position for arrow firing
-    
+    mutable Vector2 position;
     struct Arrow {
         Vector2 position;
         Vector2 direction;
@@ -62,8 +60,8 @@ private:
         float lifetime;
         bool active;
     };
-    
     std::vector<Arrow> activeArrows;
     Texture2D arrowTexture;
-    Camera2D defaultCamera = { 0 }; // Default camera for when none is provided
+    Camera2D defaultCamera = { 0 };
+    float minChargeTime = 0.2f;
 };

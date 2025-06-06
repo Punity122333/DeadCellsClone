@@ -77,13 +77,6 @@ build CMakeFiles/SideScroller.dir/src/Game.cpp.o: CXX_COMPILER__SideScroller_uns
   OBJECT_DIR = CMakeFiles/SideScroller.dir
   OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src
 
-build CMakeFiles/SideScroller.dir/src/Player.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Player.cpp || cmake_object_order_depends_target_SideScroller
-  DEP_FILE = CMakeFiles/SideScroller.dir/src/Player.cpp.o.d
-  FLAGS = -g -std=gnu++17 -I/usr/local/include
-  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
-  OBJECT_DIR = CMakeFiles/SideScroller.dir
-  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src
-
 build CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHound.cpp || cmake_object_order_depends_target_SideScroller
   DEP_FILE = CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o.d
   FLAGS = -g -std=gnu++17 -I/usr/local/include
@@ -126,15 +119,71 @@ build CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o: CXX_COMPILER__Side
   OBJECT_DIR = CMakeFiles/SideScroller.dir
   OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/map
 
-build CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Weapon.cpp || cmake_object_order_depends_target_SideScroller
-  DEP_FILE = CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o.d
+build CMakeFiles/SideScroller.dir/src/player/Player.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/Player.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/player/Player.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/player
+
+build CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerCombat.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/player
+
+build CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerMovement.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/player
+
+build CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerPhysics.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/player
+
+build CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerRenderer.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/player
+
+build CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Bow.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o.d
   FLAGS = -g -std=gnu++17 -I/usr/local/include
   INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
   OBJECT_DIR = CMakeFiles/SideScroller.dir
   OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/weapons
 
-build CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/WeaponTypes.cpp || cmake_object_order_depends_target_SideScroller
-  DEP_FILE = CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o.d
+build CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Dagger.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/weapons
+
+build CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Spear.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/weapons
+
+build CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Sword.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o.d
+  FLAGS = -g -std=gnu++17 -I/usr/local/include
+  INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
+  OBJECT_DIR = CMakeFiles/SideScroller.dir
+  OBJECT_FILE_DIR = CMakeFiles/SideScroller.dir/src/weapons
+
+build CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o: CXX_COMPILER__SideScroller_unscanned_Debug /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Weapon.cpp || cmake_object_order_depends_target_SideScroller
+  DEP_FILE = CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o.d
   FLAGS = -g -std=gnu++17 -I/usr/local/include
   INCLUDES = -I/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include
   OBJECT_DIR = CMakeFiles/SideScroller.dir
@@ -148,7 +197,7 @@ build CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o: CXX_COMPILER__S
 #############################################
 # Link the executable SideScroller
 
-build SideScroller: CXX_EXECUTABLE_LINKER__SideScroller_Debug CMakeFiles/SideScroller.dir/main.cpp.o CMakeFiles/SideScroller.dir/src/Camera.cpp.o CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o CMakeFiles/SideScroller.dir/src/Game.cpp.o CMakeFiles/SideScroller.dir/src/Player.cpp.o CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o CMakeFiles/SideScroller.dir/src/map/Map.cpp.o CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o CMakeFiles/SideScroller.dir/src/weapons/WeaponTypes.cpp.o | /usr/local/lib/libraylib.a
+build SideScroller: CXX_EXECUTABLE_LINKER__SideScroller_Debug CMakeFiles/SideScroller.dir/main.cpp.o CMakeFiles/SideScroller.dir/src/Camera.cpp.o CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o CMakeFiles/SideScroller.dir/src/Game.cpp.o CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o CMakeFiles/SideScroller.dir/src/map/Map.cpp.o CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o CMakeFiles/SideScroller.dir/src/player/Player.cpp.o CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o | /usr/local/lib/libraylib.a
   FLAGS = -g
   LINK_LIBRARIES = /usr/local/lib/libraylib.a  -L/usr/local/lib -lraylib
   OBJECT_DIR = CMakeFiles/SideScroller.dir

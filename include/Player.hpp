@@ -1,6 +1,6 @@
 #pragma once
 #include "map/Map.hpp"
-#include "weapons/Weapon.hpp"  // Include complete Weapon definition instead of forward declaration
+#include "weapons/Weapon.hpp"  
 #include <raylib.h>
 #include <vector>
 #include <memory>
@@ -18,7 +18,7 @@ class Player {
 public:
     Player(const Map &map);
     ~Player();
-    void update(float dt, const Map& map);
+    void update(float dt, const Map& map, const Camera2D& gameCamera); // Added gameCamera
     void draw() const;
     
     Vector2 getPosition() const;
@@ -42,12 +42,14 @@ public:
     bool canTakeDamage() const;
     void takeDamage(int amount);
 
+    
+
 private:   
     
-    float hitboxOffsetX = 0;    // X offset from left edge of sprite
-    float hitboxOffsetY = 0;    // Y offset from top edge of sprite
-    float hitboxWidth = 0;      // Width of hitbox (will be initialized in constructor)
-    float hitboxHeight = 0;     // Height of hitbox (will be initialized in constructor)
+    float hitboxOffsetX = 0;    
+    float hitboxOffsetY = 0;   
+    float hitboxWidth = 0;      
+    float hitboxHeight = 0;    
     
     
     float health = 100.0f;
@@ -73,8 +75,8 @@ private:
     bool canWallJump;
     bool onLadder;
     bool canLadderJump;
-    float width = 60;
-    float height = 80;
+    float width = 80;
+    float height = 100;
     float speed = 450;
     bool onGround = false;
     bool onRope = false;
@@ -103,4 +105,5 @@ private:
     void updateCoyoteTimer(float dt);
     void handleJumpInput(const Map& map, float dt);
     void handleLedgeGrabInput();
+    void updateParticles(float dt);
 };
