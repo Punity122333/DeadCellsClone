@@ -4,20 +4,65 @@
 #include <vector>
 #include <tuple>
 
+namespace {
+    constexpr int ROOM_PLACEMENT_SKIP_CHANCE_PERCENT = 15;
+    constexpr int HALLWAY_CREATION_SKIP_PERCENT = 20;
+    constexpr int MIN_ROOM_SLOT_WIDTH_CONST = 25;
+    constexpr int MIN_ROOM_SLOT_HEIGHT_CONST = 20;
+    constexpr int SLOT_GAP_SIZE_CONST = 5;
+    constexpr int HORIZONTAL_DOOR_HEIGHT_CONST = 6;
+    constexpr int VERTICAL_HALLWAY_WIDTH_CONST = 6;
+    constexpr int DEFAULT_TILE_VALUE = 1;
+    constexpr int EMPTY_TILE_VALUE = 0;
+    constexpr int PLATFORM_TILE_VALUE = 6;
+    constexpr int WALL_TILE_VALUE = 1;
+    constexpr int LADDER_TILE_VALUE = 2;
+    constexpr int ROPE_TILE_VALUE = 3;
+    constexpr int TREASURE_TILE_VALUE = 4;
+    constexpr int SHOP_TILE_VALUE = 5;
 
+    constexpr int WALL_PLACEMENT_CHANCE_MAX_ROLL = 3;
+    constexpr int MIN_WALL_VERTICAL_GAP_SIZE = 3;
+    constexpr int MAX_WALL_VERTICAL_GAP_SIZE = 5;
+    constexpr int MIN_RANDOM_PLATFORMS_IN_ROOM = 1;
+    constexpr int MAX_RANDOM_PLATFORMS_IN_ROOM = 2;
+    constexpr int MIN_RANDOM_PLATFORM_LENGTH = 4;
+    constexpr int MIN_GENERATED_LADDER_LENGTH = 8;
+    constexpr int MAX_GENERATED_LADDER_LENGTH = 15;
+    constexpr int GENERATED_LADDER_EXCLUSION_ZONE = 1;
+    constexpr int MIN_LADDERS_PER_ROOM_SHAFT_AREA = 1;
+    constexpr int MAX_LADDERS_PER_ROOM_SHAFT_AREA = 2;
+    constexpr int LADDER_OR_ROPE_ROLL_MAX = 1;
+    constexpr int MAX_EXTRA_TREASURES_IN_ROOM = 2;
+    constexpr int MAX_EXTRA_SHOP_ITEMS_IN_ROOM = 2;
+    constexpr int LARGE_HALL_CREATION_CHANCE_PERCENT = 15;
+    constexpr int MAX_ROOM_WIDTH_RANDOM_VARIATION = 5;
+    constexpr int ROOM_TYPE_TREASURE_CHANCE_THRESHOLD_PERCENT = 10;
+    constexpr int ROOM_TYPE_SHOP_CHANCE_THRESHOLD_PERCENT = 20;
+
+    int rollPercent(std::mt19937& gen) {
+        static std::uniform_int_distribution<> dist(0, 99);
+        return dist(gen);
+    }
+}
+
+bool Map::isInsideBounds(int x, int y) const {
+    return x > 0 && x < width - 1 && y > 0 && y < height - 1;
+}
 
 void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
+    const int room_width = room.endX - room.startX;
     int platY = (room.startY + room.endY) / 2;
     if (platY > room.startY + 1 && platY < room.endY - 1) {
         for (int x = room.startX + 2; x <= room.endX - 2; ++x) {
-            if (tiles[x][platY] == 0) {
-                tiles[x][platY] = 6;
+            if (tiles[x][platY] == EMPTY_TILE_VALUE) {
+                tiles[x][platY] = PLATFORM_TILE_VALUE;
                 isOriginalSolid[x][platY] = false;
             }
         }
     }
 
-    std::uniform_int_distribution<> wallChance(0, 3);
+    std::uniform_int_distribution<> wallChance(0, WALL_PLACEMENT_CHANCE_MAX_ROLL);
     if (wallChance(gen) == 0) {
         int wxMin = room.startX + 4;
         int wxMax = room.endX - 4;
@@ -25,7 +70,7 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
             std::uniform_int_distribution<> wxDist(wxMin, wxMax);
             int wx = wxDist(gen);
 
-            std::uniform_int_distribution<> gapSizeDist(3, 5);
+            std::uniform_int_distribution<> gapSizeDist(MIN_WALL_VERTICAL_GAP_SIZE, MAX_WALL_VERTICAL_GAP_SIZE);
             int gapSize = gapSizeDist(gen);
 
             int gapStartMin = room.startY + 5;
@@ -34,23 +79,23 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
                 std::uniform_int_distribution<> gapDist(gapStartMin, gapStartMax);
                 int gapStart = gapDist(gen);
 
-                for (int y = room.startY + 4; y <= room.endY - 4; ++y) {
-                    bool inGap = (y >= gapStart && y < gapStart + gapSize);
+                for (int y_coord = room.startY + 4; y_coord <= room.endY - 4; ++y_coord) {
+                    bool inGap = (y_coord >= gapStart && y_coord < gapStart + gapSize);
                     if (inGap) continue;
 
-                    if (tiles[wx][y] == 0) {
-                        tiles[wx][y] = 1;
-                        isOriginalSolid[wx][y] = true;
+                    if (tiles[wx][y_coord] == EMPTY_TILE_VALUE) {
+                        tiles[wx][y_coord] = WALL_TILE_VALUE;
+                        isOriginalSolid[wx][y_coord] = true;
                     }
                 }
             }
         }
     }
 
-    std::uniform_int_distribution<> platCountDist(1, 2);
+    std::uniform_int_distribution<> platCountDist(MIN_RANDOM_PLATFORMS_IN_ROOM, MAX_RANDOM_PLATFORMS_IN_ROOM);
     int extraPlats = platCountDist(gen);
-    const int platMinLen = 4;
-    int platMaxLen = std::max(platMinLen, (room.endX - room.startX) / 2);
+    const int platMinLen = MIN_RANDOM_PLATFORM_LENGTH;
+    int platMaxLen = std::max(platMinLen, room_width / 2);
 
     for (int i = 0; i < extraPlats; ++i) {
         std::uniform_int_distribution<> platLenDist(platMinLen, platMaxLen);
@@ -66,24 +111,20 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
         std::uniform_int_distribution<> platYDist(room.startY + 2, room.endY - 2);
         int py = platYDist(gen);
 
-        for (int x = pxStart; x < pxStart + platLen; ++x) {
-            if (py > room.startY + 1 && py < room.endY - 1 && tiles[x][py] == 0) {
-                tiles[x][py] = 6;
-                isOriginalSolid[x][py] = false;
+        for (int x_coord = pxStart; x_coord < pxStart + platLen; ++x_coord) {
+            if (py > room.startY + 1 && py < room.endY - 1 && tiles[x_coord][py] == EMPTY_TILE_VALUE) {
+                tiles[x_coord][py] = PLATFORM_TILE_VALUE;
+                isOriginalSolid[x_coord][py] = false;
             }
         }
     }
-
-    const int MIN_INTERNAL_LADDER_LENGTH = 8;
-    const int MAX_INTERNAL_LADDER_LENGTH = 15;
-    const int LADDER_EXCLUSION_ZONE = 1;
 
     std::vector<std::tuple<int, int, int>> potential_shafts;
 
     for (int x_col = room.startX + 1; x_col <= room.endX - 1; ++x_col) {
         std::vector<int> platform_ys_in_col;
         for (int y_row = room.startY + 1; y_row <= room.endY - 1; ++y_row) {
-            if (tiles[x_col][y_row] == 1 || tiles[x_col][y_row] == 6) {
+            if (tiles[x_col][y_row] == WALL_TILE_VALUE || tiles[x_col][y_row] == PLATFORM_TILE_VALUE) {
                 platform_ys_in_col.push_back(y_row);
             }
         }
@@ -100,10 +141,10 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
                     int shaft_bottom_y = lower_plat_y - 1;
                     int shaft_height = shaft_bottom_y - shaft_top_y + 1;
 
-                    if (shaft_height >= MIN_INTERNAL_LADDER_LENGTH) {
+                    if (shaft_height >= MIN_GENERATED_LADDER_LENGTH) {
                         bool is_shaft_clear = true;
                         for (int y_check = shaft_top_y; y_check <= shaft_bottom_y; ++y_check) {
-                            if (tiles[x_col][y_check] != 0) {
+                            if (tiles[x_col][y_check] != EMPTY_TILE_VALUE) {
                                 is_shaft_clear = false;
                                 break;
                             }
@@ -120,7 +161,8 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
 
     std::shuffle(potential_shafts.begin(), potential_shafts.end(), gen);
 
-    int num_ladders_to_attempt = std::uniform_int_distribution<>(1, 2)(gen);
+    std::uniform_int_distribution<> numLaddersDist(MIN_LADDERS_PER_ROOM_SHAFT_AREA, MAX_LADDERS_PER_ROOM_SHAFT_AREA);
+    int num_ladders_to_attempt = numLaddersDist(gen);
     int ladders_placed = 0;
 
     std::vector<bool> column_occupied(width, false);
@@ -136,8 +178,8 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
         int shaft_height = shaft_bottom_y - shaft_top_y + 1;
 
         bool can_place_here = true;
-        for (int check_x = std::max(room.startX + 1, x_col - LADDER_EXCLUSION_ZONE);
-             check_x <= std::min(room.endX - 1, x_col + LADDER_EXCLUSION_ZONE); ++check_x) {
+        for (int check_x = std::max(room.startX + 1, x_col - GENERATED_LADDER_EXCLUSION_ZONE);
+             check_x <= std::min(room.endX - 1, x_col + GENERATED_LADDER_EXCLUSION_ZONE); ++check_x) {
             if (column_occupied[check_x]) {
                 can_place_here = false;
                 break;
@@ -145,8 +187,8 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
         }
 
         if (can_place_here) {
-            int actual_min_length_for_dist = std::min(MIN_INTERNAL_LADDER_LENGTH, shaft_height);
-            int actual_max_length_for_dist = std::min(MAX_INTERNAL_LADDER_LENGTH, shaft_height);
+            int actual_min_length_for_dist = std::min(MIN_GENERATED_LADDER_LENGTH, shaft_height);
+            int actual_max_length_for_dist = std::min(MAX_GENERATED_LADDER_LENGTH, shaft_height);
 
             if (actual_min_length_for_dist > actual_max_length_for_dist) {
                 actual_min_length_for_dist = actual_max_length_for_dist;
@@ -160,18 +202,18 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
                 int ladder_y_start = ladderYStartDist(gen);
                 int ladder_y_end = ladder_y_start + random_length - 1;
 
-                int tileType = (std::uniform_int_distribution<>(0, 1)(gen) == 0) ? 2 : 3;
+                int tileType = (std::uniform_int_distribution<>(0, LADDER_OR_ROPE_ROLL_MAX)(gen) == 0) ? LADDER_TILE_VALUE : ROPE_TILE_VALUE;
 
-                for (int y = ladder_y_start; y <= ladder_y_end; ++y) {
-                    if (tiles[x_col][y] == 0) {
-                        tiles[x_col][y] = tileType;
-                        isOriginalSolid[x_col][y] = false;
+                for (int y_coord = ladder_y_start; y_coord <= ladder_y_end; ++y_coord) {
+                    if (tiles[x_col][y_coord] == EMPTY_TILE_VALUE) {
+                        tiles[x_col][y_coord] = tileType;
+                        isOriginalSolid[x_col][y_coord] = false;
                     }
                 }
                 ladders_placed++;
 
-                for (int mark_x = std::max(room.startX + 1, x_col - LADDER_EXCLUSION_ZONE);
-                     mark_x <= std::min(room.endX - 1, x_col + LADDER_EXCLUSION_ZONE); ++mark_x) {
+                for (int mark_x = std::max(room.startX + 1, x_col - GENERATED_LADDER_EXCLUSION_ZONE);
+                     mark_x <= std::min(room.endX - 1, x_col + GENERATED_LADDER_EXCLUSION_ZONE); ++mark_x) {
                     column_occupied[mark_x] = true;
                 }
             }
@@ -180,193 +222,184 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
 }
 
 void Map::generateTreasureRoomContent(const Room& room, std::mt19937& gen) {
-    int treasureX = room.startX + (room.endX - room.startX) / 2;
-    int treasureY = room.startY + (room.endY - room.startY) / 2;
+    const int room_width = room.endX - room.startX;
+    const int room_height = room.endY - room.startY;
+    int treasureX = room.startX + room_width / 2;
+    int treasureY = room.startY + room_height / 2;
 
-    if (treasureX > room.startX && treasureX < room.endX &&
-        treasureY > room.startY && treasureY < room.endY) {
-        if (tiles[treasureX][treasureY] == 0) {
-            tiles[treasureX][treasureY] = 4;
+    if (isInsideBounds(treasureX, treasureY)) {
+        if (tiles[treasureX][treasureY] == EMPTY_TILE_VALUE) {
+            tiles[treasureX][treasureY] = TREASURE_TILE_VALUE;
             isOriginalSolid[treasureX][treasureY] = false;
         }
     }
 
-    std::uniform_int_distribution<> extraTreasureDist(0, 2);
+    std::uniform_int_distribution<> extraTreasureDist(0, MAX_EXTRA_TREASURES_IN_ROOM);
     int extraTreasures = extraTreasureDist(gen);
 
     for (int i = 0; i < extraTreasures; ++i) {
         std::uniform_int_distribution<> xDist(room.startX + 1, room.endX - 1);
         std::uniform_int_distribution<> yDist(room.startY + 1, room.endY - 1);
-        int x = xDist(gen);
-        int y = yDist(gen);
-        if (tiles[x][y] == 0) {
-            tiles[x][y] = 4;
-            isOriginalSolid[x][y] = false;
+        int x_coord = xDist(gen);
+        int y_coord = yDist(gen);
+        if (tiles[x_coord][y_coord] == EMPTY_TILE_VALUE) {
+            tiles[x_coord][y_coord] = TREASURE_TILE_VALUE;
+            isOriginalSolid[x_coord][y_coord] = false;
         }
     }
 }
 
 void Map::generateShopRoomContent(const Room& room, std::mt19937& gen) {
-    int shopX = room.startX + (room.endX - room.startX) / 2;
-    int shopY = room.startY + (room.endY - room.startY) / 2;
+    const int room_width = room.endX - room.startX;
+    const int room_height = room.endY - room.startY;
+    int shopX = room.startX + room_width / 2;
+    int shopY = room.startY + room_height / 2;
 
-    if (shopX > room.startX && shopX < room.endX &&
-        shopY > room.startY && shopY < room.endY) {
-        if (tiles[shopX][shopY] == 0) {
-            tiles[shopX][shopY] = 5;
+    if (isInsideBounds(shopX, shopY)) {
+        if (tiles[shopX][shopY] == EMPTY_TILE_VALUE) {
+            tiles[shopX][shopY] = SHOP_TILE_VALUE;
             isOriginalSolid[shopX][shopY] = false;
         }
     }
 
-    std::uniform_int_distribution<> extraShopItemsDist(0, 2);
+    std::uniform_int_distribution<> extraShopItemsDist(0, MAX_EXTRA_SHOP_ITEMS_IN_ROOM);
     int extraShopItems = extraShopItemsDist(gen);
 
     for (int i = 0; i < extraShopItems; ++i) {
         std::uniform_int_distribution<> xDist(room.startX + 1, room.endX - 1);
         std::uniform_int_distribution<> yDist(room.startY + 1, room.endY - 1);
-        int x = xDist(gen);
-        int y = yDist(gen);
-        if (tiles[x][y] == 0) {
-            tiles[x][y] = 5;
-            isOriginalSolid[x][y] = false;
+        int x_coord = xDist(gen);
+        int y_coord = yDist(gen);
+        if (tiles[x_coord][y_coord] == EMPTY_TILE_VALUE) {
+            tiles[x_coord][y_coord] = SHOP_TILE_VALUE;
+            isOriginalSolid[x_coord][y_coord] = false;
         }
     }
 }
 
 void Map::generateRoomsAndConnections(std::mt19937& gen) {
-    const int MIN_ROOM_SLOT_WIDTH = 25;
-    const int MIN_ROOM_SLOT_HEIGHT = 20;
-    const int SLOT_GAP_SIZE = 5;
-
-    const int HORIZONTAL_DOOR_HEIGHT = 6;
-    const int VERTICAL_HALLWAY_WIDTH = 6;
-
-    int num_cols = (width - 2) / (MIN_ROOM_SLOT_WIDTH + SLOT_GAP_SIZE);
-    int num_rows = (height - 2) / (MIN_ROOM_SLOT_HEIGHT + SLOT_GAP_SIZE);
+    int num_cols = (width - 2) / (MIN_ROOM_SLOT_WIDTH_CONST + SLOT_GAP_SIZE_CONST);
+    int num_rows = (height - 2) / (MIN_ROOM_SLOT_HEIGHT_CONST + SLOT_GAP_SIZE_CONST);
 
     if (num_cols <= 0 || num_rows <= 0) {
         return;
     }
 
-    std::vector<Room> rooms;
+    std::vector<Room> rooms_vector;
     std::vector<Ladder> ladders_to_place;
     std::vector<Rope> ropes_to_place;
 
     std::vector<std::vector<Room*>> room_grid(num_cols, std::vector<Room*>(num_rows, nullptr));
 
-    for (int r = 0; r < num_rows; ++r) {
-        for (int c = 0; c < num_cols; ++c) {
-            Room* current_grid_room_ptr = room_grid[c][r];
+    for (int r_idx = 0; r_idx < num_rows; ++r_idx) {
+        for (int c_idx = 0; c_idx < num_cols; ++c_idx) {
+            Room* current_grid_room_ptr = room_grid[c_idx][r_idx];
             if (current_grid_room_ptr != nullptr) {
                 continue;
             }
 
-            if (std::uniform_int_distribution<>(0, 99)(gen) < 15) {
+            if (rollPercent(gen) < ROOM_PLACEMENT_SKIP_CHANCE_PERCENT) {
                 continue;
             }
 
-            int current_x = 1 + c * (MIN_ROOM_SLOT_WIDTH + SLOT_GAP_SIZE);
-            int current_y = 1 + r * (MIN_ROOM_SLOT_HEIGHT + SLOT_GAP_SIZE);
+            int current_x = 1 + c_idx * (MIN_ROOM_SLOT_WIDTH_CONST + SLOT_GAP_SIZE_CONST);
+            int current_y = 1 + r_idx * (MIN_ROOM_SLOT_HEIGHT_CONST + SLOT_GAP_SIZE_CONST);
 
-            bool is_hall = (std::uniform_int_distribution<>(0, 99)(gen) < 15);
-            int room_w_units = 1;
-            int room_h_units = 1;
+            bool is_hall = (rollPercent(gen) < LARGE_HALL_CREATION_CHANCE_PERCENT);
+            int room_width_slots = 1;
+            int room_height_slots = 1;
 
-            if (is_hall && c + 1 < num_cols && r + 1 < num_rows &&
-                room_grid[c+1][r] == nullptr && room_grid[c][r+1] == nullptr && room_grid[c+1][r+1] == nullptr) {
+            if (is_hall && c_idx + 1 < num_cols && r_idx + 1 < num_rows &&
+                room_grid[c_idx+1][r_idx] == nullptr && room_grid[c_idx][r_idx+1] == nullptr && room_grid[c_idx+1][r_idx+1] == nullptr) {
 
-                int potential_hall_end_x = current_x + (2 * MIN_ROOM_SLOT_WIDTH + SLOT_GAP_SIZE) - 1;
-                int potential_hall_end_y = current_y + (2 * MIN_ROOM_SLOT_HEIGHT + SLOT_GAP_SIZE) - 1;
+                int potential_hall_end_x = current_x + (2 * MIN_ROOM_SLOT_WIDTH_CONST + SLOT_GAP_SIZE_CONST) - 1;
+                int potential_hall_end_y = current_y + (2 * MIN_ROOM_SLOT_HEIGHT_CONST + SLOT_GAP_SIZE_CONST) - 1;
 
                 if (potential_hall_end_x < width - 1 && potential_hall_end_y < height - 1) {
-                    room_w_units = 2;
-                    room_h_units = 2;
+                    room_width_slots = 2;
+                    room_height_slots = 2;
                 }
             }
 
-            std::uniform_int_distribution<> roomWidthVariationDist(0, 5);
+            std::uniform_int_distribution<> roomWidthVariationDist(0, MAX_ROOM_WIDTH_RANDOM_VARIATION);
             int extra_width = roomWidthVariationDist(gen);
 
-            int room_pixel_w = room_w_units * MIN_ROOM_SLOT_WIDTH + (room_w_units - 1) * SLOT_GAP_SIZE + extra_width;
-            int room_pixel_h = room_h_units * MIN_ROOM_SLOT_HEIGHT + (room_h_units - 1) * SLOT_GAP_SIZE;
+            int room_pixel_w = room_width_slots * MIN_ROOM_SLOT_WIDTH_CONST + (room_width_slots - 1) * SLOT_GAP_SIZE_CONST + extra_width;
+            int room_pixel_h = room_height_slots * MIN_ROOM_SLOT_HEIGHT_CONST + (room_height_slots - 1) * SLOT_GAP_SIZE_CONST;
 
             if (current_x + room_pixel_w >= width - 1 || current_y + room_pixel_h >= height - 1) {
                 continue;
             }
-
-            Room new_room = {current_x, current_y, current_x + room_pixel_w - 1, current_y + room_pixel_h - 1};
             
-            std::uniform_int_distribution<> roomTypeDist(0, 99);
-            int type_roll = roomTypeDist(gen);
+            Room::Type room_type_enum = Room::NORMAL;
+            int room_type_roll = rollPercent(gen);
 
-            if (type_roll < 10) {
-                new_room.type = Room::TREASURE;
-            } else if (type_roll < 20) {
-                new_room.type = Room::SHOP;
-            } else {
-                new_room.type = Room::NORMAL;
+            if (room_type_roll < ROOM_TYPE_TREASURE_CHANCE_THRESHOLD_PERCENT) {
+                room_type_enum = Room::TREASURE;
+            } else if (room_type_roll < ROOM_TYPE_SHOP_CHANCE_THRESHOLD_PERCENT) {
+                room_type_enum = Room::SHOP;
             }
 
-            rooms.push_back(new_room);
-            Room* room_ptr = &rooms.back();
+            rooms_vector.emplace_back(current_x, current_y, current_x + room_pixel_w - 1, current_y + room_pixel_h - 1, room_type_enum);
+            Room* room_ptr = &rooms_vector.back();
 
-            for (int dr = 0; dr < room_h_units; ++dr) {
-                for (int dc = 0; dc < room_w_units; ++dc) {
-                    room_grid[c + dc][r + dr] = room_ptr;
+            for (int dr = 0; dr < room_height_slots; ++dr) {
+                for (int dc = 0; dc < room_width_slots; ++dc) {
+                    room_grid[c_idx + dc][r_idx + dr] = room_ptr;
                 }
             }
         }
     }
 
-    for (int x = 1; x < width - 1; ++x) {
-        for (int y = 1; y < height - 1; ++y) {
-            tiles[x][y] = 1;
-            isOriginalSolid[x][y] = true;
+    for (int x_coord = 1; x_coord < width - 1; ++x_coord) {
+        for (int y_coord = 1; y_coord < height - 1; ++y_coord) {
+            tiles[x_coord][y_coord] = DEFAULT_TILE_VALUE;
+            isOriginalSolid[x_coord][y_coord] = true;
         }
     }
 
-    for (const Room& room : rooms) {
-        for (int x = room.startX; x <= room.endX; ++x) {
-            for (int y = room.startY; y <= room.endY; ++y) {
-                if (x > 0 && x < width - 1 && y > 0 && y < height - 1) {
-                    tiles[x][y] = 0;
-                    isOriginalSolid[x][y] = false;
+    for (const auto& room : rooms_vector) {
+        for (int x_coord = room.startX; x_coord <= room.endX; ++x_coord) {
+            for (int y_coord = room.startY; y_coord <= room.endY; ++y_coord) {
+                if (isInsideBounds(x_coord, y_coord)) {
+                    tiles[x_coord][y_coord] = EMPTY_TILE_VALUE;
+                    isOriginalSolid[x_coord][y_coord] = false;
                 }
             }
         }
     }
 
-    for (int r = 0; r < num_rows; ++r) {
-        for (int c = 0; c < num_cols; ++c) {
-            Room* room1_ptr = room_grid[c][r];
+    for (int r_idx = 0; r_idx < num_rows; ++r_idx) {
+        for (int c_idx = 0; c_idx < num_cols; ++c_idx) {
+            Room* room1_ptr = room_grid[c_idx][r_idx];
             if (room1_ptr == nullptr) {
                 continue;
             }
 
-            if (c + 1 < num_cols) {
-                Room* room2_ptr = room_grid[c+1][r];
+            if (c_idx + 1 < num_cols) {
+                Room* room2_ptr = room_grid[c_idx+1][r_idx];
                 if (room2_ptr != nullptr && room1_ptr != room2_ptr) {
-                    if (std::uniform_int_distribution<>(0, 99)(gen) < 20) {
+                    if (rollPercent(gen) < HALLWAY_CREATION_SKIP_PERCENT) {
                         continue;
                     }
 
                     int hallway_y_min_overlap = std::max(room1_ptr->startY, room2_ptr->startY);
                     int hallway_y_max_overlap = std::min(room1_ptr->endY, room2_ptr->endY);
 
-                    if (hallway_y_max_overlap - hallway_y_min_overlap + 1 >= HORIZONTAL_DOOR_HEIGHT) {
+                    if (hallway_y_max_overlap - hallway_y_min_overlap + 1 >= HORIZONTAL_DOOR_HEIGHT_CONST) {
                         int hall_y_end = std::min(room1_ptr->endY, room2_ptr->endY);
-                        int hall_y_start = hall_y_end - HORIZONTAL_DOOR_HEIGHT + 1;
+                        int hall_y_start = hall_y_end - HORIZONTAL_DOOR_HEIGHT_CONST + 1;
 
                         hall_y_start = std::max(hall_y_start, hallway_y_min_overlap);
 
                         int clear_x_start = room1_ptr->endX;
                         int clear_x_end = room2_ptr->startX;
 
-                        for (int x = clear_x_start; x <= clear_x_end; ++x) {
-                            for (int y = hall_y_start; y <= hall_y_end; ++y) {
-                                if (x > 0 && x < width - 1 && y > 0 && y < height - 1) {
-                                    tiles[x][y] = 0;
-                                    isOriginalSolid[x][y] = false;
+                        for (int x_coord = clear_x_start; x_coord <= clear_x_end; ++x_coord) {
+                            for (int y_coord = hall_y_start; y_coord <= hall_y_end; ++y_coord) {
+                                if (isInsideBounds(x_coord, y_coord)) {
+                                    tiles[x_coord][y_coord] = EMPTY_TILE_VALUE;
+                                    isOriginalSolid[x_coord][y_coord] = false;
                                 }
                             }
                         }
@@ -374,34 +407,34 @@ void Map::generateRoomsAndConnections(std::mt19937& gen) {
                 }
             }
 
-            if (r + 1 < num_rows) {
-                Room* room2_ptr = room_grid[c][r+1];
+            if (r_idx + 1 < num_rows) {
+                Room* room2_ptr = room_grid[c_idx][r_idx+1];
                 if (room2_ptr != nullptr && room1_ptr != room2_ptr) {
-                    if (std::uniform_int_distribution<>(0, 99)(gen) < 20) {
+                    if (rollPercent(gen) < HALLWAY_CREATION_SKIP_PERCENT) {
                         continue;
                     }
 
                     int hallway_x_min_overlap = std::max(room1_ptr->startX, room2_ptr->startX);
                     int hallway_x_max_overlap = std::min(room1_ptr->endX, room2_ptr->endX);
 
-                    if (hallway_x_max_overlap - hallway_x_min_overlap + 1 >= VERTICAL_HALLWAY_WIDTH) {
+                    if (hallway_x_max_overlap - hallway_x_min_overlap + 1 >= VERTICAL_HALLWAY_WIDTH_CONST) {
                         int hall_x_start = hallway_x_min_overlap +
-                                           (hallway_x_max_overlap - hallway_x_min_overlap + 1 - VERTICAL_HALLWAY_WIDTH) / 2;
-                        int hall_x_end = hall_x_start + VERTICAL_HALLWAY_WIDTH - 1;
+                                           (hallway_x_max_overlap - hallway_x_min_overlap + 1 - VERTICAL_HALLWAY_WIDTH_CONST) / 2;
+                        int hall_x_end = hall_x_start + VERTICAL_HALLWAY_WIDTH_CONST - 1;
 
                         int clear_y_start_hall = room1_ptr->endY;
                         int clear_y_end_hall = room2_ptr->startY;
 
-                        for (int y = clear_y_start_hall; y <= clear_y_end_hall; ++y) {
-                            for (int x = hall_x_start; x <= hall_x_end; ++x) {
-                                if (x > 0 && x < width - 1 && y > 0 && y < height - 1) {
-                                    tiles[x][y] = 0;
-                                    isOriginalSolid[x][y] = false;
+                        for (int y_coord = clear_y_start_hall; y_coord <= clear_y_end_hall; ++y_coord) {
+                            for (int x_coord = hall_x_start; x_coord <= hall_x_end; ++x_coord) {
+                                if (isInsideBounds(x_coord, y_coord)) {
+                                    tiles[x_coord][y_coord] = EMPTY_TILE_VALUE;
+                                    isOriginalSolid[x_coord][y_coord] = false;
                                 }
                             }
                         }
 
-                        int tileType = (std::uniform_int_distribution<>(0, 1)(gen) == 0) ? 2 : 3;
+                        int tileType = (std::uniform_int_distribution<>(0, LADDER_OR_ROPE_ROLL_MAX)(gen) == 0) ? LADDER_TILE_VALUE : ROPE_TILE_VALUE;
 
                         std::uniform_int_distribution<> ladderRopeXDist(hall_x_start + 1, hall_x_end - 1);
                         int ladder_rope_x = ladderRopeXDist(gen);
@@ -409,10 +442,10 @@ void Map::generateRoomsAndConnections(std::mt19937& gen) {
                         int ladder_y_actual_start = room1_ptr->endY;
                         int ladder_y_actual_end = room2_ptr->startY;
 
-                        if (tileType == 2) {
-                            ladders_to_place.push_back({ladder_rope_x, ladder_y_actual_start, ladder_y_actual_end});
+                        if (tileType == LADDER_TILE_VALUE) {
+                            ladders_to_place.emplace_back(ladder_rope_x, ladder_y_actual_start, ladder_y_actual_end);
                         } else {
-                            ropes_to_place.push_back({ladder_rope_x, ladder_y_actual_start, ladder_y_actual_end});
+                            ropes_to_place.emplace_back(ladder_rope_x, ladder_y_actual_start, ladder_y_actual_end);
                         }
                     }
                 }
@@ -420,7 +453,7 @@ void Map::generateRoomsAndConnections(std::mt19937& gen) {
         }
     }
 
-    for (const Room& room : rooms) {
+    for (const auto& room : rooms_vector) {
         if (room.type == Room::TREASURE) {
             generateTreasureRoomContent(room, gen);
         } else if (room.type == Room::SHOP) {
@@ -431,21 +464,21 @@ void Map::generateRoomsAndConnections(std::mt19937& gen) {
     }
 
     for (const auto& ladder : ladders_to_place) {
-        for (int y = ladder.y1; y <= ladder.y2; ++y) {
-            if (ladder.x > 0 && ladder.x < width - 1 && y > 0 && y < height - 1) {
-                if (tiles[ladder.x][y] == 0) {
-                    tiles[ladder.x][y] = 2;
-                    isOriginalSolid[ladder.x][y] = false;
+        for (int y_coord = ladder.y1; y_coord <= ladder.y2; ++y_coord) {
+            if (isInsideBounds(ladder.x, y_coord)) {
+                if (tiles[ladder.x][y_coord] == EMPTY_TILE_VALUE) {
+                    tiles[ladder.x][y_coord] = LADDER_TILE_VALUE;
+                    isOriginalSolid[ladder.x][y_coord] = false;
                 }
             }
         }
     }
     for (const auto& rope : ropes_to_place) {
-        for (int y = rope.y1; y <= rope.y2; ++y) {
-            if (rope.x > 0 && rope.x < width - 1 && y > 0 && y < height - 1) {
-                if (tiles[rope.x][y] == 0) {
-                    tiles[rope.x][y] = 3;
-                    isOriginalSolid[rope.x][y] = false;
+        for (int y_coord = rope.y1; y_coord <= rope.y2; ++y_coord) {
+            if (isInsideBounds(rope.x, y_coord)) {
+                if (tiles[rope.x][y_coord] == EMPTY_TILE_VALUE) {
+                    tiles[rope.x][y_coord] = ROPE_TILE_VALUE;
+                    isOriginalSolid[rope.x][y_coord] = false;
                 }
             }
         }

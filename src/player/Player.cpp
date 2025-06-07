@@ -7,6 +7,16 @@
 #include <future>
 #include <thread>
 
+#include <chrono> 
+
+Image LoadImageAsync(const std::string& path) {
+    Image image = LoadImage(path.c_str());
+    if (image.data == nullptr) {
+    } else {
+    }
+    return image;
+}
+
 Player::Player(const Map &map) {
     position = map.findEmptySpawn();
     velocity = {0, 0};
@@ -17,14 +27,9 @@ Player::Player(const Map &map) {
     weapons.push_back(std::make_unique<Sword>());
     weapons.push_back(std::make_unique<Bow>());
     currentWeaponIndex = 1;
-    textureLoaded = false;
-    texture = LoadTexture("../resources/image.png");
-    if (texture.id == 0) {
-        textureLoaded = false;
-        TraceLog(LOG_ERROR, "Failed to load player texture");
-    } else {
-        textureLoaded = true;
-    }
+
+    imageFuture = std::async(std::launch::async, LoadImageAsync, "../resources/image.png");
+
     width = 48;
     height = 60;
     hitboxOffsetX = width * 0.1f;
@@ -34,6 +39,30 @@ Player::Player(const Map &map) {
 }
 
 void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies) {
+    if (!imageFutureRetrieved.load(std::memory_order_acquire)) {
+        if (imageFuture.valid()) {
+            auto status = imageFuture.wait_for(std::chrono::seconds(0));
+            if (status == std::future_status::ready) {
+                Image loadedImage = imageFuture.get(); 
+                imageFutureRetrieved.store(true, std::memory_order_release); 
+
+                if (loadedImage.data != nullptr) {
+                    texture = LoadTextureFromImage(loadedImage); 
+                    UnloadImage(loadedImage); 
+
+                    if (texture.id == 0) {
+                        textureLoadedAtomic.store(false, std::memory_order_release); 
+                    } else {
+                        textureLoadedAtomic.store(true, std::memory_order_release);
+                    }
+                } else {
+                    textureLoadedAtomic.store(false, std::memory_order_release); 
+                }
+            }
+        } else {
+        }
+    }
+
     if (invincibilityTimer > 0.0f) {
         invincibilityTimer -= dt;
     }
@@ -50,22 +79,22 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
     handleJumpInput(map, dt);
     handleLedgeGrabInput();
     position = nextPos;
+
     if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
         weapons[currentWeaponIndex]->update(dt, gameCamera, facingRight);
-    }
-    if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
-        Weapon* currentWeapon = weapons[currentWeaponIndex].get(); 
+
+        Weapon* currentWeapon = weapons[currentWeaponIndex].get();
         if (currentWeapon->getType() == WeaponType::BOW) {
             Bow* bow = dynamic_cast<Bow*>(currentWeapon);
-            if (bow) { 
+            if (bow) {
                 if ((IsKeyPressed(KEY_J) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && !bow->isCharging()) {
                     attack();
                 }
                 bow->updatePosition(position);
 
-                if (bow->hasActiveArrows()) { 
-                    int default_substeps = 1; 
-                    bow->updateArrowsWithSubsteps(dt, enemies, default_substeps); 
+                if (bow->hasActiveArrows()) {
+                    int default_substeps = 1;
+                    bow->updateArrowsWithSubsteps(dt, enemies, default_substeps);
                 }
             }
         } else {
@@ -74,6 +103,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
             }
         }
     }
+
     for (int i = 0; i < 9; i++) {
         if (IsKeyPressed(KEY_ONE + i) && i < weapons.size()) {
             switchWeapon(i);
@@ -89,22 +119,42 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
 
 void Player::updateParticles(float dt) {
     size_t numThreads = std::thread::hardware_concurrency();
-    if (numThreads == 0) numThreads = 2;
+    if (numThreads == 0) numThreads = 2; 
+    
+    if (dustParticles.empty()) {
+        return;
+    }
+
     size_t chunkSize = (dustParticles.size() + numThreads - 1) / numThreads;
     std::vector<std::future<void>> futures;
+    futures.reserve(numThreads); 
+
     for (size_t t = 0; t < numThreads; ++t) {
         size_t start = t * chunkSize;
         size_t end = std::min(start + chunkSize, dustParticles.size());
-        futures.push_back(std::async(std::launch::async, [&, start, end]() {
+
+        if (start >= end) {
+            continue; 
+        }
+
+        futures.push_back(std::async(std::launch::async, [&, start, end, dt]() { 
             for (size_t i = start; i < end; ++i) {
-                auto& p = dustParticles[i];
-                p.position = Vector2Add(p.position, Vector2Scale(p.velocity, dt));
-                p.velocity.y += 600 * dt;
-                p.age += dt;
+                if (i < dustParticles.size()) { 
+                    auto& p = dustParticles[i]; 
+                    p.position = Vector2Add(p.position, Vector2Scale(p.velocity, dt));
+                    p.velocity.y += 600 * dt; 
+                    p.age += dt;
+                }
             }
         }));
     }
-    for (auto& f : futures) f.get();
+
+    for (auto& f : futures) {
+        if (f.valid()) { 
+            f.get();
+        }
+    }
+
     dustParticles.erase(
         std::remove_if(dustParticles.begin(), dustParticles.end(),
             [](const Particle& p) { return p.age > p.lifetime; }),
@@ -123,9 +173,9 @@ bool Player::canTakeDamage() const {
 void Player::takeDamage(int amount) {
     if (canTakeDamage()) {
         health -= amount;
-        invincibilityTimer = 1.0f;
-        velocity.y = -300.0f;
-        velocity.x = (facingRight ? -200.0f : 200.0f);
+        invincibilityTimer = 1.0f; 
+        velocity.y = -300.0f; 
+        velocity.x = (facingRight ? -200.0f : 200.0f); 
         if (health <= 0) {
             health = 0;
         }
@@ -133,7 +183,22 @@ void Player::takeDamage(int amount) {
 }
 
 Player::~Player() {
-    if (textureLoaded) {
-        UnloadTexture(texture);
+    if (imageFuture.valid()) {
+        imageFuture.wait(); 
+        if (!imageFutureRetrieved.load(std::memory_order_acquire)) {
+            Image loadedImage = imageFuture.get(); 
+            if (loadedImage.data != nullptr) {
+                UnloadImage(loadedImage); 
+            }
+        }
+    } else {
+    }
+
+    if (textureLoadedAtomic.load(std::memory_order_acquire)) {
+        if (texture.id > 0) { 
+            UnloadTexture(texture);
+        } else {
+        }
+    } else {
     }
 }

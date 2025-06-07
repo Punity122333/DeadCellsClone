@@ -4,6 +4,8 @@
 #include <raylib.h>
 #include <vector>
 #include <memory>
+#include <future>   
+#include <atomic>  
 
 class ScrapHound;
 
@@ -84,8 +86,11 @@ private:
     static constexpr float COYOTE_TIME = 0.1f;
     bool facingRight;
     Texture2D texture;
-    bool textureLoaded;
+    std::atomic<bool> textureLoadedAtomic{false};
     
+    std::future<Image> imageFuture;
+    std::atomic<bool> imageFutureRetrieved{false};
+
     Rectangle frameRec;
     
     int frameWidth;      

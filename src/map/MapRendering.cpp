@@ -41,9 +41,8 @@ namespace {
     }
 }
 
-void Map::draw(const Camera2D& camera) const { // Modified signature to accept camera
-    // Calculate visible world area based on camera
-    // Assuming camera.offset is the top-left of the screen view
+void Map::draw(const Camera2D& camera) const { 
+    
     float viewX = camera.target.x - (camera.offset.x / camera.zoom);
     float viewY = camera.target.y - (camera.offset.y / camera.zoom);
     float viewWidth = GetScreenWidth() / camera.zoom;
@@ -51,7 +50,7 @@ void Map::draw(const Camera2D& camera) const { // Modified signature to accept c
     Rectangle visibleWorldRect = { viewX, viewY, viewWidth, viewHeight };
 
     for (const auto& chunk : chunks) {
-        // Define chunk rectangle in world coordinates (assuming TILE_SIZE is 32x32)
+        
         Rectangle chunkRect = {
             (float)chunk.startX * 32.0f,
             (float)chunk.startY * 32.0f,
@@ -59,11 +58,11 @@ void Map::draw(const Camera2D& camera) const { // Modified signature to accept c
             (float)(chunk.endY - chunk.startY + 1) * 32.0f
         };
 
-        // Check if chunk is in view
+        
         if (CheckCollisionRecs(visibleWorldRect, chunkRect)) {
             for (int x = chunk.startX; x <= chunk.endX; ++x) {
                 for (int y = chunk.startY; y <= chunk.endY; ++y) {
-                    // Ensure tile coordinates are within map bounds
+                    
                     if (x < 0 || x >= width || y < 0 || y >= height) continue;
 
                     int tile = tiles[x][y];
@@ -95,9 +94,9 @@ void Map::draw(const Camera2D& camera) const { // Modified signature to accept c
                         Color highlightColor = { 255, 0, 0, (unsigned char)(alpha * 255) };
                         int idx = getTileIndex(tiles, x, y, width, height);
                         DrawTexture(tileTextures[idx], x * 32, y * 32, highlightColor);
-                    } else if (tile == 2) { // Assuming '2' is a ladder or similar
+                    } else if (tile == 2) {
                         DrawRectangle(x * 32 + 10, y * 32, 12, 32, GOLD);
-                    } else if (tile == 3) { // Assuming '3' is a rope or similar
+                    } else if (tile == 3) {
                         DrawRectangle(x * 32 + 14, y * 32, 4, 32, SKYBLUE);
                     }
                 }

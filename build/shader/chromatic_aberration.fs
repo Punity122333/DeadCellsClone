@@ -1,7 +1,7 @@
 #version 330
 
 uniform sampler2D texture0;
-uniform float aberrationAmount = 0.005; // Adjust as needed
+uniform float aberrationAmount = 0.005; 
 in vec2 fragTexCoord;
 out vec4 finalColor;
 

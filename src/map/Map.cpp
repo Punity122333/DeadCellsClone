@@ -4,6 +4,11 @@
 #include <random> 
 #include <future>
 #include <thread>
+#include <filesystem>
+
+namespace {
+    constexpr int BORDER_TILE_VALUE = 1;
+}
 
 constexpr int CHUNK_SIZE = 16;
 
@@ -22,11 +27,11 @@ Map::Map(int w, int h) :
     
     size_t numThreads = std::thread::hardware_concurrency();
     if (numThreads == 0) numThreads = 2;
-    size_t chunkSize = (width + numThreads - 1) / numThreads;
+    size_t calculated_chunk_size = (width + numThreads - 1) / numThreads;
     std::vector<std::future<void>> futures;
     for (size_t t = 0; t < numThreads; ++t) {
-        size_t start = t * chunkSize;
-        size_t end = std::min(start + chunkSize, (size_t)width);
+        size_t start = t * calculated_chunk_size;
+        size_t end = std::min(start + calculated_chunk_size, (size_t)width);
         futures.push_back(std::async(std::launch::async, [&, start, end]() {
             for (size_t x = start; x < end; ++x) {
                 for (int y = 0; y < height; ++y) {
@@ -42,26 +47,24 @@ Map::Map(int w, int h) :
     int numTiles = 0;
     {
         for (int i = 0; ; ++i) {
-            char path[64];
-            snprintf(path, sizeof(path), "../resources/tiles/tile%03d.png", i);
-            FILE* f = fopen(path, "r");
-            if (!f) break;
-            fclose(f);
+            char path_buffer[64];
+            snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
+            if (!std::filesystem::exists(path_buffer)) break;
             numTiles++;
         }
     }
     for (int i = 0; i < numTiles; ++i) {
-        char path[64];
-        snprintf(path, sizeof(path), "../resources/tiles/tile%03d.png", i);
-        tileTextures.push_back(LoadTexture(path));
+        char path_buffer[64];
+        snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
+        tileTextures.push_back(LoadTexture(path_buffer));
     }
 
     for (int x = 0; x < width; x++) {
-        tiles[x][height - 1] = 1; isOriginalSolid[x][height - 1] = true;
-        tiles[x][0] = 1;         isOriginalSolid[x][0] = true;
+        tiles[x][height - 1] = BORDER_TILE_VALUE; isOriginalSolid[x][height - 1] = true;
+        tiles[x][0] = BORDER_TILE_VALUE;         isOriginalSolid[x][0] = true;
     }
     for (int y = 0; y < height; y++) {
-        tiles[width - 1][y] = 1; isOriginalSolid[width - 1][y] = true;
+        tiles[width - 1][y] = BORDER_TILE_VALUE; isOriginalSolid[width - 1][y] = true;
     }
 
     generateRoomsAndConnections(gen);
@@ -80,10 +83,9 @@ Map::Map(int w, int h) :
 
     
     std::vector<std::future<void>> conwayFutures;
-    chunkSize = (width + numThreads - 1) / numThreads;
     for (size_t t = 0; t < numThreads; ++t) {
-        size_t start = t * chunkSize;
-        size_t end = std::min(start + chunkSize, (size_t)width);
+        size_t start = t * calculated_chunk_size;
+        size_t end = std::min(start + calculated_chunk_size, (size_t)width);
         conwayFutures.push_back(std::async(std::launch::async, [&, start, end]() {
             for (size_t x = start; x < end; ++x) {
                 for (int y = 0; y < height; ++y) {

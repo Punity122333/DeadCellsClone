@@ -8,7 +8,7 @@ void Player::draw() const {
         DrawCircleV(p.position, 4, c);
     }
 
-    if (textureLoaded) {
+    if (textureLoadedAtomic.load(std::memory_order_acquire)) { 
         Color tint = WHITE;
         if (invincibilityTimer > 0.0f && (int)(invincibilityTimer * 10) % 2 == 0) {
             tint = RED;
@@ -37,7 +37,7 @@ void Player::draw() const {
         DrawRectangle((int)visualX, (int)visualY, width, height, GREEN);
     }
     
-    // Direction indicator should be based on visual position too
+    
     Color dirColor = BLUE;
     float visualX = position.x - hitboxOffsetX;
     float visualY = position.y - hitboxOffsetY;
@@ -58,7 +58,7 @@ void Player::draw() const {
         );
     }
     
-    // Draw the current weapon
+   
     if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
         weapons[currentWeaponIndex]->draw(position, facingRight);
     }

@@ -21,14 +21,23 @@ struct Room {
     int startX, startY, endX, endY;
     enum Type { NORMAL, TREASURE, SHOP }; 
     Type type; 
+
+    Room(int sx, int sy, int ex, int ey, Type t = NORMAL) 
+        : startX(sx), startY(sy), endX(ex), endY(ey), type(t) {}
 };
 
 struct Ladder {
     int x, y1, y2;
+
+    Ladder(int ladderX, int ladderY1, int ladderY2)
+        : x(ladderX), y1(ladderY1), y2(ladderY2) {}
 };
 
 struct Rope {
     int x, y1, y2;
+
+    Rope(int ropeX, int ropeY1, int ropeY2)
+        : x(ropeX), y1(ropeY1), y2(ropeY2) {}
 };
 
 class Map {
@@ -45,6 +54,8 @@ public:
     void draw(const Camera2D& camera) const;
     void applyConwayAutomata();
     void updateTransitions(float dt);
+
+    bool isInsideBounds(int x, int y) const;
 
     bool collidesWithGround(Vector2 pos) const;
     bool isSolidTile(int x, int y) const;
