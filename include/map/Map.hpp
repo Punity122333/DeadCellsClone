@@ -16,11 +16,11 @@ namespace {
     const float MIN_HIGHLIGHT_OPACITY = 0.1f;
 }
 
-// Moved outside Map class
+
 struct Room {
     int startX, startY, endX, endY;
-    enum Type { NORMAL, TREASURE, SHOP }; // Added Room Type enum
-    Type type; // Added type member
+    enum Type { NORMAL, TREASURE, SHOP }; 
+    Type type; 
 };
 
 struct Ladder {
@@ -37,11 +37,11 @@ public:
     ~Map();
 
     void placeBorders();
-    // Updated parameter type to use the global Room struct
+    
     void generateRoomsAndConnections(std::mt19937& gen);
     void generateRoomContent(const Room& room, std::mt19937& gen);
-    void generateTreasureRoomContent(const Room& room, std::mt19937& gen); // Added for treasure rooms
-    void generateShopRoomContent(const Room& room, std::mt19937& gen);     // Added for shop rooms
+    void generateTreasureRoomContent(const Room& room, std::mt19937& gen);
+    void generateShopRoomContent(const Room& room, std::mt19937& gen);    
     void draw(const Camera2D& camera) const;
     void applyConwayAutomata();
     void updateTransitions(float dt);

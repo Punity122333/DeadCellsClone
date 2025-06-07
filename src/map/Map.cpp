@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <vector>
 #include <random> 
+#include <future>
+#include <thread>
 
 constexpr int CHUNK_SIZE = 16;
 
@@ -17,13 +19,25 @@ Map::Map(int w, int h) :
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < height; ++y) {
-            tiles[x][y] = 0;
-            isOriginalSolid[x][y] = false;
-            isConwayProtected[x][y] = false;
-        }
+    
+    size_t numThreads = std::thread::hardware_concurrency();
+    if (numThreads == 0) numThreads = 2;
+    size_t chunkSize = (width + numThreads - 1) / numThreads;
+    std::vector<std::future<void>> futures;
+    for (size_t t = 0; t < numThreads; ++t) {
+        size_t start = t * chunkSize;
+        size_t end = std::min(start + chunkSize, (size_t)width);
+        futures.push_back(std::async(std::launch::async, [&, start, end]() {
+            for (size_t x = start; x < end; ++x) {
+                for (int y = 0; y < height; ++y) {
+                    tiles[x][y] = 0;
+                    isOriginalSolid[x][y] = false;
+                    isConwayProtected[x][y] = false;
+                }
+            }
+        }));
     }
+    for (auto& f : futures) f.get();
 
     int numTiles = 0;
     {
@@ -47,12 +61,10 @@ Map::Map(int w, int h) :
         tiles[x][0] = 1;         isOriginalSolid[x][0] = true;
     }
     for (int y = 0; y < height; y++) {
-        tiles[0][y] = 1;         isOriginalSolid[0][y] = true;
         tiles[width - 1][y] = 1; isOriginalSolid[width - 1][y] = true;
     }
 
     generateRoomsAndConnections(gen);
-
 
     chunks.clear();
     for (int cx = 0; cx < width; cx += CHUNK_SIZE) {
@@ -65,23 +77,32 @@ Map::Map(int w, int h) :
             chunks.push_back(chunk);
         }
     }
-    
 
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < height; ++y) {
-            if (isOriginalSolid[x][y]) {
-                for (int dx = -2; dx <= 2; ++dx) {
-                    for (int dy = -2; dy <= 2; ++dy) {
-                        int nx = x + dx;
-                        int ny = y + dy;
-                        if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-                            isConwayProtected[nx][ny] = true;
+    
+    std::vector<std::future<void>> conwayFutures;
+    chunkSize = (width + numThreads - 1) / numThreads;
+    for (size_t t = 0; t < numThreads; ++t) {
+        size_t start = t * chunkSize;
+        size_t end = std::min(start + chunkSize, (size_t)width);
+        conwayFutures.push_back(std::async(std::launch::async, [&, start, end]() {
+            for (size_t x = start; x < end; ++x) {
+                for (int y = 0; y < height; ++y) {
+                    if (isOriginalSolid[x][y]) {
+                        for (int dx = -2; dx <= 2; ++dx) {
+                            for (int dy = -2; dy <= 2; ++dy) {
+                                int nx = x + dx;
+                                int ny = y + dy;
+                                if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                                    isConwayProtected[nx][ny] = true;
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
+        }));
     }
+    for (auto& f : conwayFutures) f.get();
 }
 
 void Map::placeBorders() {

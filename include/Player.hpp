@@ -18,24 +18,24 @@ class Player {
 public:
     Player(const Map &map);
     ~Player();
-    void update(float dt, const Map& map, const Camera2D& gameCamera); // Added gameCamera
+    void update(float dt, const Map& map, const Camera2D& gameCamera,std::vector<ScrapHound>& enemies ); 
     void draw() const;
     
     Vector2 getPosition() const;
     float getHealth() const { return health; }
     float getMaxHealth() const { return maxHealth; }
     
-    // Combat system methods
+    
     void attack();
     bool isAttacking() const;
     Rectangle getWeaponHitbox() const;
     
-    // Weapon system methods
+    
     void switchWeapon(int index);
     void addWeapon(std::unique_ptr<Weapon> weapon);
     void checkWeaponHits(std::vector<ScrapHound>& enemies);
     
-    // Legacy methods for compatibility
+    
     bool isSwordAttacking() const;
     Rectangle getSwordHitbox() const;
     
@@ -65,11 +65,11 @@ private:
     const float LADDER_JUMP_LEEWAY = 10.0f;
     bool dropDown;
     
-    // Weapon system
+    
     std::vector<std::unique_ptr<Weapon>> weapons;
     int currentWeaponIndex = 0;
     
-    // Movement and physics
+    
     bool touchingWallLeft;
     bool touchingWallRight;
     bool canWallJump;
@@ -88,10 +88,10 @@ private:
     
     Rectangle frameRec;
     
-    int frameWidth;      // Width of a single frame
-    int frameHeight;     // Height of a single frame
-    int currentFrame;    // Current animation frame
-    int framesCounter;   // Animation timing counter
+    int frameWidth;      
+    int frameHeight;     
+    int currentFrame;    
+    int framesCounter;   
     int framesSpeed;
     void applyGravity(float dt);
     void updateLadderState(const Map& map);

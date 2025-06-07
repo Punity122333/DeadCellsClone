@@ -45,21 +45,25 @@ public:
     bool isCharging() const ;
     void fireArrow(Vector2 position, Vector2 direction);
     void updateArrows(float dt);
+    void updateArrowsWithSubsteps(float dt, std::vector<class ScrapHound>& enemies, int substeps);
     void drawArrows() const;
     void checkArrowCollisions(std::vector<class ScrapHound>& enemies);
     void updatePosition(Vector2 newPosition);
+    bool hasActiveArrows() const;
 private:
     float chargeTime = 0.0f;
     bool charging = false;
     float maxChargeTime = 1.0f;
     mutable Vector2 position;
     struct Arrow {
-        Vector2 position;
-        Vector2 direction;
-        float speed;
-        float lifetime;
-        bool active;
-    };
+    Vector2 position;
+    Vector2 prevPosition;
+    Vector2 direction;
+    float speed;
+    float lifetime;
+    bool active;
+    bool fullyCharged;  
+};
     std::vector<Arrow> activeArrows;
     Texture2D arrowTexture;
     Camera2D defaultCamera = { 0 };

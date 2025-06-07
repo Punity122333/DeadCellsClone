@@ -70,7 +70,7 @@ void Game::run() {
         }
 
         map->updateTransitions(dt);
-        player->update(dt, *map, camera->getCamera());
+        player->update(dt, *map, camera->getCamera(), scrapHounds);
         camera->update();
         player->checkWeaponHits(scrapHounds);
 

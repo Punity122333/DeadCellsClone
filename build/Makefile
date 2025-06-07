@@ -225,6 +225,30 @@ src/Game.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Game.cpp.s
 .PHONY : src/Game.cpp.s
 
+src/Pathfinding.o: src/Pathfinding.cpp.o
+.PHONY : src/Pathfinding.o
+
+# target to build an object file
+src/Pathfinding.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.o
+.PHONY : src/Pathfinding.cpp.o
+
+src/Pathfinding.i: src/Pathfinding.cpp.i
+.PHONY : src/Pathfinding.i
+
+# target to preprocess a source file
+src/Pathfinding.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.i
+.PHONY : src/Pathfinding.cpp.i
+
+src/Pathfinding.s: src/Pathfinding.cpp.s
+.PHONY : src/Pathfinding.s
+
+# target to generate assembly for a file
+src/Pathfinding.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.s
+.PHONY : src/Pathfinding.cpp.s
+
 src/enemies/ScrapHound.o: src/enemies/ScrapHound.cpp.o
 .PHONY : src/enemies/ScrapHound.o
 
@@ -248,6 +272,78 @@ src/enemies/ScrapHound.s: src/enemies/ScrapHound.cpp.s
 src/enemies/ScrapHound.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.s
 .PHONY : src/enemies/ScrapHound.cpp.s
+
+src/enemies/ScrapHoundCombat.o: src/enemies/ScrapHoundCombat.cpp.o
+.PHONY : src/enemies/ScrapHoundCombat.o
+
+# target to build an object file
+src/enemies/ScrapHoundCombat.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o
+.PHONY : src/enemies/ScrapHoundCombat.cpp.o
+
+src/enemies/ScrapHoundCombat.i: src/enemies/ScrapHoundCombat.cpp.i
+.PHONY : src/enemies/ScrapHoundCombat.i
+
+# target to preprocess a source file
+src/enemies/ScrapHoundCombat.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.i
+.PHONY : src/enemies/ScrapHoundCombat.cpp.i
+
+src/enemies/ScrapHoundCombat.s: src/enemies/ScrapHoundCombat.cpp.s
+.PHONY : src/enemies/ScrapHoundCombat.s
+
+# target to generate assembly for a file
+src/enemies/ScrapHoundCombat.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.s
+.PHONY : src/enemies/ScrapHoundCombat.cpp.s
+
+src/enemies/ScrapHoundDraw.o: src/enemies/ScrapHoundDraw.cpp.o
+.PHONY : src/enemies/ScrapHoundDraw.o
+
+# target to build an object file
+src/enemies/ScrapHoundDraw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o
+.PHONY : src/enemies/ScrapHoundDraw.cpp.o
+
+src/enemies/ScrapHoundDraw.i: src/enemies/ScrapHoundDraw.cpp.i
+.PHONY : src/enemies/ScrapHoundDraw.i
+
+# target to preprocess a source file
+src/enemies/ScrapHoundDraw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.i
+.PHONY : src/enemies/ScrapHoundDraw.cpp.i
+
+src/enemies/ScrapHoundDraw.s: src/enemies/ScrapHoundDraw.cpp.s
+.PHONY : src/enemies/ScrapHoundDraw.s
+
+# target to generate assembly for a file
+src/enemies/ScrapHoundDraw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.s
+.PHONY : src/enemies/ScrapHoundDraw.cpp.s
+
+src/enemies/ScrapHoundUpdateHelpers.o: src/enemies/ScrapHoundUpdateHelpers.cpp.o
+.PHONY : src/enemies/ScrapHoundUpdateHelpers.o
+
+# target to build an object file
+src/enemies/ScrapHoundUpdateHelpers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o
+.PHONY : src/enemies/ScrapHoundUpdateHelpers.cpp.o
+
+src/enemies/ScrapHoundUpdateHelpers.i: src/enemies/ScrapHoundUpdateHelpers.cpp.i
+.PHONY : src/enemies/ScrapHoundUpdateHelpers.i
+
+# target to preprocess a source file
+src/enemies/ScrapHoundUpdateHelpers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.i
+.PHONY : src/enemies/ScrapHoundUpdateHelpers.cpp.i
+
+src/enemies/ScrapHoundUpdateHelpers.s: src/enemies/ScrapHoundUpdateHelpers.cpp.s
+.PHONY : src/enemies/ScrapHoundUpdateHelpers.s
+
+# target to generate assembly for a file
+src/enemies/ScrapHoundUpdateHelpers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.s
+.PHONY : src/enemies/ScrapHoundUpdateHelpers.cpp.s
 
 src/map/Map.o: src/map/Map.cpp.o
 .PHONY : src/map/Map.o
@@ -630,9 +726,21 @@ help:
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
+	@echo "... src/Pathfinding.o"
+	@echo "... src/Pathfinding.i"
+	@echo "... src/Pathfinding.s"
 	@echo "... src/enemies/ScrapHound.o"
 	@echo "... src/enemies/ScrapHound.i"
 	@echo "... src/enemies/ScrapHound.s"
+	@echo "... src/enemies/ScrapHoundCombat.o"
+	@echo "... src/enemies/ScrapHoundCombat.i"
+	@echo "... src/enemies/ScrapHoundCombat.s"
+	@echo "... src/enemies/ScrapHoundDraw.o"
+	@echo "... src/enemies/ScrapHoundDraw.i"
+	@echo "... src/enemies/ScrapHoundDraw.s"
+	@echo "... src/enemies/ScrapHoundUpdateHelpers.o"
+	@echo "... src/enemies/ScrapHoundUpdateHelpers.i"
+	@echo "... src/enemies/ScrapHoundUpdateHelpers.s"
 	@echo "... src/map/Map.o"
 	@echo "... src/map/Map.i"
 	@echo "... src/map/Map.s"

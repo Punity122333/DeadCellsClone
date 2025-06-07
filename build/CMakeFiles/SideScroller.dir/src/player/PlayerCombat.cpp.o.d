@@ -192,5 +192,4 @@ CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o: \
  /usr/include/c++/13/ctime /usr/include/c++/13/bits/parse_numbers.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h \
  /usr/include/c++/13/bits/std_mutex.h \
- /usr/include/c++/13/bits/unique_lock.h \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/WeaponTypes.hpp
+ /usr/include/c++/13/bits/unique_lock.h

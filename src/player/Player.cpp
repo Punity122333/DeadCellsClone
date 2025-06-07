@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <raylib.h>
 #include "weapons/WeaponTypes.hpp"
+#include <future>
+#include <thread>
 
 Player::Player(const Map &map) {
     position = map.findEmptySpawn();
@@ -31,7 +33,7 @@ Player::Player(const Map &map) {
     hitboxHeight = height * 0.9f;
 }
 
-void Player::update(float dt, const Map& map, const Camera2D& gameCamera) {
+void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies) {
     if (invincibilityTimer > 0.0f) {
         invincibilityTimer -= dt;
     }
@@ -52,12 +54,20 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera) {
         weapons[currentWeaponIndex]->update(dt, gameCamera, facingRight);
     }
     if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
-        if (weapons[currentWeaponIndex]->getType() == WeaponType::BOW) {
-            Bow* bow = dynamic_cast<Bow*>(weapons[currentWeaponIndex].get());
-            if ((IsKeyPressed(KEY_J) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && !bow->isCharging()) {
-                attack();
+        Weapon* currentWeapon = weapons[currentWeaponIndex].get(); 
+        if (currentWeapon->getType() == WeaponType::BOW) {
+            Bow* bow = dynamic_cast<Bow*>(currentWeapon);
+            if (bow) { 
+                if ((IsKeyPressed(KEY_J) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && !bow->isCharging()) {
+                    attack();
+                }
+                bow->updatePosition(position);
+
+                if (bow->hasActiveArrows()) { 
+                    int default_substeps = 1; 
+                    bow->updateArrowsWithSubsteps(dt, enemies, default_substeps); 
+                }
             }
-            bow->updatePosition(position);
         } else {
             if (IsKeyPressed(KEY_J) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 attack();
@@ -78,11 +88,23 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera) {
 }
 
 void Player::updateParticles(float dt) {
-    for (auto& p : dustParticles) {
-        p.position = Vector2Add(p.position, Vector2Scale(p.velocity, dt));
-        p.velocity.y += 600 * dt; 
-        p.age += dt;
+    size_t numThreads = std::thread::hardware_concurrency();
+    if (numThreads == 0) numThreads = 2;
+    size_t chunkSize = (dustParticles.size() + numThreads - 1) / numThreads;
+    std::vector<std::future<void>> futures;
+    for (size_t t = 0; t < numThreads; ++t) {
+        size_t start = t * chunkSize;
+        size_t end = std::min(start + chunkSize, dustParticles.size());
+        futures.push_back(std::async(std::launch::async, [&, start, end]() {
+            for (size_t i = start; i < end; ++i) {
+                auto& p = dustParticles[i];
+                p.position = Vector2Add(p.position, Vector2Scale(p.velocity, dt));
+                p.velocity.y += 600 * dt;
+                p.age += dt;
+            }
+        }));
     }
+    for (auto& f : futures) f.get();
     dustParticles.erase(
         std::remove_if(dustParticles.begin(), dustParticles.end(),
             [](const Particle& p) { return p.age > p.lifetime; }),

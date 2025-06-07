@@ -18,6 +18,7 @@ public:
     Vector2 getPosition() const;
     float getHealth() const { return health; }
     float getMaxHealth() const { return maxHealth; }
+    Rectangle getArrowHitbox() const;
 
     
     bool isAlive() const { return alive; }
