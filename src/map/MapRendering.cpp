@@ -1,15 +1,32 @@
-#include "map/Map.hpp"
-#include <cmath>
-#include <algorithm> 
+#include "map/Map.hpp" // Make sure this path is correct for your project!
+#include <cmath> // For std::fmod, std::min, std::max, std::clamp
+#include <algorithm> // For std::clamp
 
 
+// --- Namespace for helper functions (from your rendering code) ---
 namespace {
-    int getTileIndex(const std::vector<std::vector<int>>& tiles, int x, int y, int width, int height) {
-        bool top    = (y > 0)            && (tiles[x][y - 1] == 1 || tiles[x][y - 1] == 6);
-        bool bottom = (y < height - 1)   && (tiles[x][y + 1] == 1 || tiles[x][y + 1] == 6);
-        bool left   = (x > 0)            && (tiles[x - 1][y] == 1 || tiles[x - 1][y] == 6);
-        bool right  = (x < width - 1)    && (tiles[x + 1][y] == 1 || tiles[x + 1][y] == 6);
+    // These constants would likely be defined globally or in Map.hpp
+    
 
+    // These constants are also from your other map generation code,
+    // potentially needed here for tile checks if not already accessible
+    constexpr int WALL_TILE_VALUE = 1;
+    constexpr int PLATFORM_TILE_VALUE = 6;
+    constexpr int LADDER_TILE_VALUE = 2;
+    constexpr int ROPE_TILE_VALUE = 3;
+    constexpr int TREASURE_TILE_VALUE = 4; // Old glitch effect treasure
+    constexpr int SHOP_TILE_VALUE = 5;
+    constexpr int CHEST_TILE_VALUE = 7; // The actual chest value
+
+
+    // Helper for getTileIndex (from your rendering code)
+    int getTileIndex(const std::vector<std::vector<int>>& tiles, int x, int y, int width, int height) {
+        bool top    = (y > 0)            && (tiles[x][y - 1] == WALL_TILE_VALUE || tiles[x][y - 1] == PLATFORM_TILE_VALUE);
+        bool bottom = (y < height - 1)   && (tiles[x][y + 1] == WALL_TILE_VALUE || tiles[x][y + 1] == PLATFORM_TILE_VALUE);
+        bool left   = (x > 0)            && (tiles[x - 1][y] == WALL_TILE_VALUE || tiles[x - 1][y] == PLATFORM_TILE_VALUE);
+        bool right  = (x < width - 1)    && (tiles[x + 1][y] == WALL_TILE_VALUE || tiles[x + 1][y] == PLATFORM_TILE_VALUE);
+
+        // This logic is specific to texture selection based on surrounding wall/platform tiles
         if (!top && !left && !right && !bottom) return 15;
         if (!top && !left && !right)            return 4;
         if (!top && !left && !bottom)           return 5;
@@ -24,9 +41,10 @@ namespace {
         if (!right)                             return 13;
         if (!left)                              return 10;
         if (!bottom)                            return 105;
-        return 11; 
+        return 11;
     }
 
+    // Helper for getBlinkAlpha (from your rendering code)
     float getBlinkAlpha(float timer, float blinkCycle, float minOpacity) {
         float blinkProgress = std::fmod(timer, blinkCycle);
         float alphaNorm = blinkProgress < blinkCycle / 2.0f
@@ -39,18 +57,38 @@ namespace {
             : minOpacity + ((alphaNorm - 0.5f) / 0.5f) * (1.0f - minOpacity);
         return std::clamp(alpha, minOpacity, 1.0f);
     }
-}
+} // End of anonymous namespace
 
-void Map::draw(const Camera2D& camera) const { 
-    
+
+// --- Map class rendering method implementation (assuming this is a method of a Map class) ---
+
+// Assuming 'tileTextures' and 'chestTexture' are member variables of Map,
+// and 'tiles', 'width', 'height', 'chunks', 'transitionTimers' are also members.
+// You need to ensure 'chestTexture' is loaded before this function is called.
+// Example: In your Map constructor or a load function:
+// chestTexture = LoadTexture("resources/textures/chest.png"); // Or wherever your chest texture is
+void Map::draw(const Camera2D& camera) const {
+
     float viewX = camera.target.x - (camera.offset.x / camera.zoom);
     float viewY = camera.target.y - (camera.offset.y / camera.zoom);
     float viewWidth = GetScreenWidth() / camera.zoom;
     float viewHeight = GetScreenHeight() / camera.zoom;
     Rectangle visibleWorldRect = { viewX, viewY, viewWidth, viewHeight };
 
+    // Debug camera and viewport info (only print occasionally to avoid spam)
+    static int frameCount = 0;
+    frameCount++;
+    if (frameCount % 60 == 0) {  // Print every 60 frames (roughly 1 second)
+        FILE* debugFile = fopen("camera_debug.txt", "a");
+        if (debugFile) {
+            fprintf(debugFile, "Frame %d: Camera target=(%.1f,%.1f), visible rect=(%.1f,%.1f,%.1f,%.1f)\n",
+                   frameCount, camera.target.x, camera.target.y, viewX, viewY, viewWidth, viewHeight);
+            fclose(debugFile);
+        }
+    }
+
+    int renderedChunks = 0;
     for (const auto& chunk : chunks) {
-        
         Rectangle chunkRect = {
             (float)chunk.startX * 32.0f,
             (float)chunk.startY * 32.0f,
@@ -58,27 +96,37 @@ void Map::draw(const Camera2D& camera) const {
             (float)(chunk.endY - chunk.startY + 1) * 32.0f
         };
 
-        
         if (CheckCollisionRecs(visibleWorldRect, chunkRect)) {
+            renderedChunks++;
             for (int x = chunk.startX; x <= chunk.endX; ++x) {
                 for (int y = chunk.startY; y <= chunk.endY; ++y) {
-                    
                     if (x < 0 || x >= width || y < 0 || y >= height) continue;
-
                     int tile = tiles[x][y];
-                    if (tile == 1 || tile == 6) { // Normal wall/platform tiles
+
+                    // Defensive check for tile value
+                    if (tile < 0 || tile > 1000) { // Assuming 1000 is a safe upper bound
+                        printf("ERROR: Invalid tile value %d at (%d,%d)\n", tile, x, y);
+                        continue;
+                    }
+
+                    if (tile == WALL_TILE_VALUE || tile == PLATFORM_TILE_VALUE) { // Normal wall/platform tiles
                         int idx = getTileIndex(tiles, x, y, width, height);
                         DrawTexture(tileTextures[idx], x * 32, y * 32, WHITE);
-                    } else if (tile == 7) { // CHEST_TILE_VALUE - Brown color
-                        DrawRectangle(x * 32, y * 32, 32, 32, (Color){139, 69, 19, 255});
-                    } else if (tile == 4) { // Old TREASURE_TILE_VALUE (glitch effect)
+                    } else if (tile == CHEST_TILE_VALUE) { // CHEST_TILE_VALUE - Now using a texture!
+                        FILE* debugFile = fopen("camera_debug.txt", "a");
+                        if (debugFile) {
+                            fprintf(debugFile, "Frame %d: Rendering chest (texture) at (%d,%d)\n", frameCount, x, y);
+                            fclose(debugFile);
+                        }
+                        DrawRectangle(x * 32, y * 32, 32, 32, BROWN); // Draw a brown rectangle for chest
+                    } else if (tile == TREASURE_TILE_VALUE) { // Old TREASURE_TILE_VALUE (glitch effect)
                         float alpha = std::min(transitionTimers[x][y] / GLITCH_TIME, 1.0f);
                         int r = GetRandomValue(180, 255);
                         int g = GetRandomValue(0, 255);
                         int b = GetRandomValue(180, 255);
                         Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
                         DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
-                    } else if (tile == 5) { // SHOP_TILE_VALUE (glitch effect)
+                    } else if (tile == SHOP_TILE_VALUE) { // SHOP_TILE_VALUE (glitch effect)
                         float alpha = 1.0f - (transitionTimers[x][y] / GLITCH_TIME);
                         alpha = std::max(alpha, 0.0f); // Ensure alpha doesn't go below 0
                         int r = GetRandomValue(0, 255);
@@ -86,7 +134,7 @@ void Map::draw(const Camera2D& camera) const {
                         int b = GetRandomValue(0, 180);
                         Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
                         DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
-                    } else if (tile == 8) { // TILE_ID_TEMP_CREATE_B (glitch effect for platforms)
+                    } else if (tile == 8) { // TILE_ID_TEMP_CREATE_B (glitch effect for platforms) - assuming '8' means this
                         float alpha = std::min(transitionTimers[x][y] / GLITCH_TIME, 1.0f);
                         int r = GetRandomValue(100, 200);
                         int g = GetRandomValue(100, 200);
@@ -103,14 +151,25 @@ void Map::draw(const Camera2D& camera) const {
                         Color highlightColor = { 255, 0, 0, (unsigned char)(alpha * 255) };
                         int idx = getTileIndex(tiles, x, y, width, height);
                         DrawTexture(tileTextures[idx], x * 32, y * 32, highlightColor);
-                    } else if (tile == 2) {
-                        DrawRectangle(x * 32 + 10, y * 32, 12, 32, GOLD);
-                    } else if (tile == 3) {
-                        DrawRectangle(x * 32 + 14, y * 32, 4, 32, SKYBLUE);
+                    } else if (tile == LADDER_TILE_VALUE) { // Ladder
+                        DrawRectangle(x * 32 + 10, y * 32, 12, 32, GOLD); // Assuming GOLD is defined (e.g., from raylib)
+                    } else if (tile == ROPE_TILE_VALUE) { // Rope
+                        DrawRectangle(x * 32 + 14, y * 32, 4, 32, SKYBLUE); // Assuming SKYBLUE is defined
                     }
-                    // The original 'else if (tile == 7)' for brown box is now handled above and is primary for tile 7.
+                    // Add an else if for EMPTY_TILE_VALUE (0) if you want to explicitly draw nothing for it
+                    // Or if any other tile value exists that shouldn't be drawn, consider handling it here.
                 }
             }
+        }
+    }
+
+    // Debug chunk info (print occasionally)
+    if (frameCount % 60 == 0) {
+        FILE* debugFile = fopen("camera_debug.txt", "a");
+        if (debugFile) {
+            fprintf(debugFile, "Frame %d: Rendered %d chunks out of %d total\n",
+                   frameCount, renderedChunks, (int)chunks.size());
+            fclose(debugFile);
         }
     }
 }

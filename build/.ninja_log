@@ -1,0 +1,27 @@
+# ninja log v5
+1	4557	1749396290757830417	CMakeFiles/SideScroller.dir/src/Game.cpp.o	36d9b7a322a5c1e6
+3	1645	1749396287843779549	CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o	8dc035856ce95f21
+2	4424	1749396290623828082	CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o	ae1049d9ce0da162
+6	2602	1749396288789796084	CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o	941242e7200907a7
+1	2897	1749396289093801395	CMakeFiles/SideScroller.dir/main.cpp.o	6b9b56c88ea63ef3
+5	2193	1749396288392789146	CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o	6fc4bf0061bc9e19
+3237	4820	1749396291022835035	CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o	e8bfdbdca6d2e0cd
+1	3127	1749396289326805461	CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.o	5c149cd5e5173af3
+1646	4387	1749396290576827263	CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o	d3ff78ea99ee9a37
+3	3235	1749396289437807398	CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o	b221975a458059f
+8	4563	1749396290758830435	CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o	90e79636ce414719
+1	521	1749396286724759962	CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o	d85b04bbc75df85f
+1	3463	1749396289664811360	CMakeFiles/SideScroller.dir/src/Camera.cpp.o	85fb72810a7c7f1c
+2	1864	1749396288067783467	CMakeFiles/SideScroller.dir/src/Spawner.cpp.o	e6c813dd5d535787
+958	6592	1749396292793865843	CMakeFiles/SideScroller.dir/src/player/Player.cpp.o	79f4361673e45f21
+3	958	1749396287148767388	CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o	b55c32dc1c6b8ca6
+522	4286	1749396290481825607	CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o	b2b5657571b6d3a
+2194	5199	1749396291400841615	CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o	d33804bcf6f17d7c
+6592	6812	1749396293013869667	SideScroller	26a141c76b00077b
+3465	4881	1749396291081836062	CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o	d78f41619c6ef392
+1865	5055	1749396291256839108	CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o	3397f8cdc8da6bb2
+3130	4741	1749396290937833555	CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o	768c932ff017564
+2898	5148	1749396291350840744	CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o	ebc0066deb7d0bd5
+4286	5005	1749396291207838255	CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o	fe7403b03fed75df
+2602	5203	1749396291405841702	CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o	b5758cd07461039
+4	6143	1749396292343858021	CMakeFiles/SideScroller.dir/src/map/Map.cpp.o	97d6e19c7411bad0

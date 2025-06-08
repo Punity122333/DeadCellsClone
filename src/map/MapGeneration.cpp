@@ -223,18 +223,31 @@ void Map::generateRoomContent(const Room& room, std::mt19937& gen) {
 }
 
 void Map::generateTreasureRoomContent(const Room& room, std::mt19937& gen) {
+    printf("DEBUG: Generating treasure room content for room at (%d,%d) to (%d,%d)\n", 
+           room.startX, room.startY, room.endX, room.endY);
+    
     const int room_width = room.endX - room.startX;
     const int room_height = room.endY - room.startY;
     int treasureX = room.startX + room_width / 2;
     int treasureY = room.startY + room_height / 2;
 
+    // Create a platform in the middle of the treasure room
+    if (isInsideBounds(treasureX, treasureY + 1)) {
+        if (tiles[treasureX][treasureY + 1] == EMPTY_TILE_VALUE) {
+            tiles[treasureX][treasureY + 1] = DEFAULT_TILE_VALUE; // Use boundary tile value for platform
+            isOriginalSolid[treasureX][treasureY + 1] = true;
+        }
+    }
+
+    // Place the chest on top of the platform
     if (isInsideBounds(treasureX, treasureY)) {
-        // Check if tile below is a boundary/wall tile (not platform or empty)
-        bool hasGroundBelow = (treasureY + 1 < height) && (tiles[treasureX][treasureY + 1] == WALL_TILE_VALUE || tiles[treasureX][treasureY + 1] == DEFAULT_TILE_VALUE);
-        
-        if (tiles[treasureX][treasureY] == EMPTY_TILE_VALUE && hasGroundBelow) {
+        if (tiles[treasureX][treasureY] == EMPTY_TILE_VALUE) {
             tiles[treasureX][treasureY] = CHEST_TILE_VALUE;
             isOriginalSolid[treasureX][treasureY] = false;
+            printf("DEBUG: Placed main chest at (%d,%d)\n", treasureX, treasureY);
+        } else {
+            printf("DEBUG: Could not place main chest at (%d,%d) - tile value is %d\n", 
+                   treasureX, treasureY, tiles[treasureX][treasureY]);
         }
     }
 
@@ -247,10 +260,13 @@ void Map::generateTreasureRoomContent(const Room& room, std::mt19937& gen) {
         int x_coord = xDist(gen);
         int y_coord = yDist(gen);
         if (isInsideBounds(x_coord, y_coord)) {
-            // Check if tile below is a boundary/wall tile (not platform or empty)
-            bool hasGroundBelow = (y_coord + 1 < height) && (tiles[x_coord][y_coord + 1] == WALL_TILE_VALUE || tiles[x_coord][y_coord + 1] == DEFAULT_TILE_VALUE);
             
-            if (tiles[x_coord][y_coord] == EMPTY_TILE_VALUE && hasGroundBelow) {
+            if (isInsideBounds(x_coord, y_coord + 1) && tiles[x_coord][y_coord + 1] == EMPTY_TILE_VALUE) {
+                tiles[x_coord][y_coord + 1] = DEFAULT_TILE_VALUE;
+                isOriginalSolid[x_coord][y_coord + 1] = true;
+            }
+            
+            if (tiles[x_coord][y_coord] == EMPTY_TILE_VALUE) {
                 tiles[x_coord][y_coord] = CHEST_TILE_VALUE;
                 isOriginalSolid[x_coord][y_coord] = false;
             }
@@ -464,8 +480,11 @@ void Map::generateRoomsAndConnections(std::mt19937& gen) {
         }
     }
 
+    // Place room content (chests, platforms, etc) AFTER all clearing
+    int treasureRoomCount = 0;
     for (const auto& room : rooms_vector) {
         if (room.type == Room::TREASURE) {
+            treasureRoomCount++;
             generateTreasureRoomContent(room, gen);
         } else if (room.type == Room::SHOP) {
             generateShopRoomContent(room, gen);
@@ -473,13 +492,18 @@ void Map::generateRoomsAndConnections(std::mt19937& gen) {
             generateRoomContent(room, gen);
         }
     }
+    printf("DEBUG: Generated %d treasure rooms total\n", treasureRoomCount);
 
     for (const auto& ladder : ladders_to_place) {
         for (int y_coord = ladder.y1; y_coord <= ladder.y2; ++y_coord) {
             if (isInsideBounds(ladder.x, y_coord)) {
-                if (tiles[ladder.x][y_coord] == EMPTY_TILE_VALUE) {
-                    tiles[ladder.x][y_coord] = LADDER_TILE_VALUE;
-                    isOriginalSolid[ladder.x][y_coord] = false;
+                // Only place ladder if tile is EMPTY or CHEST (so chests are not overwritten)
+                if (tiles[ladder.x][y_coord] == EMPTY_TILE_VALUE || tiles[ladder.x][y_coord] == CHEST_TILE_VALUE) {
+                    // Don't overwrite chests
+                    if (tiles[ladder.x][y_coord] != CHEST_TILE_VALUE) {
+                        tiles[ladder.x][y_coord] = LADDER_TILE_VALUE;
+                        isOriginalSolid[ladder.x][y_coord] = false;
+                    }
                 }
             }
         }
@@ -487,11 +511,28 @@ void Map::generateRoomsAndConnections(std::mt19937& gen) {
     for (const auto& rope : ropes_to_place) {
         for (int y_coord = rope.y1; y_coord <= rope.y2; ++y_coord) {
             if (isInsideBounds(rope.x, y_coord)) {
-                if (tiles[rope.x][y_coord] == EMPTY_TILE_VALUE) {
-                    tiles[rope.x][y_coord] = ROPE_TILE_VALUE;
-                    isOriginalSolid[rope.x][y_coord] = false;
+                // Only place rope if tile is EMPTY or CHEST (so chests are not overwritten)
+                if (tiles[rope.x][y_coord] == EMPTY_TILE_VALUE || tiles[rope.x][y_coord] == CHEST_TILE_VALUE) {
+                    // Don't overwrite chests
+                    if (tiles[rope.x][y_coord] != CHEST_TILE_VALUE) {
+                        tiles[rope.x][y_coord] = ROPE_TILE_VALUE;
+                        isOriginalSolid[rope.x][y_coord] = false;
+                    }
                 }
             }
         }
     }
+    
+    // Final verification: Check if chest tiles still exist after all generation processes
+    printf("DEBUG: Final chest verification - scanning entire map for chest tiles:\n");
+    int chestCount = 0;
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            if (tiles[x][y] == CHEST_TILE_VALUE) {
+                chestCount++;
+                printf("DEBUG: Found chest tile at (%d,%d)\n", x, y);
+            }
+        }
+    }
+    printf("DEBUG: Total chest tiles found in final map: %d\n", chestCount);
 }

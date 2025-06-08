@@ -9,7 +9,20 @@ GameCamera::GameCamera(int screenWidth, int screenHeight, const Player& p)
 }
 
 void GameCamera::update() {
-    cam.target = player.getPosition();
+    Vector2 playerPos = player.getPosition();
+    cam.target = playerPos;
+    
+    // Debug output to see what position the camera is getting
+    static int frameCount = 0;
+    frameCount++;
+    if (frameCount % 60 == 0) {  // Print every 60 frames
+        FILE* debugFile = fopen("camera_debug.txt", "a");
+        if (debugFile) {
+            fprintf(debugFile, "Camera update: Player position=(%.1f,%.1f), setting target to=(%.1f,%.1f)\n", 
+                   playerPos.x, playerPos.y, cam.target.x, cam.target.y);
+            fclose(debugFile);
+        }
+    }
 }
 
 Camera2D GameCamera::getCamera() const {

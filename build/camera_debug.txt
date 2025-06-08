@@ -1,0 +1,103 @@
+Frame 60: Camera target=(5760.0,1295.2), visible rect=(5120.0,935.2,1280.0,720.0)
+Frame 60: Rendered 9 chunks out of 608 total
+Frame 120: Camera target=(5760.0,2279.0), visible rect=(5120.0,1919.0,1280.0,720.0)
+Frame 120: Rendered 9 chunks out of 608 total
+Camera update: Player position=(1543.0,328.3), setting target to=(1543.0,328.3)
+Frame 60: Camera target=(1543.0,328.3), visible rect=(903.0,-31.7,1280.0,720.0)
+Frame 60: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1463.4,648.3), setting target to=(1463.4,648.3)
+Frame 120: Camera target=(1463.4,648.3), visible rect=(823.4,288.3,1280.0,720.0)
+Frame 120: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1703.1,903.8), setting target to=(1703.1,903.8)
+Frame 180: Camera target=(1703.1,903.8), visible rect=(1063.1,543.8,1280.0,720.0)
+Frame 180: Rendered 6 chunks out of 608 total
+Camera update: Player position=(1697.5,1415.0), setting target to=(1697.5,1415.0)
+Frame 240: Camera target=(1697.5,1415.0), visible rect=(1057.5,1055.0,1280.0,720.0)
+Frame 240: Rendered 6 chunks out of 608 total
+Camera update: Player position=(1247.7,1415.0), setting target to=(1247.7,1415.0)
+Frame 300: Camera target=(1247.7,1415.0), visible rect=(607.7,1055.0,1280.0,720.0)
+Frame 300: Rendered 6 chunks out of 608 total
+Camera update: Player position=(1211.2,1671.5), setting target to=(1211.2,1671.5)
+Frame 360: Camera target=(1211.2,1671.5), visible rect=(571.2,1311.5,1280.0,720.0)
+Frame 360: Rendered 6 chunks out of 608 total
+Camera update: Player position=(1211.2,1863.0), setting target to=(1211.2,1863.0)
+Frame 420: Camera target=(1211.2,1863.0), visible rect=(571.2,1503.0,1280.0,720.0)
+Frame 420: Rendered 9 chunks out of 608 total
+Camera update: Player position=(1525.4,359.2), setting target to=(1525.4,359.2)
+Frame 60: Camera target=(1525.4,359.2), visible rect=(885.4,-0.8,1280.0,720.0)
+Frame 60: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1431.9,616.7), setting target to=(1431.9,616.7)
+Frame 120: Camera target=(1431.9,616.7), visible rect=(791.9,256.7,1280.0,720.0)
+Frame 120: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1435.2,1063.0), setting target to=(1435.2,1063.0)
+Frame 180: Camera target=(1435.2,1063.0), visible rect=(795.2,703.0,1280.0,720.0)
+Frame 180: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1795.2,1063.0), setting target to=(1795.2,1063.0)
+Frame 240: Camera target=(1795.2,1063.0), visible rect=(1155.2,703.0,1280.0,720.0)
+Frame 240: Rendered 6 chunks out of 608 total
+Camera update: Player position=(1849.0,1363.4), setting target to=(1849.0,1363.4)
+Frame 300: Camera target=(1849.0,1363.4), visible rect=(1209.0,1003.4,1280.0,720.0)
+Frame 300: Rendered 9 chunks out of 608 total
+Camera update: Player position=(1451.8,1433.3), setting target to=(1451.8,1433.3)
+Frame 360: Camera target=(1451.8,1433.3), visible rect=(811.8,1073.3,1280.0,720.0)
+Frame 360: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1383.8,1873.0), setting target to=(1383.8,1873.0)
+Frame 420: Camera target=(1383.8,1873.0), visible rect=(743.8,1513.0,1280.0,720.0)
+Frame 420: Rendered 9 chunks out of 608 total
+Camera update: Player position=(1268.8,2215.0), setting target to=(1268.8,2215.0)
+Frame 480: Camera target=(1268.8,2215.0), visible rect=(628.8,1855.0,1280.0,720.0)
+Frame 480: Rendered 9 chunks out of 608 total
+Camera update: Player position=(818.8,2215.0), setting target to=(818.8,2215.0)
+Frame 540: Camera target=(818.8,2215.0), visible rect=(178.8,1855.0,1280.0,720.0)
+Frame 540: Rendered 9 chunks out of 608 total
+Camera update: Player position=(421.8,2248.4), setting target to=(421.8,2248.4)
+Frame 600: Camera target=(421.8,2248.4), visible rect=(-218.2,1888.4,1280.0,720.0)
+Frame 600: Rendered 9 chunks out of 608 total
+Camera update: Player position=(366.2,2631.0), setting target to=(366.2,2631.0)
+Frame 660: Camera target=(366.2,2631.0), visible rect=(-273.8,2271.0,1280.0,720.0)
+Frame 660: Rendered 4 chunks out of 608 total
+Camera update: Player position=(715.3,2668.8), setting target to=(715.3,2668.8)
+Frame 720: Camera target=(715.3,2668.8), visible rect=(75.3,2308.8,1280.0,720.0)
+Frame 720: Rendered 6 chunks out of 608 total
+Camera update: Player position=(915.7,3335.0), setting target to=(915.7,3335.0)
+Frame 780: Camera target=(915.7,3335.0), visible rect=(275.7,2975.0,1280.0,720.0)
+Frame 780: Rendered 12 chunks out of 608 total
+Camera update: Player position=(899.8,3562.8), setting target to=(899.8,3562.8)
+Frame 840: Camera target=(899.8,3562.8), visible rect=(259.8,3202.8,1280.0,720.0)
+Frame 840: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1358.7,3816.7), setting target to=(1358.7,3816.7)
+Frame 900: Camera target=(1358.7,3816.7), visible rect=(718.7,3456.7,1280.0,720.0)
+Frame 900: Rendered 9 chunks out of 608 total
+Camera update: Player position=(1307.3,4124.7), setting target to=(1307.3,4124.7)
+Frame 960: Camera target=(1307.3,4124.7), visible rect=(667.3,3764.7,1280.0,720.0)
+Frame 960: Rendered 6 chunks out of 608 total
+Camera update: Player position=(1365.4,4617.8), setting target to=(1365.4,4617.8)
+Frame 1020: Camera target=(1365.4,4617.8), visible rect=(725.4,4257.8,1280.0,720.0)
+Frame 1020: Rendered 6 chunks out of 608 total
+Camera update: Player position=(1449.8,5192.8), setting target to=(1449.8,5192.8)
+Frame 1080: Camera target=(1449.8,5192.8), visible rect=(809.8,4832.8,1280.0,720.0)
+Frame 1080: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1622.3,5447.0), setting target to=(1622.3,5447.0)
+Frame 1140: Camera target=(1622.3,5447.0), visible rect=(982.3,5087.0,1280.0,720.0)
+Frame 1140: Rendered 12 chunks out of 608 total
+Camera update: Player position=(1627.2,5521.4), setting target to=(1627.2,5521.4)
+Frame 1200: Camera target=(1627.2,5521.4), visible rect=(987.2,5161.4,1280.0,720.0)
+Frame 1200: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1625.6,6165.8), setting target to=(1625.6,6165.8)
+Frame 1260: Camera target=(1625.6,6165.8), visible rect=(985.6,5805.8,1280.0,720.0)
+Frame 1260: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1456.4,6220.8), setting target to=(1456.4,6220.8)
+Frame 1320: Camera target=(1456.4,6220.8), visible rect=(816.4,5860.8,1280.0,720.0)
+Frame 1320: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1493.6,6265.8), setting target to=(1493.6,6265.8)
+Frame 1380: Camera target=(1493.6,6265.8), visible rect=(853.6,5905.8,1280.0,720.0)
+Frame 1380: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1494.7,6759.0), setting target to=(1494.7,6759.0)
+Frame 1440: Camera target=(1494.7,6759.0), visible rect=(854.7,6399.0,1280.0,720.0)
+Frame 1440: Rendered 8 chunks out of 608 total
+Camera update: Player position=(1601.6,7015.0), setting target to=(1601.6,7015.0)
+Frame 1500: Camera target=(1601.6,7015.0), visible rect=(961.6,6655.0,1280.0,720.0)
+Frame 1500: Rendered 12 chunks out of 608 total
+Camera update: Player position=(1601.6,7015.0), setting target to=(1601.6,7015.0)
+Frame 1560: Camera target=(1601.6,7015.0), visible rect=(961.6,6655.0,1280.0,720.0)
+Frame 1560: Rendered 12 chunks out of 608 total
