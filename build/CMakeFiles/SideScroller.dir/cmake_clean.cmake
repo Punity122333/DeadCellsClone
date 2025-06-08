@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SideScroller.dir/src/Game.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.o"
   "CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.o.d"
+  "CMakeFiles/SideScroller.dir/src/Spawner.cpp.o"
+  "CMakeFiles/SideScroller.dir/src/Spawner.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o"
   "CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o"

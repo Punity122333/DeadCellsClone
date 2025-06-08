@@ -14,7 +14,7 @@ namespace {
     constexpr int TILE_ID_ROPE = 3;
     constexpr int TILE_ID_TEMP_CREATE_A = 4; 
     constexpr int TILE_ID_TEMP_DELETE = 5;   
-    constexpr int TILE_ID_TEMP_CREATE_B = 7; 
+    constexpr int TILE_ID_TEMP_CREATE_B = 8; 
     constexpr int TILE_ID_SOLID = 1;
     constexpr int TILE_ID_PLATFORM = 6;
     constexpr int TILE_ID_EMPTY = 0;
@@ -43,7 +43,7 @@ void Map::applyConwayAutomata() {
             bool isChunkProtectedOrSpecial = false;
             for (int y = startY; y < chunkEndY; ++y) {
                 for (int x = startX; x < chunkEndX; ++x) {
-                    if (isConwayProtected[x][y] || tiles[x][y] == TILE_ID_LADDER || tiles[x][y] == TILE_ID_ROPE) {
+                    if (isConwayProtected[x][y] || tiles[x][y] == TILE_ID_LADDER || tiles[x][y] == TILE_ID_ROPE || tiles[x][y] == 7) {
                         isChunkProtectedOrSpecial = true;
                         break;
                     }
@@ -68,7 +68,7 @@ void Map::applyConwayAutomata() {
 
                     if (tiles[x][y] == TILE_ID_LADDER || tiles[x][y] == TILE_ID_ROPE ||
                         tiles[x][y] == TILE_ID_TEMP_CREATE_A || tiles[x][y] == TILE_ID_TEMP_DELETE || tiles[x][y] == TILE_ID_TEMP_CREATE_B ||
-                        tiles[x][y] == TILE_HIGHLIGHT_CREATE || tiles[x][y] == TILE_HIGHLIGHT_DELETE) {
+                        tiles[x][y] == TILE_HIGHLIGHT_CREATE || tiles[x][y] == TILE_HIGHLIGHT_DELETE || tiles[x][y] == 7) {
                         nextTiles[x][y] = tiles[x][y];
                         continue;
                     }

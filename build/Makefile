@@ -249,6 +249,30 @@ src/Pathfinding.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.s
 .PHONY : src/Pathfinding.cpp.s
 
+src/Spawner.o: src/Spawner.cpp.o
+.PHONY : src/Spawner.o
+
+# target to build an object file
+src/Spawner.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Spawner.cpp.o
+.PHONY : src/Spawner.cpp.o
+
+src/Spawner.i: src/Spawner.cpp.i
+.PHONY : src/Spawner.i
+
+# target to preprocess a source file
+src/Spawner.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Spawner.cpp.i
+.PHONY : src/Spawner.cpp.i
+
+src/Spawner.s: src/Spawner.cpp.s
+.PHONY : src/Spawner.s
+
+# target to generate assembly for a file
+src/Spawner.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Spawner.cpp.s
+.PHONY : src/Spawner.cpp.s
+
 src/enemies/ScrapHound.o: src/enemies/ScrapHound.cpp.o
 .PHONY : src/enemies/ScrapHound.o
 
@@ -729,6 +753,9 @@ help:
 	@echo "... src/Pathfinding.o"
 	@echo "... src/Pathfinding.i"
 	@echo "... src/Pathfinding.s"
+	@echo "... src/Spawner.o"
+	@echo "... src/Spawner.i"
+	@echo "... src/Spawner.s"
 	@echo "... src/enemies/ScrapHound.o"
 	@echo "... src/enemies/ScrapHound.i"
 	@echo "... src/enemies/ScrapHound.s"

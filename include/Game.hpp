@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Spawner.hpp"
 #include "map/Map.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
@@ -27,4 +27,5 @@ private:
     Shader chromaticAberrationShader;
     Shader* activeShader;
     std::vector<ScrapHound> scrapHounds;
+    Spawner spawner;
 };

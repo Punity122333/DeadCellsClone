@@ -110,6 +110,10 @@ Map::Map(int w, int h) :
 void Map::placeBorders() {
 }
 
+const std::vector<Room>& Map::getGeneratedRooms() const {
+    return generatedRooms;
+}
+
 int Map::getHeight() const {
     return height;
 }

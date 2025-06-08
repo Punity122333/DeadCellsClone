@@ -158,3 +158,7 @@ Rectangle ScrapHound::getArrowHitbox() const {
         56.0f  
     };
 }
+
+bool ScrapHound::canTakeDamage() const {
+    return invincibilityTimer <= 0.0f;
+}

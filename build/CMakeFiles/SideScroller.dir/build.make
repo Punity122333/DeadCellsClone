@@ -139,10 +139,24 @@ CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Pathfinding.cpp -o CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.s
 
+CMakeFiles/SideScroller.dir/src/Spawner.cpp.o: CMakeFiles/SideScroller.dir/flags.make
+CMakeFiles/SideScroller.dir/src/Spawner.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Spawner.cpp
+CMakeFiles/SideScroller.dir/src/Spawner.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SideScroller.dir/src/Spawner.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/Spawner.cpp.o -MF CMakeFiles/SideScroller.dir/src/Spawner.cpp.o.d -o CMakeFiles/SideScroller.dir/src/Spawner.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Spawner.cpp
+
+CMakeFiles/SideScroller.dir/src/Spawner.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SideScroller.dir/src/Spawner.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Spawner.cpp > CMakeFiles/SideScroller.dir/src/Spawner.cpp.i
+
+CMakeFiles/SideScroller.dir/src/Spawner.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SideScroller.dir/src/Spawner.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Spawner.cpp -o CMakeFiles/SideScroller.dir/src/Spawner.cpp.s
+
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHound.cpp
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o -MF CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o.d -o CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHound.cpp
 
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHoundCombat.cpp
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o -MF CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o.d -o CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHoundCombat.cpp
 
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHoundDraw.cpp
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o -MF CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o.d -o CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHoundDraw.cpp
 
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHoundUpdateHelpers.cpp
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o -MF CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o.d -o CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHoundUpdateHelpers.cpp
 
 CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.s: cmake_for
 CMakeFiles/SideScroller.dir/src/map/Map.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/map/Map.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/Map.cpp
 CMakeFiles/SideScroller.dir/src/map/Map.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/SideScroller.dir/src/map/Map.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SideScroller.dir/src/map/Map.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/Map.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/Map.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/Map.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/Map.cpp
 
 CMakeFiles/SideScroller.dir/src/map/Map.cpp.i: cmake_force
@@ -212,7 +226,7 @@ CMakeFiles/SideScroller.dir/src/map/Map.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapAutomata.cpp
 CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapAutomata.cpp
 
 CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.i: cmake_force
@@ -226,7 +240,7 @@ CMakeFiles/SideScroller.dir/src/map/MapAutomata.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapCollisionSpawn.cpp
 CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapCollisionSpawn.cpp
 
 CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.i: cmake_force
@@ -240,7 +254,7 @@ CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapGeneration.cpp
 CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapGeneration.cpp
 
 CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.i: cmake_force
@@ -254,7 +268,7 @@ CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapRendering.cpp
 CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o -MF CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o.d -o CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/map/MapRendering.cpp
 
 CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.i: cmake_force
@@ -268,7 +282,7 @@ CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/player/Player.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/player/Player.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/Player.cpp
 CMakeFiles/SideScroller.dir/src/player/Player.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/SideScroller.dir/src/player/Player.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/SideScroller.dir/src/player/Player.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/player/Player.cpp.o -MF CMakeFiles/SideScroller.dir/src/player/Player.cpp.o.d -o CMakeFiles/SideScroller.dir/src/player/Player.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/Player.cpp
 
 CMakeFiles/SideScroller.dir/src/player/Player.cpp.i: cmake_force
@@ -282,7 +296,7 @@ CMakeFiles/SideScroller.dir/src/player/Player.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerCombat.cpp
 CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o -MF CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o.d -o CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerCombat.cpp
 
 CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.i: cmake_force
@@ -296,7 +310,7 @@ CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerMovement.cpp
 CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o -MF CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o.d -o CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerMovement.cpp
 
 CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.i: cmake_force
@@ -310,7 +324,7 @@ CMakeFiles/SideScroller.dir/src/player/PlayerMovement.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerPhysics.cpp
 CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o -MF CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o.d -o CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerPhysics.cpp
 
 CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.i: cmake_force
@@ -324,7 +338,7 @@ CMakeFiles/SideScroller.dir/src/player/PlayerPhysics.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerRenderer.cpp
 CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o -MF CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o.d -o CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/player/PlayerRenderer.cpp
 
 CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.i: cmake_force
@@ -338,7 +352,7 @@ CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Bow.cpp
 CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o -MF CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o.d -o CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Bow.cpp
 
 CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.i: cmake_force
@@ -352,7 +366,7 @@ CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Dagger.cpp
 CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o -MF CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o.d -o CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Dagger.cpp
 
 CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.i: cmake_force
@@ -366,7 +380,7 @@ CMakeFiles/SideScroller.dir/src/weapons/Dagger.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Spear.cpp
 CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o -MF CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o.d -o CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Spear.cpp
 
 CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.i: cmake_force
@@ -380,7 +394,7 @@ CMakeFiles/SideScroller.dir/src/weapons/Spear.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Sword.cpp
 CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o -MF CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o.d -o CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Sword.cpp
 
 CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.i: cmake_force
@@ -394,7 +408,7 @@ CMakeFiles/SideScroller.dir/src/weapons/Sword.cpp.s: cmake_force
 CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o: CMakeFiles/SideScroller.dir/flags.make
 CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o: /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Weapon.cpp
 CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o: CMakeFiles/SideScroller.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o -MF CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o.d -o CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o -c /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/weapons/Weapon.cpp
 
 CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.i: cmake_force
@@ -412,6 +426,7 @@ SideScroller_OBJECTS = \
 "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o" \
 "CMakeFiles/SideScroller.dir/src/Game.cpp.o" \
 "CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.o" \
+"CMakeFiles/SideScroller.dir/src/Spawner.cpp.o" \
 "CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o" \
 "CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o" \
 "CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o" \
@@ -440,6 +455,7 @@ SideScroller: CMakeFiles/SideScroller.dir/src/Camera.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/src/Game.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.o
+SideScroller: CMakeFiles/SideScroller.dir/src/Spawner.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o
@@ -462,7 +478,7 @@ SideScroller: CMakeFiles/SideScroller.dir/src/weapons/Weapon.cpp.o
 SideScroller: CMakeFiles/SideScroller.dir/build.make
 SideScroller: /usr/local/lib/libraylib.a
 SideScroller: CMakeFiles/SideScroller.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Linking CXX executable SideScroller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Linking CXX executable SideScroller"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SideScroller.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

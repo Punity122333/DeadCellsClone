@@ -39,3 +39,8 @@ void Weapon::levelUp() {
     level++;
     damageMultiplier += 0.2f;
 }
+
+Vector2 Weapon::getKnockback(bool facingRight) const {
+    // Default knockback
+    return {facingRight ? 50.0f : -50.0f, -50.0f};
+}

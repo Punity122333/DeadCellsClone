@@ -66,22 +66,31 @@ void Map::draw(const Camera2D& camera) const {
                     if (x < 0 || x >= width || y < 0 || y >= height) continue;
 
                     int tile = tiles[x][y];
-                    if (tile == 1 || tile == 6) {
+                    if (tile == 1 || tile == 6) { // Normal wall/platform tiles
                         int idx = getTileIndex(tiles, x, y, width, height);
                         DrawTexture(tileTextures[idx], x * 32, y * 32, WHITE);
-                    } else if (tile == 4 || tile == 7) {
+                    } else if (tile == 7) { // CHEST_TILE_VALUE - Brown color
+                        DrawRectangle(x * 32, y * 32, 32, 32, (Color){139, 69, 19, 255});
+                    } else if (tile == 4) { // Old TREASURE_TILE_VALUE (glitch effect)
                         float alpha = std::min(transitionTimers[x][y] / GLITCH_TIME, 1.0f);
                         int r = GetRandomValue(180, 255);
                         int g = GetRandomValue(0, 255);
                         int b = GetRandomValue(180, 255);
                         Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
                         DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
-                    } else if (tile == 5) {
+                    } else if (tile == 5) { // SHOP_TILE_VALUE (glitch effect)
                         float alpha = 1.0f - (transitionTimers[x][y] / GLITCH_TIME);
                         alpha = std::max(alpha, 0.0f); // Ensure alpha doesn't go below 0
                         int r = GetRandomValue(0, 255);
                         int g = GetRandomValue(180, 255);
                         int b = GetRandomValue(0, 180);
+                        Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
+                        DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
+                    } else if (tile == 8) { // TILE_ID_TEMP_CREATE_B (glitch effect for platforms)
+                        float alpha = std::min(transitionTimers[x][y] / GLITCH_TIME, 1.0f);
+                        int r = GetRandomValue(100, 200);
+                        int g = GetRandomValue(100, 200);
+                        int b = GetRandomValue(200, 255);
                         Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
                         DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
                     } else if (tile == TILE_HIGHLIGHT_CREATE) {
@@ -99,6 +108,7 @@ void Map::draw(const Camera2D& camera) const {
                     } else if (tile == 3) {
                         DrawRectangle(x * 32 + 14, y * 32, 4, 32, SKYBLUE);
                     }
+                    // The original 'else if (tile == 7)' for brown box is now handled above and is primary for tile 7.
                 }
             }
         }

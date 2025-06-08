@@ -5,7 +5,7 @@
 #include <tuple>
 
 namespace {
-    constexpr int ROOM_PLACEMENT_SKIP_CHANCE_PERCENT = 15;
+    constexpr int ROOM_PLACEMENT_SKIP_CHANCE_PERCENT = 5;
     constexpr int HALLWAY_CREATION_SKIP_PERCENT = 20;
     constexpr int MIN_ROOM_SLOT_WIDTH_CONST = 25;
     constexpr int MIN_ROOM_SLOT_HEIGHT_CONST = 20;
@@ -20,6 +20,7 @@ namespace {
     constexpr int ROPE_TILE_VALUE = 3;
     constexpr int TREASURE_TILE_VALUE = 4;
     constexpr int SHOP_TILE_VALUE = 5;
+    constexpr int CHEST_TILE_VALUE = 7;
 
     constexpr int WALL_PLACEMENT_CHANCE_MAX_ROLL = 3;
     constexpr int MIN_WALL_VERTICAL_GAP_SIZE = 3;
@@ -37,8 +38,8 @@ namespace {
     constexpr int MAX_EXTRA_SHOP_ITEMS_IN_ROOM = 2;
     constexpr int LARGE_HALL_CREATION_CHANCE_PERCENT = 15;
     constexpr int MAX_ROOM_WIDTH_RANDOM_VARIATION = 5;
-    constexpr int ROOM_TYPE_TREASURE_CHANCE_THRESHOLD_PERCENT = 10;
-    constexpr int ROOM_TYPE_SHOP_CHANCE_THRESHOLD_PERCENT = 20;
+    constexpr int ROOM_TYPE_TREASURE_CHANCE_THRESHOLD_PERCENT = 25;
+    constexpr int ROOM_TYPE_SHOP_CHANCE_THRESHOLD_PERCENT = 40;
 
     int rollPercent(std::mt19937& gen) {
         static std::uniform_int_distribution<> dist(0, 99);
@@ -228,8 +229,11 @@ void Map::generateTreasureRoomContent(const Room& room, std::mt19937& gen) {
     int treasureY = room.startY + room_height / 2;
 
     if (isInsideBounds(treasureX, treasureY)) {
-        if (tiles[treasureX][treasureY] == EMPTY_TILE_VALUE) {
-            tiles[treasureX][treasureY] = TREASURE_TILE_VALUE;
+        // Check if tile below is a boundary/wall tile (not platform or empty)
+        bool hasGroundBelow = (treasureY + 1 < height) && (tiles[treasureX][treasureY + 1] == WALL_TILE_VALUE || tiles[treasureX][treasureY + 1] == DEFAULT_TILE_VALUE);
+        
+        if (tiles[treasureX][treasureY] == EMPTY_TILE_VALUE && hasGroundBelow) {
+            tiles[treasureX][treasureY] = CHEST_TILE_VALUE;
             isOriginalSolid[treasureX][treasureY] = false;
         }
     }
@@ -242,9 +246,14 @@ void Map::generateTreasureRoomContent(const Room& room, std::mt19937& gen) {
         std::uniform_int_distribution<> yDist(room.startY + 1, room.endY - 1);
         int x_coord = xDist(gen);
         int y_coord = yDist(gen);
-        if (tiles[x_coord][y_coord] == EMPTY_TILE_VALUE) {
-            tiles[x_coord][y_coord] = TREASURE_TILE_VALUE;
-            isOriginalSolid[x_coord][y_coord] = false;
+        if (isInsideBounds(x_coord, y_coord)) {
+            // Check if tile below is a boundary/wall tile (not platform or empty)
+            bool hasGroundBelow = (y_coord + 1 < height) && (tiles[x_coord][y_coord + 1] == WALL_TILE_VALUE || tiles[x_coord][y_coord + 1] == DEFAULT_TILE_VALUE);
+            
+            if (tiles[x_coord][y_coord] == EMPTY_TILE_VALUE && hasGroundBelow) {
+                tiles[x_coord][y_coord] = CHEST_TILE_VALUE;
+                isOriginalSolid[x_coord][y_coord] = false;
+            }
         }
     }
 }
@@ -350,6 +359,8 @@ void Map::generateRoomsAndConnections(std::mt19937& gen) {
             }
         }
     }
+
+    generatedRooms = rooms_vector;
 
     for (int x_coord = 1; x_coord < width - 1; ++x_coord) {
         for (int y_coord = 1; y_coord < height - 1; ++y_coord) {

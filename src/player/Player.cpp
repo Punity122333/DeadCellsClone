@@ -115,6 +115,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
         facingRight = false;
     }
     updateParticles(dt);
+    checkWeaponHits(enemies);
 }
 
 void Player::updateParticles(float dt) {

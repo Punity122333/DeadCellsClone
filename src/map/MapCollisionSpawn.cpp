@@ -27,12 +27,12 @@ bool Map::collidesWithGround(Vector2 pos) const {
 }
 
 bool Map::isSolidTile(int x, int y) const {
-    if (!isInsideBounds(x,y)) return false;
+    if (!isInsideBounds(x,y)) return true;
     return tiles[x][y] == TILE_ID_SOLID_GROUND || tiles[x][y] == TILE_ID_PLATFORM || tiles[x][y] == TILE_HIGHLIGHT_DELETE;
 }
 
 bool Map::isLadderTile(int x, int y) const {
-    if (!isInsideBounds(x,y)) return false;
+    if (!isInsideBounds(x,y)) return false; 
     return tiles[x][y] == TILE_ID_LADDER;
 }
 

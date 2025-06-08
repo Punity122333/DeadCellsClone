@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/FishEyeGradient.cpp" "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/FishEyeGradient.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Game.cpp" "CMakeFiles/SideScroller.dir/src/Game.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Game.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Pathfinding.cpp" "CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.o.d"
+  "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/Spawner.cpp" "CMakeFiles/SideScroller.dir/src/Spawner.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/Spawner.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHound.cpp" "CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHoundCombat.cpp" "CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o.d"
   "/home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/ScrapHoundDraw.cpp" "CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o" "gcc" "CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o.d"

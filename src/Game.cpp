@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "Camera.hpp"
 #include "FishEyeGradient.hpp"
+#include "Spawner.hpp" 
 #include <algorithm>
 
 const int screenWidth = 1920;
@@ -25,20 +26,8 @@ Game::Game() {
     player = std::make_unique<Player>(*map);
     camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
 
-    Vector2 playerSpawn = player->getPosition();
-    int spawned = 0;
-    int tryCount = 0;
-    while (spawned < 5 && tryCount < 50) {
-        int dx = GetRandomValue(-5, 5);
-        int dy = GetRandomValue(-3, 3);
-        int tx = (int)(playerSpawn.x / 32) + dx;
-        int ty = (int)(playerSpawn.y / 32) + dy;
-        if (map->isTileEmpty(tx, ty) && !(dx == 0 && dy == 0)) {
-            scrapHounds.emplace_back(Vector2{ tx * 32.0f, ty * 32.0f });
-            spawned++;
-        }
-        tryCount++;
-    }
+    
+    spawner.spawnEnemiesInRooms(*map, scrapHounds); 
 
     sceneTexture = LoadRenderTexture(screenWidth, screenHeight);
 
@@ -103,12 +92,30 @@ void Game::run() {
         map->draw(camera->getCamera());
         player->draw();
 
+        Vector2 topLeftWorld = GetScreenToWorld2D({0.0f, 0.0f}, camera->getCamera());
+        Vector2 bottomRightWorld = GetScreenToWorld2D({(float)screenWidth, (float)screenHeight}, camera->getCamera());
+
+        Rectangle cameraViewWorld = {
+            topLeftWorld.x,
+            topLeftWorld.y,
+            bottomRightWorld.x - topLeftWorld.x,
+            bottomRightWorld.y - topLeftWorld.y
+        };
+
         for (const auto& enemy : scrapHounds) {
-            enemy.draw();
-            
-            if (IsKeyDown(KEY_TAB)) {
-                Vector2 enemyPos = enemy.getPosition();
-                DrawRectangleLines((int)enemyPos.x, (int)enemyPos.y, 32, 32, RED);
+            if (enemy.isAlive()) {
+                Rectangle enemyRect = { 
+                    enemy.getPosition().x, 
+                    enemy.getPosition().y, 
+                    32.0f, 
+                    32.0f  
+                }; 
+                if (CheckCollisionRecs(enemyRect, cameraViewWorld)) {
+                    enemy.draw();
+                    if (IsKeyDown(KEY_TAB)) { 
+                        DrawRectangleLines((int)enemy.getPosition().x, (int)enemy.getPosition().y, 32, 32, RED);
+                    }
+                }
             }
         }
         

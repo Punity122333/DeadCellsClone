@@ -79,6 +79,10 @@ Please ensure your code is well-documented and tested before submitting.
 
 This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute the code as you see fit, but the author is not responsible for any potential issues.
 
+## Credits
+
+A huge thanks to Wheat-coder for providing the tilesets and spritesheets needed for the game. The textures would not have been possible without him.
+
 ## ✅ Final Notes
 
 Thank you for checking out this project! Feedback, suggestions, and contributions are appreciated.

@@ -37,8 +37,25 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies) {
     }
 
     Weapon* currentWeapon = weapons[currentWeaponIndex].get();
-    if (!currentWeapon) {
+    if (!currentWeapon || !currentWeapon->isAttacking()) {
         return;
+    }
+
+    Rectangle weaponHitbox = currentWeapon->getHitbox(position, facingRight);
+    if (weaponHitbox.width == 0 || weaponHitbox.height == 0) {
+        return;
+    }
+
+    for (auto& enemy : enemies) {
+        if (enemy.isAlive()) {
+            Rectangle enemyHitbox = enemy.getArrowHitbox();
+            if (CheckCollisionRecs(weaponHitbox, enemyHitbox)) {
+                if (enemy.canTakeDamage()) {
+                    enemy.takeDamage(currentWeapon->getDamage());
+                    enemy.applyKnockback(currentWeapon->getKnockback(facingRight));
+                }
+            }
+        }
     }
 }
 

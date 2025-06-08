@@ -74,6 +74,8 @@ public:
     };
     std::vector<Chunk> chunks;
 
+    const std::vector<Room>& getGeneratedRooms() const;
+
 private:
     int width;
     int height;
@@ -82,6 +84,7 @@ private:
     std::vector<std::vector<bool>> isOriginalSolid;
     std::vector<std::vector<bool>> isConwayProtected;
     std::vector<Texture2D> tileTextures;
+    std::vector<Room> generatedRooms;
 };
 
 #endif // MAP_HPP

@@ -9,6 +9,7 @@ public:
     void draw(Vector2 playerPosition, bool facingRight) const override;
     Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
+    Vector2 getKnockback(bool facingRight) const override;
 };
 
 class Dagger : public Weapon {
@@ -18,6 +19,7 @@ public:
     void draw(Vector2 playerPosition, bool facingRight) const override;
     Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
+    Vector2 getKnockback(bool facingRight) const override;
     
 private:
     float attackSpeedMultiplier = 2.0f;
@@ -30,6 +32,7 @@ public:
     void draw(Vector2 playerPosition, bool facingRight) const override;
     Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
+    Vector2 getKnockback(bool facingRight) const override;
     
 private:
     float extraRange = 1.5f;
@@ -50,6 +53,7 @@ public:
     void checkArrowCollisions(std::vector<class ScrapHound>& enemies);
     void updatePosition(Vector2 newPosition);
     bool hasActiveArrows() const;
+    Vector2 getKnockback(bool facingRight) const override;
 private:
     float chargeTime = 0.0f;
     bool charging = false;

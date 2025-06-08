@@ -22,6 +22,7 @@ public:
 
     
     bool isAlive() const { return alive; }
+    bool canTakeDamage() const; // Added declaration
     void takeDamage(int amount);
     void applyKnockback(Vector2 force);
 

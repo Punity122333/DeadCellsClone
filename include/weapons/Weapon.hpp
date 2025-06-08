@@ -29,6 +29,7 @@ public:
     float getRange() const { return range; }
     int getLevel() const { return level; }
     virtual void levelUp();
+    virtual Vector2 getKnockback(bool facingRight) const;
 protected:
     std::string name;
     WeaponType type;

@@ -7,12 +7,15 @@ find_package(raylib REQUIRED)
 
 include_directories(include)
 
+
 # Find all source files
 file(GLOB_RECURSE SOURCES 
+    "src/**/*.cpp"
     "src/*.cpp"
     "main.cpp"
 )
 
+message(STATUS "Source files found: ${SOURCES}")
 # Add shaders
 file(GLOB SHADERS "shader/*.fs")
 
