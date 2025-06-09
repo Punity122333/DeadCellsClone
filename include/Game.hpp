@@ -8,12 +8,18 @@
 #include <raylib.h>
 #include <vector>
 
+enum class GameState {
+    PLAYING,
+    GAME_OVER
+};
+
 class Game {
 public:
     Game();
     ~Game();
 
     void run();
+    void resetGame(); // Added resetGame declaration
     
 private:
     const int screenWidth = 1280;
@@ -28,4 +34,6 @@ private:
     Shader* activeShader;
     std::vector<ScrapHound> scrapHounds;
     Spawner spawner;
+    GameState currentState;
+    std::vector<Texture2D> tileTextures; // Add to Game class
 };

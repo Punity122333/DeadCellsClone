@@ -14,18 +14,19 @@ namespace {
 constexpr int CHUNK_SIZE = 16;
 
 
-Map::Map(int w, int h) :
+// Modified constructor
+Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures) :
     width(w),
     height(h),
     tiles(w, std::vector<int>(h, 0)),
     transitionTimers(w, std::vector<float>(h, 0.0f)),
     isOriginalSolid(w, std::vector<bool>(h, false)),
-    isConwayProtected(w, std::vector<bool>(h, false))
+    isConwayProtected(w, std::vector<bool>(h, false)),
+    tileTextures(loadedTileTextures) // Assign pre-loaded textures
 {
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    
     size_t numThreads = std::thread::hardware_concurrency();
     if (numThreads == 0) numThreads = 2;
     size_t calculated_chunk_size = (width + numThreads - 1) / numThreads;
@@ -45,6 +46,8 @@ Map::Map(int w, int h) :
     }
     for (auto& f : futures) f.get();
 
+    // REMOVE the texture loading loop from here
+    /*
     int numTiles = 0;
     {
         for (int i = 0; ; ++i) {
@@ -59,6 +62,7 @@ Map::Map(int w, int h) :
         snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
         tileTextures.push_back(LoadTexture(path_buffer));
     }
+    */
 
     for (int x = 0; x < width; x++) {
         tiles[x][height - 1] = BORDER_TILE_VALUE; isOriginalSolid[x][height - 1] = true;
@@ -126,7 +130,5 @@ int Map::getWidth() const {
 }
 
 Map::~Map() {
-    for (const auto& texture : tileTextures) {
-        UnloadTexture(texture);
-    }
+    
 }
