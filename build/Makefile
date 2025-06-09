@@ -441,6 +441,30 @@ src/map/MapCollisionSpawn.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapCollisionSpawn.cpp.s
 .PHONY : src/map/MapCollisionSpawn.cpp.s
 
+src/map/MapConstants.o: src/map/MapConstants.cpp.o
+.PHONY : src/map/MapConstants.o
+
+# target to build an object file
+src/map/MapConstants.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapConstants.cpp.o
+.PHONY : src/map/MapConstants.cpp.o
+
+src/map/MapConstants.i: src/map/MapConstants.cpp.i
+.PHONY : src/map/MapConstants.i
+
+# target to preprocess a source file
+src/map/MapConstants.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapConstants.cpp.i
+.PHONY : src/map/MapConstants.cpp.i
+
+src/map/MapConstants.s: src/map/MapConstants.cpp.s
+.PHONY : src/map/MapConstants.s
+
+# target to generate assembly for a file
+src/map/MapConstants.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapConstants.cpp.s
+.PHONY : src/map/MapConstants.cpp.s
+
 src/map/MapGeneration.o: src/map/MapGeneration.cpp.o
 .PHONY : src/map/MapGeneration.o
 
@@ -488,6 +512,54 @@ src/map/MapRendering.s: src/map/MapRendering.cpp.s
 src/map/MapRendering.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.s
 .PHONY : src/map/MapRendering.cpp.s
+
+src/map/RoomContentGenerator.o: src/map/RoomContentGenerator.cpp.o
+.PHONY : src/map/RoomContentGenerator.o
+
+# target to build an object file
+src/map/RoomContentGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomContentGenerator.cpp.o
+.PHONY : src/map/RoomContentGenerator.cpp.o
+
+src/map/RoomContentGenerator.i: src/map/RoomContentGenerator.cpp.i
+.PHONY : src/map/RoomContentGenerator.i
+
+# target to preprocess a source file
+src/map/RoomContentGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomContentGenerator.cpp.i
+.PHONY : src/map/RoomContentGenerator.cpp.i
+
+src/map/RoomContentGenerator.s: src/map/RoomContentGenerator.cpp.s
+.PHONY : src/map/RoomContentGenerator.s
+
+# target to generate assembly for a file
+src/map/RoomContentGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomContentGenerator.cpp.s
+.PHONY : src/map/RoomContentGenerator.cpp.s
+
+src/map/RoomGenerator.o: src/map/RoomGenerator.cpp.o
+.PHONY : src/map/RoomGenerator.o
+
+# target to build an object file
+src/map/RoomGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomGenerator.cpp.o
+.PHONY : src/map/RoomGenerator.cpp.o
+
+src/map/RoomGenerator.i: src/map/RoomGenerator.cpp.i
+.PHONY : src/map/RoomGenerator.i
+
+# target to preprocess a source file
+src/map/RoomGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomGenerator.cpp.i
+.PHONY : src/map/RoomGenerator.cpp.i
+
+src/map/RoomGenerator.s: src/map/RoomGenerator.cpp.s
+.PHONY : src/map/RoomGenerator.s
+
+# target to generate assembly for a file
+src/map/RoomGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomGenerator.cpp.s
+.PHONY : src/map/RoomGenerator.cpp.s
 
 src/player/Player.o: src/player/Player.cpp.o
 .PHONY : src/player/Player.o
@@ -777,12 +849,21 @@ help:
 	@echo "... src/map/MapCollisionSpawn.o"
 	@echo "... src/map/MapCollisionSpawn.i"
 	@echo "... src/map/MapCollisionSpawn.s"
+	@echo "... src/map/MapConstants.o"
+	@echo "... src/map/MapConstants.i"
+	@echo "... src/map/MapConstants.s"
 	@echo "... src/map/MapGeneration.o"
 	@echo "... src/map/MapGeneration.i"
 	@echo "... src/map/MapGeneration.s"
 	@echo "... src/map/MapRendering.o"
 	@echo "... src/map/MapRendering.i"
 	@echo "... src/map/MapRendering.s"
+	@echo "... src/map/RoomContentGenerator.o"
+	@echo "... src/map/RoomContentGenerator.i"
+	@echo "... src/map/RoomContentGenerator.s"
+	@echo "... src/map/RoomGenerator.o"
+	@echo "... src/map/RoomGenerator.i"
+	@echo "... src/map/RoomGenerator.s"
 	@echo "... src/player/Player.o"
 	@echo "... src/player/Player.i"
 	@echo "... src/player/Player.s"

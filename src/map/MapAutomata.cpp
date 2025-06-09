@@ -17,7 +17,14 @@ namespace {
     constexpr int TILE_ID_TEMP_CREATE_B = 8; 
     constexpr int TILE_ID_SOLID = 1;
     constexpr int TILE_ID_PLATFORM = 6;
-    constexpr int TILE_ID_EMPTY = 0;
+    constexpr int TILE_ID_EMPTY = 0;    
+    constexpr float HIGHLIGHT_TIME = 2.0f;
+    constexpr float GLITCH_TIME = 0.5f;
+    constexpr float BLINK_CYCLE_TIME = 1.0f;
+    constexpr float MIN_HIGHLIGHT_OPACITY = 0.1f;
+
+    constexpr int TILE_HIGHLIGHT_CREATE = 11;
+    constexpr int TILE_HIGHLIGHT_DELETE = 12;
 }
 
 void Map::applyConwayAutomata() {
@@ -43,7 +50,7 @@ void Map::applyConwayAutomata() {
             bool isChunkProtectedOrSpecial = false;
             for (int y = startY; y < chunkEndY; ++y) {
                 for (int x = startX; x < chunkEndX; ++x) {
-                    if (isConwayProtected[x][y] || tiles[x][y] == TILE_ID_LADDER || tiles[x][y] == TILE_ID_ROPE || tiles[x][y] == 7) {
+                    if (isConwayProtected[x][y] || tiles[x][y] == TILE_ID_LADDER || tiles[x][y] == TILE_ID_ROPE || tiles[x][y] == MapConstants::CHEST_TILE_VALUE || tiles[x][y] == MapConstants::WALL_TILE_VALUE || tiles[x][y] == MapConstants::SHOP_TILE_VALUE || tiles[x][y] == MapConstants::TREASURE_TILE_VALUE || tiles[x][y] == TILE_HIGHLIGHT_CREATE || tiles[x][y] == TILE_HIGHLIGHT_DELETE || tiles[x][y] == MapConstants::PROTECTED_EMPTY_TILE_VALUE) {
                         isChunkProtectedOrSpecial = true;
                         break;
                     }

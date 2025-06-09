@@ -1,4 +1,5 @@
 #include "map/Map.hpp"
+#include "map/RoomGenerator.hpp"
 #include <cstdio>
 #include <vector>
 #include <random> 
@@ -67,7 +68,7 @@ Map::Map(int w, int h) :
         tiles[width - 1][y] = BORDER_TILE_VALUE; isOriginalSolid[width - 1][y] = true;
     }
 
-    generateRoomsAndConnections(gen);
+    
 
     chunks.clear();
     for (int cx = 0; cx < width; cx += CHUNK_SIZE) {
@@ -105,6 +106,8 @@ Map::Map(int w, int h) :
         }));
     }
     for (auto& f : conwayFutures) f.get();
+
+    RoomGenerator::generateRoomsAndConnections(*this, gen);
 }
 
 void Map::placeBorders() {
@@ -116,6 +119,10 @@ const std::vector<Room>& Map::getGeneratedRooms() const {
 
 int Map::getHeight() const {
     return height;
+}
+
+int Map::getWidth() const {
+    return width;
 }
 
 Map::~Map() {
