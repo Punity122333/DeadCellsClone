@@ -4,6 +4,7 @@
 #include "FishEyeGradient.hpp"
 #include "Spawner.hpp" 
 #include <algorithm>
+#include <filesystem>
 
 const int screenWidth = 1920;
 const int screenHeight = 1080;
@@ -22,7 +23,21 @@ Game::Game() {
 
     fisheyeBackground = CreateFisheyeGradient(screenWidth, screenHeight, innerCyan, outerPrussianBlue);
 
-    map = std::make_unique<Map>(500, 300);
+    // Load tile textures once here
+    int numTiles = 0;
+    for (int i = 0; ; ++i) {
+        char path_buffer[64];
+        snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
+        if (!std::filesystem::exists(path_buffer)) break; // Make sure to include <filesystem>
+        numTiles++;
+    }
+    for (int i = 0; i < numTiles; ++i) {
+        char path_buffer[64];
+        snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
+        tileTextures.push_back(LoadTexture(path_buffer));
+    }
+
+    map = std::make_unique<Map>(500, 300, tileTextures); // Pass textures to Map
     player = std::make_unique<Player>(*map);
     camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
 
@@ -34,16 +49,29 @@ Game::Game() {
     bloomShader = LoadShader(0, "../shader/bloom.fs");
     chromaticAberrationShader = LoadShader(0, "../shader/chromatic_aberration.fs");
     activeShader = &bloomShader;
+    currentState = GameState::PLAYING; // Initialize game state
 }
 
 Game::~Game() {
     UnloadTexture(fisheyeBackground);
     UnloadShader(bloomShader);
     UnloadShader(chromaticAberrationShader);
+    for (const auto& texture : tileTextures) { // Unload tile textures here
+        UnloadTexture(texture);
+    }
     camera.reset();
     player.reset();
     map.reset();
     CloseWindow();
+}
+
+void Game::resetGame() {
+    map = std::make_unique<Map>(500, 300, tileTextures); // Pass textures to Map
+    player = std::make_unique<Player>(*map);
+    camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
+    scrapHounds.clear();
+    spawner.spawnEnemiesInRooms(*map, scrapHounds);
+    currentState = GameState::PLAYING;
 }
 
 void Game::run() {
@@ -51,37 +79,49 @@ void Game::run() {
     const float automataInterval = 5.0f;
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
-        automataTimer += dt;
 
-        if (automataTimer >= automataInterval) {
-            map->applyConwayAutomata();
-            automataTimer = 0.0f;
-        }
+        if (currentState == GameState::PLAYING) {
+            automataTimer += dt;
 
-        map->updateTransitions(dt);
-        player->update(dt, *map, camera->getCamera(), scrapHounds);
-        camera->update();
-        player->checkWeaponHits(scrapHounds);
+            if (automataTimer >= automataInterval) {
+                map->applyConwayAutomata();
+                automataTimer = 0.0f;
+            }
 
-        scrapHounds.erase(
-            std::remove_if(scrapHounds.begin(), scrapHounds.end(),
-                [](const ScrapHound& enemy) { return !enemy.isAlive(); }),
-            scrapHounds.end()
-        );
+            map->updateTransitions(dt);
+            player->update(dt, *map, camera->getCamera(), scrapHounds);
+            camera->update();
+            player->checkWeaponHits(scrapHounds);
 
-        for (auto& enemy : scrapHounds) {
-            enemy.update(*map, player->getPosition(), dt);
-            
-            if (enemy.isAlive()) {
-                Vector2 enemyPos = enemy.getPosition();
-                Rectangle enemyRect = { enemyPos.x, enemyPos.y, 32, 32 };
+            scrapHounds.erase(
+                std::remove_if(scrapHounds.begin(), scrapHounds.end(),
+                    [](const ScrapHound& enemy) { return !enemy.isAlive(); }),
+                scrapHounds.end()
+            );
+
+            for (auto& enemy : scrapHounds) {
+                enemy.update(*map, player->getPosition(), dt);
                 
-                Vector2 playerPos = player->getPosition();
-                Rectangle playerRect = { playerPos.x, playerPos.y, 32, 32 };
-                
-                if (CheckCollisionRecs(enemyRect, playerRect) && player->canTakeDamage()) {
-                    player->takeDamage(5);
+                if (enemy.isAlive()) {
+                    Vector2 enemyPos = enemy.getPosition();
+                    Rectangle enemyRect = { enemyPos.x, enemyPos.y, 32, 32 };
+                    
+                    Vector2 playerPos = player->getPosition();
+                    Rectangle playerRect = { playerPos.x, playerPos.y, 32, 32 };
+                    
+                    if (CheckCollisionRecs(enemyRect, playerRect) && player->canTakeDamage()) {
+                        player->takeDamage(5);
+                    }
                 }
+            }
+
+            if (player->getHealth() <= 0) {
+                currentState = GameState::GAME_OVER;
+            }
+
+        } else if (currentState == GameState::GAME_OVER) {
+            if (IsKeyPressed(KEY_R)) {
+                resetGame();
             }
         }
         
@@ -147,6 +187,18 @@ void Game::run() {
         DrawRectangle(barX, barY, (int)(barWidth * healthRatio), (int)barHeight, RED);
         DrawRectangleLines(barX, barY, (int)barWidth, (int)barHeight, BLACK);
         DrawText("HEALTH", barX, barY - 22, 22, WHITE);
+
+        if (currentState == GameState::GAME_OVER) {
+            DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 0.7f));
+            const char* gameOverText = "GAME OVER";
+            int gameOverTextWidth = MeasureText(gameOverText, 80);
+            DrawText(gameOverText, screenWidth / 2 - gameOverTextWidth / 2, screenHeight / 2 - 40, 80, RED);
+            
+            const char* restartText = "Press R to Restart";
+            int restartTextWidth = MeasureText(restartText, 40);
+            DrawText(restartText, screenWidth / 2 - restartTextWidth / 2, screenHeight / 2 + 60, 40, WHITE);
+        }
+
         EndDrawing();
     }
 }
