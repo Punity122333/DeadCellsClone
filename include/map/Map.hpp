@@ -93,7 +93,7 @@ class Map {
     friend class RoomGenerator;
     
 public:
-    Map(int w, int h);
+    Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures); // Modified constructor
     ~Map();
 
     void placeBorders();
@@ -135,7 +135,7 @@ private:
     std::vector<std::vector<float>> transitionTimers;
     std::vector<std::vector<bool>> isOriginalSolid;
     std::vector<std::vector<bool>> isConwayProtected;
-    std::vector<Texture2D> tileTextures;
+    std::vector<Texture2D> tileTextures; // This will now store a copy or reference
     std::vector<Room> generatedRooms;
 };
 
