@@ -259,8 +259,8 @@ void RoomGenerator::protectEmptyTilesNearWalls(Map& map) {
     for (int x = 0; x < map.getWidth(); ++x) {
         for (int y = 0; y < map.getHeight(); ++y) {
             if (map.tiles[x][y] == WALL_TILE_VALUE) {
-                for (int dx = -2; dx <= 2; ++dx) {
-                    for (int dy = -2; dy <= 2; ++dy) {
+                for (int dx = -4; dx <= 4; ++dx) {
+                    for (int dy = -4; dy <= 4; ++dy) {
                         int nx = x + dx;
                         int ny = y + dy;
                         if (map.isInsideBounds(nx, ny) && map.tiles[nx][ny] == EMPTY_TILE_VALUE) {

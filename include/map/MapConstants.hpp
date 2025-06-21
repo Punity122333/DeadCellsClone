@@ -37,7 +37,7 @@ namespace MapConstants {
     constexpr int MAX_EXTRA_SHOP_ITEMS_IN_ROOM = 2;
     constexpr int LARGE_HALL_CREATION_CHANCE_PERCENT = 15;
     constexpr int MAX_ROOM_WIDTH_RANDOM_VARIATION = 5;
-    constexpr int ROOM_TYPE_TREASURE_CHANCE_THRESHOLD_PERCENT = 25;
+    constexpr int ROOM_TYPE_TREASURE_CHANCE_THRESHOLD_PERCENT = 10;
     constexpr int ROOM_TYPE_SHOP_CHANCE_THRESHOLD_PERCENT = 40;
 
     constexpr int TILE_TEMP_CREATE_A = 101;

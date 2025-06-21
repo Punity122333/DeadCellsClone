@@ -4,11 +4,14 @@
 #include "Player.hpp"
 #include "Camera.hpp"
 #include "enemies/ScrapHound.hpp"
+#include "GameUI.hpp"
+#include "TitleScreenUI.hpp" // Include TitleScreenUI
 #include <memory>
 #include <raylib.h>
 #include <vector>
 
 enum class GameState {
+    TITLE, // Added title screen state
     PLAYING,
     GAME_OVER
 };
@@ -36,4 +39,6 @@ private:
     Spawner spawner;
     GameState currentState;
     std::vector<Texture2D> tileTextures; // Add to Game class
+    std::unique_ptr<GameUI> gameUI;
+    std::unique_ptr<TitleScreenUI> titleScreenUI; // Add title screen UI
 };

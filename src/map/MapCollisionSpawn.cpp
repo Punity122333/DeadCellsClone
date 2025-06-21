@@ -1,6 +1,7 @@
 #include "map/Map.hpp"
 #include <stack>
 #include <vector>
+#include <random>
 
 using namespace MapConstants;
 
@@ -44,17 +45,23 @@ Vector2 Map::findEmptySpawn() const {
     if (totalEmpty == 0) {
         return {DEFAULT_SPAWN_COORD_COMPONENT_FLOAT, DEFAULT_SPAWN_COORD_COMPONENT_FLOAT};
     }
-
+    std::vector<std::pair<int, int>> candidates;
     for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET; ++y) {
         for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
-            if (tiles[x][y] == EMPTY_TILE_VALUE && (y + 1 < height) && 
-                (tiles[x][y + 1] == WALL_TILE_VALUE || tiles[x][y + 1] == PLATFORM_TILE_VALUE)) {
+            if (tiles[x][y] == EMPTY_TILE_VALUE) {
                 int reachable = countReachableEmptyTiles(x, y);
-                if (reachable >= static_cast<float>(totalEmpty) * MIN_REACHABLE_SPAWN_PERCENTAGE) {
-                    return { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
+                if (reachable >= static_cast<float>(totalEmpty) * 0.75f) {
+                    candidates.emplace_back(x, y);
                 }
             }
         }
+    }
+    if (!candidates.empty()) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, candidates.size() - 1);
+        auto [x, y] = candidates[dis(gen)];
+        return { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
     }
     return {DEFAULT_SPAWN_COORD_COMPONENT_FLOAT, DEFAULT_SPAWN_COORD_COMPONENT_FLOAT};
 }

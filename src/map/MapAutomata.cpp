@@ -7,17 +7,17 @@ namespace {
     constexpr int MAX_CONWAY_CHUNK_SIZE_X = 12;
     constexpr int MIN_CONWAY_CHUNK_SIZE_Y = 1;
     constexpr int MAX_CONWAY_CHUNK_SIZE_Y = 2;
-    constexpr int CHUNK_ALIVE_ROLL_MAX = 9; 
+    constexpr int CHUNK_ALIVE_ROLL_MAX = 9;
     constexpr int CHUNK_ALIVE_SUCCESS_ROLL = 0;
 
     constexpr int TILE_ID_LADDER = 2;
     constexpr int TILE_ID_ROPE = 3;
-    constexpr int TILE_ID_TEMP_CREATE_A = 4; 
-    constexpr int TILE_ID_TEMP_DELETE = 5;   
-    constexpr int TILE_ID_TEMP_CREATE_B = 8; 
+    constexpr int TILE_ID_TEMP_CREATE_A = 4;
+    constexpr int TILE_ID_TEMP_DELETE = 5;
+    constexpr int TILE_ID_TEMP_CREATE_B = 8;
     constexpr int TILE_ID_SOLID = 1;
     constexpr int TILE_ID_PLATFORM = 6;
-    constexpr int TILE_ID_EMPTY = 0;    
+    constexpr int TILE_ID_EMPTY = 0;
     constexpr float HIGHLIGHT_TIME = 2.0f;
     constexpr float GLITCH_TIME = 0.5f;
     constexpr float BLINK_CYCLE_TIME = 1.0f;
@@ -31,22 +31,24 @@ void Map::applyConwayAutomata() {
     std::vector<std::vector<int>> nextTiles = tiles;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> chunkSizeDist(MIN_CONWAY_CHUNK_SIZE_X, MAX_CONWAY_CHUNK_SIZE_X);
+    std::uniform_int_distribution<> chunkSizeDist(MIN_CONWAY_CHUNK_SIZE_X, MAX_CONWAY_CHUNK_SIZE_X - 2);
     std::uniform_int_distribution<> chunkYSizeDist(MIN_CONWAY_CHUNK_SIZE_Y, MAX_CONWAY_CHUNK_SIZE_Y);
     std::uniform_int_distribution<> shouldChunkBeAliveDist(0, CHUNK_ALIVE_ROLL_MAX);
+    std::uniform_int_distribution<> chunkSpacingDist(2, 6);
     std::vector<std::vector<bool>> processedTiles(width, std::vector<bool>(height, false));
 
-    for (int startX = 0; startX < width; ++startX) {
-        for (int startY = 0; startY < height; ++startY) {
+    int startX = 0;
+    while (startX < width) {
+        int startY = 0;
+        while (startY < height) {
             if (processedTiles[startX][startY]) {
+                startY += chunkSpacingDist(gen);
                 continue;
             }
-
             const int currentChunkSizeX = chunkSizeDist(gen);
             const int currentChunkSizeY = chunkYSizeDist(gen);
             const int chunkEndX = std::min(startX + currentChunkSizeX, width);
             const int chunkEndY = std::min(startY + currentChunkSizeY, height);
-
             bool isChunkProtectedOrSpecial = false;
             for (int y = startY; y < chunkEndY; ++y) {
                 for (int x = startX; x < chunkEndX; ++x) {
@@ -57,31 +59,26 @@ void Map::applyConwayAutomata() {
                 }
                 if (isChunkProtectedOrSpecial) break;
             }
-
             if (isChunkProtectedOrSpecial) {
                 for (int y = startY; y < chunkEndY; ++y) {
                     for (int x = startX; x < chunkEndX; ++x) {
                         processedTiles[x][y] = true;
                     }
                 }
+                startY += chunkSpacingDist(gen);
                 continue;
             }
-
             bool shouldChunkBeAlive = (shouldChunkBeAliveDist(gen) == CHUNK_ALIVE_SUCCESS_ROLL);
-
             for (int y = startY; y < chunkEndY; ++y) {
                 for (int x = startX; x < chunkEndX; ++x) {
                     processedTiles[x][y] = true;
-
                     if (tiles[x][y] == TILE_ID_LADDER || tiles[x][y] == TILE_ID_ROPE ||
                         tiles[x][y] == TILE_ID_TEMP_CREATE_A || tiles[x][y] == TILE_ID_TEMP_DELETE || tiles[x][y] == TILE_ID_TEMP_CREATE_B ||
                         tiles[x][y] == TILE_HIGHLIGHT_CREATE || tiles[x][y] == TILE_HIGHLIGHT_DELETE || tiles[x][y] == 7) {
                         nextTiles[x][y] = tiles[x][y];
                         continue;
                     }
-
                     bool tileIsCurrentlySolidOrPlatform = (tiles[x][y] == TILE_ID_SOLID || tiles[x][y] == TILE_ID_PLATFORM);
-
                     if (shouldChunkBeAlive) {
                         if (!tileIsCurrentlySolidOrPlatform) {
                             nextTiles[x][y] = TILE_HIGHLIGHT_CREATE;
@@ -99,16 +96,17 @@ void Map::applyConwayAutomata() {
                     }
                 }
             }
+            startY += currentChunkSizeY + chunkSpacingDist(gen);
         }
+        startX += chunkSpacingDist(gen);
     }
     tiles = nextTiles;
 }
 
 void Map::updateTransitions(float dt) {
-    std::uniform_int_distribution<> tileChoiceDist(0, 1); // For replacing GetRandomValue
-    std::random_device rd; // Need a random device for the generator
-    std::mt19937 gen(rd()); // And a generator
-
+    std::uniform_int_distribution<> tileChoiceDist(0, 1);
+    std::random_device rd;
+    std::mt19937 gen(rd());
     for (int x = 1; x < width - 1; ++x) {
         for (int y = 1; y < height - 1; ++y) {
             if (isConwayProtected[x][y]) {
@@ -120,11 +118,10 @@ void Map::updateTransitions(float dt) {
                 transitionTimers[x][y] = 0.0f;
                 continue;
             }
-
             if (tiles[x][y] == TILE_HIGHLIGHT_CREATE) {
                 transitionTimers[x][y] += dt;
                 if (transitionTimers[x][y] >= HIGHLIGHT_TIME) {
-                    if (tileChoiceDist(gen) == 0) { // Replaced GetRandomValue
+                    if (tileChoiceDist(gen) == 0) {
                         tiles[x][y] = TILE_ID_TEMP_CREATE_A;
                     } else {
                         tiles[x][y] = TILE_ID_TEMP_CREATE_B;
