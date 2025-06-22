@@ -1,13 +1,16 @@
 #include "map/Map.hpp"
 #include <random>
 #include <algorithm>
+#include <thread>
+#include <mutex>
+#include <atomic>
 
 namespace {
-    constexpr int MIN_CONWAY_CHUNK_SIZE_X = 6;
-    constexpr int MAX_CONWAY_CHUNK_SIZE_X = 12;
+    constexpr int MIN_CONWAY_CHUNK_SIZE_X = 4;
+    constexpr int MAX_CONWAY_CHUNK_SIZE_X = 8;
     constexpr int MIN_CONWAY_CHUNK_SIZE_Y = 1;
     constexpr int MAX_CONWAY_CHUNK_SIZE_Y = 2;
-    constexpr int CHUNK_ALIVE_ROLL_MAX = 9;
+    constexpr int CHUNK_ALIVE_ROLL_MAX = 10;
     constexpr int CHUNK_ALIVE_SUCCESS_ROLL = 0;
 
     constexpr int TILE_ID_LADDER = 2;
@@ -27,134 +30,248 @@ namespace {
     constexpr int TILE_HIGHLIGHT_DELETE = 12;
 }
 
+inline bool isNonEditable(int tile) {
+    return tile == TILE_ID_LADDER || tile == TILE_ID_ROPE || tile == TILE_ID_TEMP_CREATE_A || tile == TILE_ID_TEMP_DELETE || tile == TILE_ID_TEMP_CREATE_B || tile == TILE_HIGHLIGHT_CREATE || tile == TILE_HIGHLIGHT_DELETE || tile == 7;
+}
+
 void Map::applyConwayAutomata() {
     std::vector<std::vector<int>> nextTiles = tiles;
+    std::vector<std::thread> threads;
     std::random_device rd;
-    std::mt19937 gen(rd());
+    int numThreads = std::thread::hardware_concurrency();
+    int chunkSize = (width + numThreads - 1) / numThreads;
+    std::vector<std::mt19937> gens;
+    for (int t = 0; t < numThreads; ++t) gens.emplace_back(rd());
     std::uniform_int_distribution<> chunkSizeDist(MIN_CONWAY_CHUNK_SIZE_X, MAX_CONWAY_CHUNK_SIZE_X - 2);
     std::uniform_int_distribution<> chunkYSizeDist(MIN_CONWAY_CHUNK_SIZE_Y, MAX_CONWAY_CHUNK_SIZE_Y);
-    std::uniform_int_distribution<> shouldChunkBeAliveDist(0, CHUNK_ALIVE_ROLL_MAX);
-    std::uniform_int_distribution<> chunkSpacingDist(2, 6);
+    // Make chunk shapes more horizontal sometimes
+    std::uniform_int_distribution<> horizontalBiasDist(0, 2); // 0: normal, 1: horizontal, 2: vertical
+    // Increase deletion chance by biasing shouldChunkBeAliveDist
+    std::uniform_int_distribution<> shouldChunkBeAliveDist(0, CHUNK_ALIVE_ROLL_MAX + 3); // More values, so alive is rarer
+    // 2. Reduce chunk spacing for denser chunk processing, but not zero to avoid freezing
+    std::uniform_int_distribution<> chunkSpacingDist(0, 1); // Small, but not zero
+    std::mutex processedTilesMutex;
     std::vector<std::vector<bool>> processedTiles(width, std::vector<bool>(height, false));
+    // Debug counters
+    std::atomic<int> createdCount(0);
+    std::atomic<int> deletedCount(0);
+    std::atomic<int> skippedCount(0);
 
-    int startX = 0;
-    while (startX < width) {
-        int startY = 0;
-        while (startY < height) {
-            if (processedTiles[startX][startY]) {
-                startY += chunkSpacingDist(gen);
+    // First pass: count eligible tiles for creation and deletion
+    int totalCreatable = 0, totalDeletable = 0;
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            if (isConwayProtected[x][y] || isNonEditable(tiles[x][y]) ||
+                tiles[x][y] == MapConstants::CHEST_TILE_VALUE ||
+                tiles[x][y] == MapConstants::WALL_TILE_VALUE ||
+                tiles[x][y] == MapConstants::SHOP_TILE_VALUE ||
+                tiles[x][y] == MapConstants::TREASURE_TILE_VALUE ||
+                tiles[x][y] == MapConstants::PROTECTED_EMPTY_TILE_VALUE) {
                 continue;
             }
-            const int currentChunkSizeX = chunkSizeDist(gen);
-            const int currentChunkSizeY = chunkYSizeDist(gen);
-            const int chunkEndX = std::min(startX + currentChunkSizeX, width);
-            const int chunkEndY = std::min(startY + currentChunkSizeY, height);
-            bool isChunkProtectedOrSpecial = false;
-            for (int y = startY; y < chunkEndY; ++y) {
-                for (int x = startX; x < chunkEndX; ++x) {
-                    if (isConwayProtected[x][y] || tiles[x][y] == TILE_ID_LADDER || tiles[x][y] == TILE_ID_ROPE || tiles[x][y] == MapConstants::CHEST_TILE_VALUE || tiles[x][y] == MapConstants::WALL_TILE_VALUE || tiles[x][y] == MapConstants::SHOP_TILE_VALUE || tiles[x][y] == MapConstants::TREASURE_TILE_VALUE || tiles[x][y] == TILE_HIGHLIGHT_CREATE || tiles[x][y] == TILE_HIGHLIGHT_DELETE || tiles[x][y] == MapConstants::PROTECTED_EMPTY_TILE_VALUE) {
-                        isChunkProtectedOrSpecial = true;
-                        break;
-                    }
-                }
-                if (isChunkProtectedOrSpecial) break;
+            if (tiles[x][y] != TILE_ID_SOLID && tiles[x][y] != TILE_ID_PLATFORM) {
+                totalCreatable++;
+            } else {
+                totalDeletable++;
             }
-            if (isChunkProtectedOrSpecial) {
-                for (int y = startY; y < chunkEndY; ++y) {
-                    for (int x = startX; x < chunkEndX; ++x) {
-                        processedTiles[x][y] = true;
+        }
+    }
+    int maxBalanced = std::min(totalCreatable, totalDeletable);
+    std::atomic<int> runningCreated(0);
+    std::atomic<int> runningDeleted(0);
+
+    for (int t = 0; t < numThreads; ++t) {
+        int xStart = t * chunkSize;
+        int xEnd = std::min(width, xStart + chunkSize);
+        threads.emplace_back([&, t, xStart, xEnd]() {
+            auto& gen = gens[t];
+            for (int startX = xStart; startX < xEnd;) {
+                int startY = 0;
+                while (startY < height) {
+                    {
+                        std::lock_guard<std::mutex> lock(processedTilesMutex);
+                        if (processedTiles[startX][startY]) {
+                            startY += chunkSpacingDist(gen);
+                            continue;
+                        }
                     }
-                }
-                startY += chunkSpacingDist(gen);
-                continue;
-            }
-            bool shouldChunkBeAlive = (shouldChunkBeAliveDist(gen) == CHUNK_ALIVE_SUCCESS_ROLL);
-            for (int y = startY; y < chunkEndY; ++y) {
-                for (int x = startX; x < chunkEndX; ++x) {
-                    processedTiles[x][y] = true;
-                    if (tiles[x][y] == TILE_ID_LADDER || tiles[x][y] == TILE_ID_ROPE ||
-                        tiles[x][y] == TILE_ID_TEMP_CREATE_A || tiles[x][y] == TILE_ID_TEMP_DELETE || tiles[x][y] == TILE_ID_TEMP_CREATE_B ||
-                        tiles[x][y] == TILE_HIGHLIGHT_CREATE || tiles[x][y] == TILE_HIGHLIGHT_DELETE || tiles[x][y] == 7) {
-                        nextTiles[x][y] = tiles[x][y];
+                    bool shouldChunkBeAlive = (shouldChunkBeAliveDist(gen) == CHUNK_ALIVE_SUCCESS_ROLL);
+                    // Horizontal/vertical/normal chunk shape
+                    int bias = horizontalBiasDist(gen);
+                    int currentChunkSizeX, currentChunkSizeY;
+                    if (bias == 1) { // horizontal
+                        currentChunkSizeX = MAX_CONWAY_CHUNK_SIZE_X;
+                        currentChunkSizeY = chunkYSizeDist(gen);
+                    } else if (bias == 2) { // vertical
+                        currentChunkSizeX = chunkSizeDist(gen);
+                        currentChunkSizeY = MAX_CONWAY_CHUNK_SIZE_Y;
+                    } else { // normal
+                        currentChunkSizeX = chunkSizeDist(gen);
+                        currentChunkSizeY = chunkYSizeDist(gen);
+                    }
+                    int chunkEndX = std::min(startX + currentChunkSizeX, xEnd);
+                    int chunkEndY = std::min(startY + currentChunkSizeY, height);
+                    bool isChunkProtectedOrSpecial = false;
+                    for (int y = startY; y < chunkEndY; ++y) {
+                        for (int x = startX; x < chunkEndX; ++x) {
+                            if (isConwayProtected[x][y] || isNonEditable(tiles[x][y]) || tiles[x][y] == MapConstants::CHEST_TILE_VALUE || tiles[x][y] == MapConstants::WALL_TILE_VALUE || tiles[x][y] == MapConstants::SHOP_TILE_VALUE || tiles[x][y] == MapConstants::TREASURE_TILE_VALUE || tiles[x][y] == MapConstants::PROTECTED_EMPTY_TILE_VALUE) {
+                                isChunkProtectedOrSpecial = true;
+                                break;
+                            }
+                        }
+                        if (isChunkProtectedOrSpecial) break;
+                    }
+                    if (isChunkProtectedOrSpecial) {
+                        std::lock_guard<std::mutex> lock(processedTilesMutex);
+                        for (int y = startY; y < chunkEndY; ++y) {
+                            for (int x = startX; x < chunkEndX; ++x) {
+                                processedTiles[x][y] = true;
+                                skippedCount++;
+                            }
+                        }
+                        startY += chunkSpacingDist(gen);
                         continue;
                     }
-                    bool tileIsCurrentlySolidOrPlatform = (tiles[x][y] == TILE_ID_SOLID || tiles[x][y] == TILE_ID_PLATFORM);
-                    if (shouldChunkBeAlive) {
-                        if (!tileIsCurrentlySolidOrPlatform) {
-                            nextTiles[x][y] = TILE_HIGHLIGHT_CREATE;
-                            transitionTimers[x][y] = 0.0f;
-                        } else {
-                            nextTiles[x][y] = tiles[x][y];
-                        }
-                    } else {
-                        if (tileIsCurrentlySolidOrPlatform) {
-                            nextTiles[x][y] = TILE_HIGHLIGHT_DELETE;
-                            transitionTimers[x][y] = 0.0f;
-                        } else {
-                            nextTiles[x][y] = tiles[x][y];
+                    // Count how many tiles in this chunk are creatable/deletable
+                    int chunkCreatable = 0, chunkDeletable = 0;
+                    for (int y = startY; y < chunkEndY; ++y) {
+                        for (int x = startX; x < chunkEndX; ++x) {
+                            if (isNonEditable(tiles[x][y]) || tiles[x][y] == MapConstants::CHEST_TILE_VALUE || tiles[x][y] == MapConstants::WALL_TILE_VALUE || tiles[x][y] == MapConstants::SHOP_TILE_VALUE || tiles[x][y] == MapConstants::TREASURE_TILE_VALUE || tiles[x][y] == MapConstants::PROTECTED_EMPTY_TILE_VALUE) {
+                                continue;
+                            }
+                            if (tiles[x][y] != TILE_ID_SOLID && tiles[x][y] != TILE_ID_PLATFORM) {
+                                chunkCreatable++;
+                            } else {
+                                chunkDeletable++;
+                            }
                         }
                     }
+                    // Only process if we have not exceeded the balanced limit
+                    bool doCreate = false, doDelete = false;
+                    if (shouldChunkBeAlive && runningCreated + chunkCreatable <= maxBalanced) {
+                        doCreate = true;
+                    } else if (!shouldChunkBeAlive && runningDeleted + chunkDeletable <= maxBalanced) {
+                        doDelete = true;
+                    }
+                    for (int y = startY; y < chunkEndY; ++y) {
+                        for (int x = startX; x < chunkEndX; ++x) {
+                            {
+                                std::lock_guard<std::mutex> lock(processedTilesMutex);
+                                processedTiles[x][y] = true;
+                            }
+                            if (isNonEditable(tiles[x][y]) || tiles[x][y] == MapConstants::CHEST_TILE_VALUE || tiles[x][y] == MapConstants::WALL_TILE_VALUE || tiles[x][y] == MapConstants::SHOP_TILE_VALUE || tiles[x][y] == MapConstants::TREASURE_TILE_VALUE || tiles[x][y] == MapConstants::PROTECTED_EMPTY_TILE_VALUE) {
+                                nextTiles[x][y] = tiles[x][y];
+                                skippedCount++;
+                                continue;
+                            }
+                            bool tileIsCurrentlySolidOrPlatform = (tiles[x][y] == TILE_ID_SOLID || tiles[x][y] == TILE_ID_PLATFORM);
+                            if (doCreate && !tileIsCurrentlySolidOrPlatform) {
+                                nextTiles[x][y] = TILE_HIGHLIGHT_CREATE;
+                                transitionTimers[x][y] = 0.0f;
+                                createdCount++;
+                                runningCreated++;
+                            } else if (doDelete && tileIsCurrentlySolidOrPlatform) {
+                                nextTiles[x][y] = TILE_HIGHLIGHT_DELETE;
+                                transitionTimers[x][y] = 0.0f;
+                                deletedCount++;
+                                runningDeleted++;
+                            } else {
+                                nextTiles[x][y] = tiles[x][y];
+                                skippedCount++;
+                            }
+                        }
+                    }
+                    startY += currentChunkSizeY + chunkSpacingDist(gen);
                 }
+                startX += chunkSize;
             }
-            startY += currentChunkSizeY + chunkSpacingDist(gen);
-        }
-        startX += chunkSpacingDist(gen);
+        });
     }
+    for (auto& th : threads) th.join();
     tiles = nextTiles;
+    // Debug output
+    printf("[ConwayAutomata] Created: %d, Deleted: %d, Skipped: %d\n", createdCount.load(), deletedCount.load(), skippedCount.load());
 }
 
 void Map::updateTransitions(float dt) {
-    std::uniform_int_distribution<> tileChoiceDist(0, 1);
+    int numThreads = std::thread::hardware_concurrency();
+    int chunkSize = (height - 2 + numThreads - 1) / numThreads;
+    std::vector<std::thread> threads;
     std::random_device rd;
-    std::mt19937 gen(rd());
-    for (int x = 1; x < width - 1; ++x) {
-        for (int y = 1; y < height - 1; ++y) {
-            if (isConwayProtected[x][y]) {
-                if (isOriginalSolid[x][y]) {
-                    tiles[x][y] = TILE_ID_SOLID;
-                } else {
-                    tiles[x][y] = TILE_ID_EMPTY;
-                }
-                transitionTimers[x][y] = 0.0f;
-                continue;
-            }
-            if (tiles[x][y] == TILE_HIGHLIGHT_CREATE) {
-                transitionTimers[x][y] += dt;
-                if (transitionTimers[x][y] >= HIGHLIGHT_TIME) {
-                    if (tileChoiceDist(gen) == 0) {
-                        tiles[x][y] = TILE_ID_TEMP_CREATE_A;
-                    } else {
-                        tiles[x][y] = TILE_ID_TEMP_CREATE_B;
+    std::vector<std::mt19937> gens;
+    for (int t = 0; t < numThreads; ++t) gens.emplace_back(rd());
+    for (int t = 0; t < numThreads; ++t) {
+        int yStart = 1 + t * chunkSize;
+        int yEnd = std::min(height - 1, yStart + chunkSize);
+        threads.emplace_back([&, t, yStart, yEnd]() {
+            auto& gen = gens[t];
+            std::uniform_int_distribution<> tileChoiceDist(0, 1);
+            std::vector<int> batchChoices(width * (yEnd - yStart));
+            for (auto& v : batchChoices) v = tileChoiceDist(gen);
+            int batchIdx = 0;
+            for (int x = 1; x < width - 1; ++x) {
+                for (int y = yStart; y < yEnd; ++y) {
+                    if (isConwayProtected[x][y]) {
+                        if (isOriginalSolid[x][y]) {
+                            tiles[x][y] = TILE_ID_SOLID;
+                        } else {
+                            tiles[x][y] = TILE_ID_EMPTY;
+                        }
+                        transitionTimers[x][y] = 0.0f;
+                        continue;
                     }
-                    transitionTimers[x][y] = 0.0f;
-                }
-            } else if (tiles[x][y] == TILE_HIGHLIGHT_DELETE) {
-                transitionTimers[x][y] += dt;
-                if (transitionTimers[x][y] >= HIGHLIGHT_TIME) {
-                    tiles[x][y] = TILE_ID_TEMP_DELETE;
-                    transitionTimers[x][y] = 0.0f;
+                    if (tiles[x][y] == TILE_HIGHLIGHT_CREATE) {
+                        float timer = transitionTimers[x][y] + dt;
+                        if (timer >= HIGHLIGHT_TIME) {
+                            if (batchChoices[batchIdx++] == 0) {
+                                tiles[x][y] = TILE_ID_TEMP_CREATE_A;
+                            } else {
+                                tiles[x][y] = TILE_ID_TEMP_CREATE_B;
+                            }
+                            transitionTimers[x][y] = 0.0f;
+                        } else {
+                            transitionTimers[x][y] = timer;
+                        }
+                    } else if (tiles[x][y] == TILE_HIGHLIGHT_DELETE) {
+                        float timer = transitionTimers[x][y] + dt;
+                        if (timer >= HIGHLIGHT_TIME) {
+                            tiles[x][y] = TILE_ID_TEMP_DELETE;
+                            transitionTimers[x][y] = 0.0f;
+                        } else {
+                            transitionTimers[x][y] = timer;
+                        }
+                    } else if (tiles[x][y] == TILE_ID_TEMP_CREATE_A || tiles[x][y] == TILE_ID_TEMP_CREATE_B) {
+                        float timer = transitionTimers[x][y] + dt;
+                        if (timer >= GLITCH_TIME) {
+                            if (tiles[x][y] == TILE_ID_TEMP_CREATE_A) {
+                                tiles[x][y] = TILE_ID_PLATFORM;
+                                // Mark Conway-created tiles as eligible for future deletion
+                                isOriginalSolid[x][y] = false;
+                                // Clear Conway protection for newly created tiles to ensure they can be deleted
+                                isConwayProtected[x][y] = false;
+                            } else if (tiles[x][y] == TILE_ID_TEMP_CREATE_B) {
+                                tiles[x][y] = TILE_ID_PLATFORM;
+                                // Mark Conway-created tiles as eligible for future deletion
+                                isOriginalSolid[x][y] = false;
+                                // Clear Conway protection for newly created tiles to ensure they can be deleted
+                                isConwayProtected[x][y] = false;
+                            }
+                            transitionTimers[x][y] = 0.0f;
+                        } else {
+                            transitionTimers[x][y] = timer;
+                        }
+                    } else if (tiles[x][y] == TILE_ID_TEMP_DELETE) {
+                        float timer = transitionTimers[x][y] + dt;
+                        if (timer >= GLITCH_TIME) {
+                            tiles[x][y] = TILE_ID_EMPTY;
+                            transitionTimers[x][y] = 0.0f;
+                        } else {
+                            transitionTimers[x][y] = timer;
+                        }
+                    }
                 }
             }
-            else if (tiles[x][y] == TILE_ID_TEMP_CREATE_A || tiles[x][y] == TILE_ID_TEMP_CREATE_B) {
-                transitionTimers[x][y] += dt;
-                if (transitionTimers[x][y] >= GLITCH_TIME) {
-                    if (tiles[x][y] == TILE_ID_TEMP_CREATE_A) {
-                        tiles[x][y] = TILE_ID_SOLID;
-                    }
-                    else if (tiles[x][y] == TILE_ID_TEMP_CREATE_B) {
-                        tiles[x][y] = TILE_ID_PLATFORM;
-                    }
-                    transitionTimers[x][y] = 0.0f;
-                }
-            } else if (tiles[x][y] == TILE_ID_TEMP_DELETE) {
-                transitionTimers[x][y] += dt;
-                if (transitionTimers[x][y] >= GLITCH_TIME) {
-                    tiles[x][y] = TILE_ID_EMPTY;
-                    transitionTimers[x][y] = 0.0f;
-                }
-            } else {
-                transitionTimers[x][y] = 0.0f;
-            }
-        }
+        });
     }
+    for (auto& th : threads) th.join();
 }

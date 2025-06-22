@@ -79,7 +79,8 @@ void Game::resetGame() {
 
 void Game::run() {
     float automataTimer = 0.0f;
-    const float automataInterval = 5.0f;
+    const float automataInterval = 5.0f; // Normal interval
+    
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
         static float fadeAlpha = 0.0f;

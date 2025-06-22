@@ -55,9 +55,8 @@ namespace MapConstants {
     constexpr int MAX_CONWAY_CHUNK_SIZE_Y = 2;
     constexpr int CHUNK_ALIVE_ROLL_MAX = 9;
     constexpr int CHUNK_ALIVE_SUCCESS_ROLL = 0;
-    constexpr int FLOOR_TILE_VALUE = 13; // New tile type for room/hallway floors
-    constexpr int PROTECTED_EMPTY_TILE_VALUE = 14; // New tile type for protected empty
-    
+    constexpr int FLOOR_TILE_VALUE = 13;
+    constexpr int PROTECTED_EMPTY_TILE_VALUE = 14;
 
     int rollPercent(std::mt19937& gen);
 }
