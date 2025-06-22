@@ -37814,3 +37814,51 @@ Frame 9600: Rendered 9 chunks out of 608 total
 Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
 Frame 9660: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
 Frame 9660: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 9720: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 9720: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 9780: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 9780: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 9840: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 9840: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 9900: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 9900: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 9960: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 9960: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10020: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10020: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10080: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10080: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10140: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10140: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10200: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10200: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10260: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10260: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10320: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10320: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10380: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10380: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10440: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10440: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10500: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10500: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10560: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10560: Rendered 9 chunks out of 608 total
+Camera update: Player position=(2342.1,745.9), setting target to=(2342.1,745.9)
+Frame 10620: Camera target=(2342.1,745.9), visible rect=(1702.1,385.9,1280.0,720.0)
+Frame 10620: Rendered 9 chunks out of 608 total
