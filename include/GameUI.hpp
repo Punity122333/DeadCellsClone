@@ -2,7 +2,6 @@
 
 #include "Player.hpp"
 
-// Forward declare the GameState enum
 enum class GameState;
 
 class GameUI {

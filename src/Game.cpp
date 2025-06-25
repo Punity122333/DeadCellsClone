@@ -11,11 +11,18 @@
 const int screenWidth = 1920;
 const int screenHeight = 1080;
 
+namespace GamePaths {
+    constexpr const char* Icon = "../resources/icon/CellularAutomata.png";
+    constexpr const char* Tile = "../resources/tiles/tile%03d.png";
+    constexpr const char* BloomShader = "../shader/bloom.fs";
+    constexpr const char* ChromaticAberrationShader = "../shader/chromatic_aberration.fs";
+}
+
 Game::Game() {
-    InitWindow(screenWidth, screenHeight, "Dead Cells Cpp Clone");
+    InitWindow(screenWidth, screenHeight, "Cellular Automata");
     SetTargetFPS(60);
 
-    Image icon = LoadImage("../resources/icon/CellularAutomata.png");
+    Image icon = LoadImage(GamePaths::Icon);
     ImageFormat(&icon, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8); 
     SetWindowIcon(icon);
     UnloadImage(icon);
@@ -28,13 +35,13 @@ Game::Game() {
     int numTiles = 0;
     for (int i = 0; ; ++i) {
         char path_buffer[64];
-        snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
+        snprintf(path_buffer, sizeof(path_buffer), GamePaths::Tile, i);
         if (!std::filesystem::exists(path_buffer)) break;
         numTiles++;
     }
     for (int i = 0; i < numTiles; ++i) {
         char path_buffer[64];
-        snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
+        snprintf(path_buffer, sizeof(path_buffer), GamePaths::Tile, i);
         tileTextures.push_back(LoadTexture(path_buffer));
     }
 
@@ -46,8 +53,8 @@ Game::Game() {
 
     sceneTexture = LoadRenderTexture(screenWidth, screenHeight);
 
-    bloomShader = LoadShader(0, "../shader/bloom.fs");
-    chromaticAberrationShader = LoadShader(0, "../shader/chromatic_aberration.fs");
+    bloomShader = LoadShader(0, GamePaths::BloomShader);
+    chromaticAberrationShader = LoadShader(0, GamePaths::ChromaticAberrationShader);
     activeShader = &bloomShader;
     currentState = GameState::TITLE;
 
@@ -74,13 +81,13 @@ void Game::resetGame() {
     camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
     scrapHounds.clear();
     automatons.clear();
-    spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons); // FIX: spawn both enemy types
+    spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons); 
     currentState = GameState::PLAYING;
 }
 
 void Game::run() {
     float automataTimer = 0.0f;
-    const float automataInterval = 5.0f; // Normal interval
+    const float automataInterval = 5.0f;
     
     while (!WindowShouldClose()) {
         float dt = GetFrameTime();
@@ -156,7 +163,20 @@ void Game::run() {
 
             for (auto& automaton : automatons) {
                 automaton.update(*map, player->getPosition(), dt);
-                automaton.draw();
+                
+                
+                automaton.checkProjectileCollisions(*player);
+                
+                if (automaton.isAlive()) {
+                    Rectangle automatonRect = automaton.getHitbox();
+                    
+                    Vector2 playerPos = player->getPosition();
+                    Rectangle playerRect = { playerPos.x, playerPos.y, 32, 32 };
+                    
+                    if (CheckCollisionRecs(automatonRect, playerRect) && player->canTakeDamage()) {
+                        player->takeDamage(10);
+                    }
+                }
             }
 
             if (player->getHealth() <= 0) {
@@ -198,6 +218,18 @@ void Game::run() {
                     enemy.draw();
                     if (IsKeyDown(KEY_TAB)) { 
                         DrawRectangleLines((int)enemy.getPosition().x, (int)enemy.getPosition().y, 32, 32, RED);
+                    }
+                }
+            }
+        }
+        
+        for (const auto& automaton : automatons) {
+            if (automaton.isAlive()) {
+                Rectangle automatonRect = automaton.getHitbox();
+                if (CheckCollisionRecs(automatonRect, cameraViewWorld)) {
+                    automaton.draw();
+                    if (IsKeyDown(KEY_TAB)) { 
+                        DrawRectangleLines((int)automatonRect.x, (int)automatonRect.y, (int)automatonRect.width, (int)automatonRect.height, BLUE);
                     }
                 }
             }

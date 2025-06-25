@@ -1,4 +1,4 @@
-#include "map/Map.hpp"
+#include "map/MapConstants.hpp"
 #include <random>
 
 namespace MapConstants {

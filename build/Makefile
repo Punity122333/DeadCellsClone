@@ -273,30 +273,6 @@ src/Pathfinding.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.s
 .PHONY : src/Pathfinding.cpp.s
 
-src/Spawner.o: src/Spawner.cpp.o
-.PHONY : src/Spawner.o
-
-# target to build an object file
-src/Spawner.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Spawner.cpp.o
-.PHONY : src/Spawner.cpp.o
-
-src/Spawner.i: src/Spawner.cpp.i
-.PHONY : src/Spawner.i
-
-# target to preprocess a source file
-src/Spawner.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Spawner.cpp.i
-.PHONY : src/Spawner.cpp.i
-
-src/Spawner.s: src/Spawner.cpp.s
-.PHONY : src/Spawner.s
-
-# target to generate assembly for a file
-src/Spawner.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Spawner.cpp.s
-.PHONY : src/Spawner.cpp.s
-
 src/TitleScreenUI.o: src/TitleScreenUI.cpp.o
 .PHONY : src/TitleScreenUI.o
 
@@ -321,197 +297,221 @@ src/TitleScreenUI.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/TitleScreenUI.cpp.s
 .PHONY : src/TitleScreenUI.cpp.s
 
-src/enemies/Automaton.o: src/enemies/Automaton.cpp.o
-.PHONY : src/enemies/Automaton.o
+src/core/Spawner.o: src/core/Spawner.cpp.o
+.PHONY : src/core/Spawner.o
 
 # target to build an object file
-src/enemies/Automaton.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Automaton.cpp.o
-.PHONY : src/enemies/Automaton.cpp.o
+src/core/Spawner.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/Spawner.cpp.o
+.PHONY : src/core/Spawner.cpp.o
 
-src/enemies/Automaton.i: src/enemies/Automaton.cpp.i
-.PHONY : src/enemies/Automaton.i
+src/core/Spawner.i: src/core/Spawner.cpp.i
+.PHONY : src/core/Spawner.i
 
 # target to preprocess a source file
-src/enemies/Automaton.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Automaton.cpp.i
-.PHONY : src/enemies/Automaton.cpp.i
+src/core/Spawner.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/Spawner.cpp.i
+.PHONY : src/core/Spawner.cpp.i
 
-src/enemies/Automaton.s: src/enemies/Automaton.cpp.s
-.PHONY : src/enemies/Automaton.s
+src/core/Spawner.s: src/core/Spawner.cpp.s
+.PHONY : src/core/Spawner.s
 
 # target to generate assembly for a file
-src/enemies/Automaton.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Automaton.cpp.s
-.PHONY : src/enemies/Automaton.cpp.s
+src/core/Spawner.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/Spawner.cpp.s
+.PHONY : src/core/Spawner.cpp.s
 
-src/enemies/AutomatonCombat.o: src/enemies/AutomatonCombat.cpp.o
-.PHONY : src/enemies/AutomatonCombat.o
+src/enemies/automaton/Automaton.o: src/enemies/automaton/Automaton.cpp.o
+.PHONY : src/enemies/automaton/Automaton.o
 
 # target to build an object file
-src/enemies/AutomatonCombat.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonCombat.cpp.o
-.PHONY : src/enemies/AutomatonCombat.cpp.o
+src/enemies/automaton/Automaton.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/Automaton.cpp.o
+.PHONY : src/enemies/automaton/Automaton.cpp.o
 
-src/enemies/AutomatonCombat.i: src/enemies/AutomatonCombat.cpp.i
-.PHONY : src/enemies/AutomatonCombat.i
+src/enemies/automaton/Automaton.i: src/enemies/automaton/Automaton.cpp.i
+.PHONY : src/enemies/automaton/Automaton.i
 
 # target to preprocess a source file
-src/enemies/AutomatonCombat.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonCombat.cpp.i
-.PHONY : src/enemies/AutomatonCombat.cpp.i
+src/enemies/automaton/Automaton.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/Automaton.cpp.i
+.PHONY : src/enemies/automaton/Automaton.cpp.i
 
-src/enemies/AutomatonCombat.s: src/enemies/AutomatonCombat.cpp.s
-.PHONY : src/enemies/AutomatonCombat.s
+src/enemies/automaton/Automaton.s: src/enemies/automaton/Automaton.cpp.s
+.PHONY : src/enemies/automaton/Automaton.s
 
 # target to generate assembly for a file
-src/enemies/AutomatonCombat.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonCombat.cpp.s
-.PHONY : src/enemies/AutomatonCombat.cpp.s
+src/enemies/automaton/Automaton.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/Automaton.cpp.s
+.PHONY : src/enemies/automaton/Automaton.cpp.s
 
-src/enemies/AutomatonDraw.o: src/enemies/AutomatonDraw.cpp.o
-.PHONY : src/enemies/AutomatonDraw.o
+src/enemies/automaton/AutomatonCombat.o: src/enemies/automaton/AutomatonCombat.cpp.o
+.PHONY : src/enemies/automaton/AutomatonCombat.o
 
 # target to build an object file
-src/enemies/AutomatonDraw.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonDraw.cpp.o
-.PHONY : src/enemies/AutomatonDraw.cpp.o
+src/enemies/automaton/AutomatonCombat.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonCombat.cpp.o
+.PHONY : src/enemies/automaton/AutomatonCombat.cpp.o
 
-src/enemies/AutomatonDraw.i: src/enemies/AutomatonDraw.cpp.i
-.PHONY : src/enemies/AutomatonDraw.i
+src/enemies/automaton/AutomatonCombat.i: src/enemies/automaton/AutomatonCombat.cpp.i
+.PHONY : src/enemies/automaton/AutomatonCombat.i
 
 # target to preprocess a source file
-src/enemies/AutomatonDraw.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonDraw.cpp.i
-.PHONY : src/enemies/AutomatonDraw.cpp.i
+src/enemies/automaton/AutomatonCombat.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonCombat.cpp.i
+.PHONY : src/enemies/automaton/AutomatonCombat.cpp.i
 
-src/enemies/AutomatonDraw.s: src/enemies/AutomatonDraw.cpp.s
-.PHONY : src/enemies/AutomatonDraw.s
+src/enemies/automaton/AutomatonCombat.s: src/enemies/automaton/AutomatonCombat.cpp.s
+.PHONY : src/enemies/automaton/AutomatonCombat.s
 
 # target to generate assembly for a file
-src/enemies/AutomatonDraw.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonDraw.cpp.s
-.PHONY : src/enemies/AutomatonDraw.cpp.s
+src/enemies/automaton/AutomatonCombat.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonCombat.cpp.s
+.PHONY : src/enemies/automaton/AutomatonCombat.cpp.s
 
-src/enemies/AutomatonUpdateHelpers.o: src/enemies/AutomatonUpdateHelpers.cpp.o
-.PHONY : src/enemies/AutomatonUpdateHelpers.o
+src/enemies/automaton/AutomatonDraw.o: src/enemies/automaton/AutomatonDraw.cpp.o
+.PHONY : src/enemies/automaton/AutomatonDraw.o
 
 # target to build an object file
-src/enemies/AutomatonUpdateHelpers.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonUpdateHelpers.cpp.o
-.PHONY : src/enemies/AutomatonUpdateHelpers.cpp.o
+src/enemies/automaton/AutomatonDraw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonDraw.cpp.o
+.PHONY : src/enemies/automaton/AutomatonDraw.cpp.o
 
-src/enemies/AutomatonUpdateHelpers.i: src/enemies/AutomatonUpdateHelpers.cpp.i
-.PHONY : src/enemies/AutomatonUpdateHelpers.i
+src/enemies/automaton/AutomatonDraw.i: src/enemies/automaton/AutomatonDraw.cpp.i
+.PHONY : src/enemies/automaton/AutomatonDraw.i
 
 # target to preprocess a source file
-src/enemies/AutomatonUpdateHelpers.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonUpdateHelpers.cpp.i
-.PHONY : src/enemies/AutomatonUpdateHelpers.cpp.i
+src/enemies/automaton/AutomatonDraw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonDraw.cpp.i
+.PHONY : src/enemies/automaton/AutomatonDraw.cpp.i
 
-src/enemies/AutomatonUpdateHelpers.s: src/enemies/AutomatonUpdateHelpers.cpp.s
-.PHONY : src/enemies/AutomatonUpdateHelpers.s
+src/enemies/automaton/AutomatonDraw.s: src/enemies/automaton/AutomatonDraw.cpp.s
+.PHONY : src/enemies/automaton/AutomatonDraw.s
 
 # target to generate assembly for a file
-src/enemies/AutomatonUpdateHelpers.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonUpdateHelpers.cpp.s
-.PHONY : src/enemies/AutomatonUpdateHelpers.cpp.s
+src/enemies/automaton/AutomatonDraw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonDraw.cpp.s
+.PHONY : src/enemies/automaton/AutomatonDraw.cpp.s
 
-src/enemies/ScrapHound.o: src/enemies/ScrapHound.cpp.o
-.PHONY : src/enemies/ScrapHound.o
+src/enemies/automaton/AutomatonUpdateHelpers.o: src/enemies/automaton/AutomatonUpdateHelpers.cpp.o
+.PHONY : src/enemies/automaton/AutomatonUpdateHelpers.o
 
 # target to build an object file
-src/enemies/ScrapHound.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.o
-.PHONY : src/enemies/ScrapHound.cpp.o
+src/enemies/automaton/AutomatonUpdateHelpers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonUpdateHelpers.cpp.o
+.PHONY : src/enemies/automaton/AutomatonUpdateHelpers.cpp.o
 
-src/enemies/ScrapHound.i: src/enemies/ScrapHound.cpp.i
-.PHONY : src/enemies/ScrapHound.i
+src/enemies/automaton/AutomatonUpdateHelpers.i: src/enemies/automaton/AutomatonUpdateHelpers.cpp.i
+.PHONY : src/enemies/automaton/AutomatonUpdateHelpers.i
 
 # target to preprocess a source file
-src/enemies/ScrapHound.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.i
-.PHONY : src/enemies/ScrapHound.cpp.i
+src/enemies/automaton/AutomatonUpdateHelpers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonUpdateHelpers.cpp.i
+.PHONY : src/enemies/automaton/AutomatonUpdateHelpers.cpp.i
 
-src/enemies/ScrapHound.s: src/enemies/ScrapHound.cpp.s
-.PHONY : src/enemies/ScrapHound.s
+src/enemies/automaton/AutomatonUpdateHelpers.s: src/enemies/automaton/AutomatonUpdateHelpers.cpp.s
+.PHONY : src/enemies/automaton/AutomatonUpdateHelpers.s
 
 # target to generate assembly for a file
-src/enemies/ScrapHound.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHound.cpp.s
-.PHONY : src/enemies/ScrapHound.cpp.s
+src/enemies/automaton/AutomatonUpdateHelpers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonUpdateHelpers.cpp.s
+.PHONY : src/enemies/automaton/AutomatonUpdateHelpers.cpp.s
 
-src/enemies/ScrapHoundCombat.o: src/enemies/ScrapHoundCombat.cpp.o
-.PHONY : src/enemies/ScrapHoundCombat.o
+src/enemies/scraphound/ScrapHound.o: src/enemies/scraphound/ScrapHound.cpp.o
+.PHONY : src/enemies/scraphound/ScrapHound.o
 
 # target to build an object file
-src/enemies/ScrapHoundCombat.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.o
-.PHONY : src/enemies/ScrapHoundCombat.cpp.o
+src/enemies/scraphound/ScrapHound.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHound.cpp.o
+.PHONY : src/enemies/scraphound/ScrapHound.cpp.o
 
-src/enemies/ScrapHoundCombat.i: src/enemies/ScrapHoundCombat.cpp.i
-.PHONY : src/enemies/ScrapHoundCombat.i
+src/enemies/scraphound/ScrapHound.i: src/enemies/scraphound/ScrapHound.cpp.i
+.PHONY : src/enemies/scraphound/ScrapHound.i
 
 # target to preprocess a source file
-src/enemies/ScrapHoundCombat.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.i
-.PHONY : src/enemies/ScrapHoundCombat.cpp.i
+src/enemies/scraphound/ScrapHound.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHound.cpp.i
+.PHONY : src/enemies/scraphound/ScrapHound.cpp.i
 
-src/enemies/ScrapHoundCombat.s: src/enemies/ScrapHoundCombat.cpp.s
-.PHONY : src/enemies/ScrapHoundCombat.s
+src/enemies/scraphound/ScrapHound.s: src/enemies/scraphound/ScrapHound.cpp.s
+.PHONY : src/enemies/scraphound/ScrapHound.s
 
 # target to generate assembly for a file
-src/enemies/ScrapHoundCombat.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundCombat.cpp.s
-.PHONY : src/enemies/ScrapHoundCombat.cpp.s
+src/enemies/scraphound/ScrapHound.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHound.cpp.s
+.PHONY : src/enemies/scraphound/ScrapHound.cpp.s
 
-src/enemies/ScrapHoundDraw.o: src/enemies/ScrapHoundDraw.cpp.o
-.PHONY : src/enemies/ScrapHoundDraw.o
+src/enemies/scraphound/ScrapHoundCombat.o: src/enemies/scraphound/ScrapHoundCombat.cpp.o
+.PHONY : src/enemies/scraphound/ScrapHoundCombat.o
 
 # target to build an object file
-src/enemies/ScrapHoundDraw.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.o
-.PHONY : src/enemies/ScrapHoundDraw.cpp.o
+src/enemies/scraphound/ScrapHoundCombat.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundCombat.cpp.o
+.PHONY : src/enemies/scraphound/ScrapHoundCombat.cpp.o
 
-src/enemies/ScrapHoundDraw.i: src/enemies/ScrapHoundDraw.cpp.i
-.PHONY : src/enemies/ScrapHoundDraw.i
+src/enemies/scraphound/ScrapHoundCombat.i: src/enemies/scraphound/ScrapHoundCombat.cpp.i
+.PHONY : src/enemies/scraphound/ScrapHoundCombat.i
 
 # target to preprocess a source file
-src/enemies/ScrapHoundDraw.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.i
-.PHONY : src/enemies/ScrapHoundDraw.cpp.i
+src/enemies/scraphound/ScrapHoundCombat.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundCombat.cpp.i
+.PHONY : src/enemies/scraphound/ScrapHoundCombat.cpp.i
 
-src/enemies/ScrapHoundDraw.s: src/enemies/ScrapHoundDraw.cpp.s
-.PHONY : src/enemies/ScrapHoundDraw.s
+src/enemies/scraphound/ScrapHoundCombat.s: src/enemies/scraphound/ScrapHoundCombat.cpp.s
+.PHONY : src/enemies/scraphound/ScrapHoundCombat.s
 
 # target to generate assembly for a file
-src/enemies/ScrapHoundDraw.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundDraw.cpp.s
-.PHONY : src/enemies/ScrapHoundDraw.cpp.s
+src/enemies/scraphound/ScrapHoundCombat.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundCombat.cpp.s
+.PHONY : src/enemies/scraphound/ScrapHoundCombat.cpp.s
 
-src/enemies/ScrapHoundUpdateHelpers.o: src/enemies/ScrapHoundUpdateHelpers.cpp.o
-.PHONY : src/enemies/ScrapHoundUpdateHelpers.o
+src/enemies/scraphound/ScrapHoundDraw.o: src/enemies/scraphound/ScrapHoundDraw.cpp.o
+.PHONY : src/enemies/scraphound/ScrapHoundDraw.o
 
 # target to build an object file
-src/enemies/ScrapHoundUpdateHelpers.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.o
-.PHONY : src/enemies/ScrapHoundUpdateHelpers.cpp.o
+src/enemies/scraphound/ScrapHoundDraw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundDraw.cpp.o
+.PHONY : src/enemies/scraphound/ScrapHoundDraw.cpp.o
 
-src/enemies/ScrapHoundUpdateHelpers.i: src/enemies/ScrapHoundUpdateHelpers.cpp.i
-.PHONY : src/enemies/ScrapHoundUpdateHelpers.i
+src/enemies/scraphound/ScrapHoundDraw.i: src/enemies/scraphound/ScrapHoundDraw.cpp.i
+.PHONY : src/enemies/scraphound/ScrapHoundDraw.i
 
 # target to preprocess a source file
-src/enemies/ScrapHoundUpdateHelpers.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.i
-.PHONY : src/enemies/ScrapHoundUpdateHelpers.cpp.i
+src/enemies/scraphound/ScrapHoundDraw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundDraw.cpp.i
+.PHONY : src/enemies/scraphound/ScrapHoundDraw.cpp.i
 
-src/enemies/ScrapHoundUpdateHelpers.s: src/enemies/ScrapHoundUpdateHelpers.cpp.s
-.PHONY : src/enemies/ScrapHoundUpdateHelpers.s
+src/enemies/scraphound/ScrapHoundDraw.s: src/enemies/scraphound/ScrapHoundDraw.cpp.s
+.PHONY : src/enemies/scraphound/ScrapHoundDraw.s
 
 # target to generate assembly for a file
-src/enemies/ScrapHoundUpdateHelpers.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/ScrapHoundUpdateHelpers.cpp.s
-.PHONY : src/enemies/ScrapHoundUpdateHelpers.cpp.s
+src/enemies/scraphound/ScrapHoundDraw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundDraw.cpp.s
+.PHONY : src/enemies/scraphound/ScrapHoundDraw.cpp.s
+
+src/enemies/scraphound/ScrapHoundUpdateHelpers.o: src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.o
+.PHONY : src/enemies/scraphound/ScrapHoundUpdateHelpers.o
+
+# target to build an object file
+src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.o
+.PHONY : src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.o
+
+src/enemies/scraphound/ScrapHoundUpdateHelpers.i: src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.i
+.PHONY : src/enemies/scraphound/ScrapHoundUpdateHelpers.i
+
+# target to preprocess a source file
+src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.i
+.PHONY : src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.i
+
+src/enemies/scraphound/ScrapHoundUpdateHelpers.s: src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.s
+.PHONY : src/enemies/scraphound/ScrapHoundUpdateHelpers.s
+
+# target to generate assembly for a file
+src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.s
+.PHONY : src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.s
 
 src/map/Map.o: src/map/Map.cpp.o
 .PHONY : src/map/Map.o
@@ -972,36 +972,36 @@ help:
 	@echo "... src/Pathfinding.o"
 	@echo "... src/Pathfinding.i"
 	@echo "... src/Pathfinding.s"
-	@echo "... src/Spawner.o"
-	@echo "... src/Spawner.i"
-	@echo "... src/Spawner.s"
 	@echo "... src/TitleScreenUI.o"
 	@echo "... src/TitleScreenUI.i"
 	@echo "... src/TitleScreenUI.s"
-	@echo "... src/enemies/Automaton.o"
-	@echo "... src/enemies/Automaton.i"
-	@echo "... src/enemies/Automaton.s"
-	@echo "... src/enemies/AutomatonCombat.o"
-	@echo "... src/enemies/AutomatonCombat.i"
-	@echo "... src/enemies/AutomatonCombat.s"
-	@echo "... src/enemies/AutomatonDraw.o"
-	@echo "... src/enemies/AutomatonDraw.i"
-	@echo "... src/enemies/AutomatonDraw.s"
-	@echo "... src/enemies/AutomatonUpdateHelpers.o"
-	@echo "... src/enemies/AutomatonUpdateHelpers.i"
-	@echo "... src/enemies/AutomatonUpdateHelpers.s"
-	@echo "... src/enemies/ScrapHound.o"
-	@echo "... src/enemies/ScrapHound.i"
-	@echo "... src/enemies/ScrapHound.s"
-	@echo "... src/enemies/ScrapHoundCombat.o"
-	@echo "... src/enemies/ScrapHoundCombat.i"
-	@echo "... src/enemies/ScrapHoundCombat.s"
-	@echo "... src/enemies/ScrapHoundDraw.o"
-	@echo "... src/enemies/ScrapHoundDraw.i"
-	@echo "... src/enemies/ScrapHoundDraw.s"
-	@echo "... src/enemies/ScrapHoundUpdateHelpers.o"
-	@echo "... src/enemies/ScrapHoundUpdateHelpers.i"
-	@echo "... src/enemies/ScrapHoundUpdateHelpers.s"
+	@echo "... src/core/Spawner.o"
+	@echo "... src/core/Spawner.i"
+	@echo "... src/core/Spawner.s"
+	@echo "... src/enemies/automaton/Automaton.o"
+	@echo "... src/enemies/automaton/Automaton.i"
+	@echo "... src/enemies/automaton/Automaton.s"
+	@echo "... src/enemies/automaton/AutomatonCombat.o"
+	@echo "... src/enemies/automaton/AutomatonCombat.i"
+	@echo "... src/enemies/automaton/AutomatonCombat.s"
+	@echo "... src/enemies/automaton/AutomatonDraw.o"
+	@echo "... src/enemies/automaton/AutomatonDraw.i"
+	@echo "... src/enemies/automaton/AutomatonDraw.s"
+	@echo "... src/enemies/automaton/AutomatonUpdateHelpers.o"
+	@echo "... src/enemies/automaton/AutomatonUpdateHelpers.i"
+	@echo "... src/enemies/automaton/AutomatonUpdateHelpers.s"
+	@echo "... src/enemies/scraphound/ScrapHound.o"
+	@echo "... src/enemies/scraphound/ScrapHound.i"
+	@echo "... src/enemies/scraphound/ScrapHound.s"
+	@echo "... src/enemies/scraphound/ScrapHoundCombat.o"
+	@echo "... src/enemies/scraphound/ScrapHoundCombat.i"
+	@echo "... src/enemies/scraphound/ScrapHoundCombat.s"
+	@echo "... src/enemies/scraphound/ScrapHoundDraw.o"
+	@echo "... src/enemies/scraphound/ScrapHoundDraw.i"
+	@echo "... src/enemies/scraphound/ScrapHoundDraw.s"
+	@echo "... src/enemies/scraphound/ScrapHoundUpdateHelpers.o"
+	@echo "... src/enemies/scraphound/ScrapHoundUpdateHelpers.i"
+	@echo "... src/enemies/scraphound/ScrapHoundUpdateHelpers.s"
 	@echo "... src/map/Map.o"
 	@echo "... src/map/Map.i"
 	@echo "... src/map/Map.s"

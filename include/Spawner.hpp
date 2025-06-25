@@ -12,4 +12,4 @@ public:
     void spawnEnemiesInRooms(Map& map, std::vector<ScrapHound>& scrapHounds, std::vector<Automaton>& automatons);
 };
 
-#endif // SPAWNER_HPP
+#endif
