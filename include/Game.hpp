@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "Camera.hpp"
 #include "enemies/ScrapHound.hpp"
+#include "enemies/Automaton.hpp"
 #include "GameUI.hpp"
 #include "TitleScreenUI.hpp" // Include TitleScreenUI
 #include <memory>
@@ -36,6 +37,7 @@ private:
     Shader chromaticAberrationShader;
     Shader* activeShader;
     std::vector<ScrapHound> scrapHounds;
+    std::vector<Automaton> automatons; // Add automatons vector
     Spawner spawner;
     GameState currentState;
     std::vector<Texture2D> tileTextures; // Add to Game class

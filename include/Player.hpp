@@ -8,6 +8,7 @@
 #include <atomic>  
 
 class ScrapHound;
+class Automaton;
 
 struct Particle {
     Vector2 position;
@@ -20,7 +21,7 @@ class Player {
 public:
     Player(const Map &map);
     ~Player();
-    void update(float dt, const Map& map, const Camera2D& gameCamera,std::vector<ScrapHound>& enemies ); 
+    void update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons); 
     void draw() const;
     
     Vector2 getPosition() const;
@@ -35,7 +36,7 @@ public:
     
     void switchWeapon(int index);
     void addWeapon(std::unique_ptr<Weapon> weapon);
-    void checkWeaponHits(std::vector<ScrapHound>& enemies);
+    void checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons);
     
     
     bool isSwordAttacking() const;

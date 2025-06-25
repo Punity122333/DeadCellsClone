@@ -1,5 +1,6 @@
 #include "weapons/WeaponTypes.hpp"
 #include "enemies/ScrapHound.hpp"
+#include "enemies/Automaton.hpp"
 
 #include <cmath>
 #include <cfloat>
@@ -126,7 +127,6 @@ void Bow::draw(Vector2 playerPosition, bool facingRight) const {
     DrawRectangleRec(boxRect, SKYBLUE);
     DrawRectangleLinesEx(boxRect, BOW_DRAW_LINE_THICKNESS, DARKBLUE);
     drawArrows();
-    
     if (charging) {
         float meterWidth = CHARGE_METER_WIDTH;
         float meterHeight = CHARGE_METER_HEIGHT;
@@ -134,7 +134,6 @@ void Bow::draw(Vector2 playerPosition, bool facingRight) const {
         float filledWidth = meterWidth * progress;
         float meterX = playerPosition.x - meterWidth / 2.0f + CHARGE_METER_X_OFFSET;
         float meterY = playerPosition.y + CHARGE_METER_Y_OFFSET;
-        
         DrawRectangle(meterX, meterY, meterWidth, meterHeight, Fade(GRAY, CHARGE_METER_BG_ALPHA));
         DrawRectangle(meterX, meterY, filledWidth, meterHeight, Fade(GREEN, CHARGE_METER_FG_ALPHA));
         DrawRectangleLines(meterX, meterY, meterWidth, meterHeight, DARKGREEN);
@@ -150,19 +149,13 @@ Vector2 Bow::getKnockback(bool facingRight) const {
 }
 
 void Bow::fireArrow(Vector2 startPosition, Vector2 direction) {
-     
-    
     float chargeRatio = 0.0f;
     if (maxChargeTime > 0.0f) {
         chargeRatio = this->chargeTime / maxChargeTime; 
     }
-    
     chargeRatio = fmaxf(0.0f, fminf(chargeRatio, 1.0f)); 
-    
-    
     float calculatedSpeed = MIN_ARROW_SPEED + (MAX_THEORETICAL_ARROW_SPEED - MIN_ARROW_SPEED) * chargeRatio;
     float arrowSpeed = fminf(calculatedSpeed, EFFECTIVE_SPEED_CAP);
-    
     Arrow arrow;
     arrow.position = { startPosition.x, startPosition.y + ARROW_START_Y_OFFSET };
     arrow.prevPosition = arrow.position;  
@@ -194,66 +187,40 @@ void Bow::updateArrows(float dt) {
         activeArrows.end());
 }
 
-void Bow::checkArrowCollisions(std::vector<ScrapHound>& enemies) {
+void Bow::checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons) {
     for (auto& arrow : activeArrows) {
         if (!arrow.active) continue;
-        
-        Rectangle arrowHitbox;
-        float minX = fminf(arrow.prevPosition.x, arrow.position.x);
-        float maxX = fmaxf(arrow.prevPosition.x, arrow.position.x);
-        
-        if (arrow.direction.x >= 0) {
-            arrowHitbox = {
-                minX,                    
-                arrow.position.y + ARROW_HITBOX_Y_OFFSET, 
-                maxX - minX + ARROW_HITBOX_WIDTH_ADJUSTMENT,     
-                ARROW_HITBOX_HEIGHT                    
-            };
-        } else {
-            arrowHitbox = {
-                minX - ARROW_HITBOX_WIDTH_ADJUSTMENT,
-                arrow.position.y + ARROW_HITBOX_Y_OFFSET, 
-                maxX - minX + ARROW_HITBOX_WIDTH_ADJUSTMENT,       
-                ARROW_HITBOX_HEIGHT                    
-            };
-        }
-        
         for (auto& enemy : enemies) {
-            if (!enemy.isAlive()) continue;
-            Rectangle enemyRect = enemy.getArrowHitbox(); 
-            
-            if (CheckCollisionRecs(arrowHitbox, enemyRect)) {
-                float chargeFactor = arrow.speed > ARROW_CHARGE_FACTOR_SPEED_THRESHOLD ? ARROW_HIGH_CHARGE_FACTOR : ARROW_LOW_CHARGE_FACTOR;
-                enemy.takeDamage(getDamage() * chargeFactor);
-                Vector2 knockback = {
-                    arrow.direction.x * ARROW_KNOCKBACK_BASE_X * chargeFactor,
-                    arrow.direction.y * ARROW_KNOCKBACK_BASE_Y * chargeFactor
-                };
-                enemy.applyKnockback(knockback);
+            if (enemy.isAlive() && CheckCollisionRecs(arrow.getHitbox(), enemy.getArrowHitbox())) {
+                enemy.takeDamage(BOW_DAMAGE);
                 arrow.active = false;
-                break;
+            }
+        }
+        for (auto& automaton : automatons) {
+            if (automaton.isAlive() && CheckCollisionRecs(arrow.getHitbox(), automaton.getHitbox())) {
+                automaton.takeDamage(BOW_DAMAGE);
+                arrow.active = false;
             }
         }
     }
 }
 
-void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, int substeps_param) {
-    int local_substeps = substeps_param;
+void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, int substeps) {
+    for (int s = 0; s < substeps; ++s) {
+        for (auto& arrow : activeArrows) {
+            if (!arrow.active) continue; 
 
-    for (auto& arrow : activeArrows) {
-        if (arrow.active && arrow.speed > SUBSTEP_SPEED_THRESHOLD) {
-            local_substeps = std::max(local_substeps, SUBSTEP_MAX_COUNT); 
-            break;
+        
+
+            arrow.prevPosition = arrow.position;  
+            arrow.position.x += arrow.direction.x * arrow.speed * dt;
+            arrow.position.y += arrow.direction.y * arrow.speed * dt;
+            arrow.lifetime -= dt;
+            if (arrow.lifetime <= 0.0f) {
+                arrow.active = false; 
+            }
         }
-    }
-    
-    
-               
-
-    float subDt = dt / local_substeps;
-    for (int i = 0; i < local_substeps; ++i) {
-        updateArrows(subDt);
-        checkArrowCollisions(enemies);
+        checkArrowCollisions(enemies, automatons);
     }
     
     activeArrows.erase(
@@ -286,5 +253,9 @@ void Bow::updatePosition(Vector2 newPosition) {
 
 bool Bow::hasActiveArrows() const {
     return !activeArrows.empty();
+}
+
+Rectangle Bow::Arrow::getHitbox() const {
+    return { position.x, position.y, 16, 8 };
 }
 

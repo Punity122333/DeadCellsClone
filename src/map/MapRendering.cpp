@@ -5,10 +5,6 @@
 using namespace MapConstants;
 namespace {
     
-    
-
-
-    
     int getTileIndex(const std::vector<std::vector<int>>& tiles, int x, int y, int width, int height) {
         bool top    = (y > 0)            && (tiles[x][y - 1] == WALL_TILE_VALUE || tiles[x][y - 1] == PLATFORM_TILE_VALUE);
         bool bottom = (y < height - 1)   && (tiles[x][y + 1] == WALL_TILE_VALUE || tiles[x][y + 1] == PLATFORM_TILE_VALUE);
@@ -61,14 +57,7 @@ void Map::draw(const Camera2D& camera) const {
     
     static int frameCount = 0;
     frameCount++;
-    if (frameCount % 60 == 0) {
-                FILE* debugFile = fopen("camera_debug.txt", "a");
-        if (debugFile) {
-            fprintf(debugFile, "Frame %d: Camera target=(%.1f,%.1f), visible rect=(%.1f,%.1f,%.1f,%.1f)\n",
-                   frameCount, camera.target.x, camera.target.y, viewX, viewY, viewWidth, viewHeight);
-            fclose(debugFile);
-        }
-    }
+    
 
     int renderedChunks = 0;
     for (const auto& chunk : chunks) {
@@ -132,34 +121,11 @@ void Map::draw(const Camera2D& camera) const {
                     } else if (tile == ROPE_TILE_VALUE) {
                         DrawRectangle(x * 32 + 14, y * 32, 4, 32, SKYBLUE);
                     } else if (tile == CHEST_TILE_VALUE) {
-                        FILE* debugFile = fopen("camera_debug.txt", "a");
-                        if (debugFile) {
-                            fprintf(debugFile, "Frame %d: Rendering chest (texture) at (%d,%d)\n", frameCount, x, y);
-                            fclose(debugFile);
-                        }
                         DrawRectangle(x * 32, y * 32, 32, 32, BROWN); 
                     }
                     
                 }
             }
-        }
-    }
-
-    if (frameCount % 60 == 0) {
-        FILE* chestDebugFile = fopen("chest_tiles_debug.txt", "a");
-        if (chestDebugFile) {
-            fprintf(chestDebugFile, "Frame %d: CHEST_TILE_VALUE positions:\n", frameCount);
-            int chestCount = 0;
-            for (int x = 0; x < width; ++x) {
-                for (int y = 0; y < height; ++y) {
-                    if (tiles[x][y] == CHEST_TILE_VALUE) {
-                        fprintf(chestDebugFile, "  Chest at (%d, %d)\n", x, y);
-                        chestCount++;
-                    }
-                }
-            }
-            fprintf(chestDebugFile, "Total chests: %d\n\n", chestCount);
-            fclose(chestDebugFile);
         }
     }
 
@@ -175,12 +141,4 @@ void Map::draw(const Camera2D& camera) const {
     }
 
     
-    if (frameCount % 60 == 0) {
-        FILE* debugFile = fopen("camera_debug.txt", "a");
-        if (debugFile) {
-            fprintf(debugFile, "Frame %d: Rendered %d chunks out of %d total\n",
-                   frameCount, renderedChunks, (int)chunks.size());
-            fclose(debugFile);
-        }
-    }
 }

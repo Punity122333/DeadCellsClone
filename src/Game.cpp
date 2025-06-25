@@ -42,7 +42,7 @@ Game::Game() {
     player = std::make_unique<Player>(*map);
     camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
 
-    spawner.spawnEnemiesInRooms(*map, scrapHounds); 
+    spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons); // FIX: spawn both enemy types
 
     sceneTexture = LoadRenderTexture(screenWidth, screenHeight);
 
@@ -73,7 +73,8 @@ void Game::resetGame() {
     player = std::make_unique<Player>(*map);
     camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
     scrapHounds.clear();
-    spawner.spawnEnemiesInRooms(*map, scrapHounds);
+    automatons.clear();
+    spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons); // FIX: spawn both enemy types
     currentState = GameState::PLAYING;
 }
 
@@ -121,14 +122,20 @@ void Game::run() {
             }
 
             map->updateTransitions(dt);
-            player->update(dt, *map, camera->getCamera(), scrapHounds);
+            player->update(dt, *map, camera->getCamera(), scrapHounds, automatons);
             camera->update();
-            player->checkWeaponHits(scrapHounds);
+            player->checkWeaponHits(scrapHounds, automatons);
 
             scrapHounds.erase(
                 std::remove_if(scrapHounds.begin(), scrapHounds.end(),
                     [](const ScrapHound& enemy) { return !enemy.isAlive(); }),
                 scrapHounds.end()
+            );
+
+            automatons.erase(
+                std::remove_if(automatons.begin(), automatons.end(),
+                    [](const Automaton& enemy) { return !enemy.isAlive(); }),
+                automatons.end()
             );
 
             for (auto& enemy : scrapHounds) {
@@ -145,6 +152,11 @@ void Game::run() {
                         player->takeDamage(5);
                     }
                 }
+            }
+
+            for (auto& automaton : automatons) {
+                automaton.update(*map, player->getPosition(), dt);
+                automaton.draw();
             }
 
             if (player->getHealth() <= 0) {

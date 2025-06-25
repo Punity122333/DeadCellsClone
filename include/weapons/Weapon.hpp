@@ -3,6 +3,7 @@
 #include <string>
 
 class ScrapHound;
+class Automaton;
 
 enum class WeaponType {
     SWORD,

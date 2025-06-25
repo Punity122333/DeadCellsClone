@@ -61,7 +61,7 @@ Player::Player(const Map &map) {
     hitboxHeight = height * 0.9f;
 }
 
-void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies) {
+void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons) {
     if (!imageFutureRetrieved.load(std::memory_order_acquire)) {
         if (imageFuture.valid()) {
             auto status = imageFuture.wait_for(std::chrono::seconds(0));
@@ -117,7 +117,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
 
                 if (bow->hasActiveArrows()) {
                     int default_substeps = 1;
-                    bow->updateArrowsWithSubsteps(dt, enemies, default_substeps);
+                    bow->updateArrowsWithSubsteps(dt, enemies, automatons, default_substeps);
                 }
             }
         } else {
@@ -128,7 +128,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
     }
 
     for (int i = 0; i < 9; i++) {
-        if (IsKeyPressed(KEY_ONE + i) && i < weapons.size()) {
+        if (IsKeyPressed(KEY_ONE + i) && i < (int)weapons.size()) {
             switchWeapon(i);
         }
     }
@@ -138,7 +138,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
         facingRight = false;
     }
     updateParticles(dt);
-    checkWeaponHits(enemies);
+    checkWeaponHits(enemies, automatons);
 }
 
 void Player::updateParticles(float dt) {

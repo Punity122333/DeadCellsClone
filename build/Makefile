@@ -321,6 +321,102 @@ src/TitleScreenUI.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/TitleScreenUI.cpp.s
 .PHONY : src/TitleScreenUI.cpp.s
 
+src/enemies/Automaton.o: src/enemies/Automaton.cpp.o
+.PHONY : src/enemies/Automaton.o
+
+# target to build an object file
+src/enemies/Automaton.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Automaton.cpp.o
+.PHONY : src/enemies/Automaton.cpp.o
+
+src/enemies/Automaton.i: src/enemies/Automaton.cpp.i
+.PHONY : src/enemies/Automaton.i
+
+# target to preprocess a source file
+src/enemies/Automaton.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Automaton.cpp.i
+.PHONY : src/enemies/Automaton.cpp.i
+
+src/enemies/Automaton.s: src/enemies/Automaton.cpp.s
+.PHONY : src/enemies/Automaton.s
+
+# target to generate assembly for a file
+src/enemies/Automaton.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Automaton.cpp.s
+.PHONY : src/enemies/Automaton.cpp.s
+
+src/enemies/AutomatonCombat.o: src/enemies/AutomatonCombat.cpp.o
+.PHONY : src/enemies/AutomatonCombat.o
+
+# target to build an object file
+src/enemies/AutomatonCombat.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonCombat.cpp.o
+.PHONY : src/enemies/AutomatonCombat.cpp.o
+
+src/enemies/AutomatonCombat.i: src/enemies/AutomatonCombat.cpp.i
+.PHONY : src/enemies/AutomatonCombat.i
+
+# target to preprocess a source file
+src/enemies/AutomatonCombat.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonCombat.cpp.i
+.PHONY : src/enemies/AutomatonCombat.cpp.i
+
+src/enemies/AutomatonCombat.s: src/enemies/AutomatonCombat.cpp.s
+.PHONY : src/enemies/AutomatonCombat.s
+
+# target to generate assembly for a file
+src/enemies/AutomatonCombat.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonCombat.cpp.s
+.PHONY : src/enemies/AutomatonCombat.cpp.s
+
+src/enemies/AutomatonDraw.o: src/enemies/AutomatonDraw.cpp.o
+.PHONY : src/enemies/AutomatonDraw.o
+
+# target to build an object file
+src/enemies/AutomatonDraw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonDraw.cpp.o
+.PHONY : src/enemies/AutomatonDraw.cpp.o
+
+src/enemies/AutomatonDraw.i: src/enemies/AutomatonDraw.cpp.i
+.PHONY : src/enemies/AutomatonDraw.i
+
+# target to preprocess a source file
+src/enemies/AutomatonDraw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonDraw.cpp.i
+.PHONY : src/enemies/AutomatonDraw.cpp.i
+
+src/enemies/AutomatonDraw.s: src/enemies/AutomatonDraw.cpp.s
+.PHONY : src/enemies/AutomatonDraw.s
+
+# target to generate assembly for a file
+src/enemies/AutomatonDraw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonDraw.cpp.s
+.PHONY : src/enemies/AutomatonDraw.cpp.s
+
+src/enemies/AutomatonUpdateHelpers.o: src/enemies/AutomatonUpdateHelpers.cpp.o
+.PHONY : src/enemies/AutomatonUpdateHelpers.o
+
+# target to build an object file
+src/enemies/AutomatonUpdateHelpers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonUpdateHelpers.cpp.o
+.PHONY : src/enemies/AutomatonUpdateHelpers.cpp.o
+
+src/enemies/AutomatonUpdateHelpers.i: src/enemies/AutomatonUpdateHelpers.cpp.i
+.PHONY : src/enemies/AutomatonUpdateHelpers.i
+
+# target to preprocess a source file
+src/enemies/AutomatonUpdateHelpers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonUpdateHelpers.cpp.i
+.PHONY : src/enemies/AutomatonUpdateHelpers.cpp.i
+
+src/enemies/AutomatonUpdateHelpers.s: src/enemies/AutomatonUpdateHelpers.cpp.s
+.PHONY : src/enemies/AutomatonUpdateHelpers.s
+
+# target to generate assembly for a file
+src/enemies/AutomatonUpdateHelpers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/AutomatonUpdateHelpers.cpp.s
+.PHONY : src/enemies/AutomatonUpdateHelpers.cpp.s
+
 src/enemies/ScrapHound.o: src/enemies/ScrapHound.cpp.o
 .PHONY : src/enemies/ScrapHound.o
 
@@ -882,6 +978,18 @@ help:
 	@echo "... src/TitleScreenUI.o"
 	@echo "... src/TitleScreenUI.i"
 	@echo "... src/TitleScreenUI.s"
+	@echo "... src/enemies/Automaton.o"
+	@echo "... src/enemies/Automaton.i"
+	@echo "... src/enemies/Automaton.s"
+	@echo "... src/enemies/AutomatonCombat.o"
+	@echo "... src/enemies/AutomatonCombat.i"
+	@echo "... src/enemies/AutomatonCombat.s"
+	@echo "... src/enemies/AutomatonDraw.o"
+	@echo "... src/enemies/AutomatonDraw.i"
+	@echo "... src/enemies/AutomatonDraw.s"
+	@echo "... src/enemies/AutomatonUpdateHelpers.o"
+	@echo "... src/enemies/AutomatonUpdateHelpers.i"
+	@echo "... src/enemies/AutomatonUpdateHelpers.s"
 	@echo "... src/enemies/ScrapHound.o"
 	@echo "... src/enemies/ScrapHound.i"
 	@echo "... src/enemies/ScrapHound.s"

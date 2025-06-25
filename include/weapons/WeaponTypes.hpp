@@ -1,6 +1,10 @@
 #pragma once
 #include "weapons/Weapon.hpp"
 #include <vector>
+#include <raylib.h>
+
+class ScrapHound;
+class Automaton;
 
 class Sword : public Weapon {
 public:
@@ -44,32 +48,38 @@ public:
     void update(float dt, const Camera2D& gameCamera, bool playerFacingRight) override;
     void draw(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
-    Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
-    bool isCharging() const ;
+    bool isCharging() const;
     void fireArrow(Vector2 position, Vector2 direction);
     void updateArrows(float dt);
-    void updateArrowsWithSubsteps(float dt, std::vector<class ScrapHound>& enemies, int substeps);
+    void updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, int substeps);
     void drawArrows() const;
-    void checkArrowCollisions(std::vector<class ScrapHound>& enemies);
+    void checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons);
     void updatePosition(Vector2 newPosition);
     bool hasActiveArrows() const;
     Vector2 getKnockback(bool facingRight) const override;
+    Rectangle getHitbox(Vector2 playerPosition, bool facingRight) const override;
+
+    class Arrow {
+    public:
+        Vector2 position;
+        Vector2 prevPosition;
+        Vector2 direction;
+        float speed = 0.0f;
+        float lifetime = 1.0f;
+        bool active = true;
+        Arrow() = default;
+        Arrow(Vector2 pos, Vector2 dir, float spd = 400.0f, float life = 1.0f)
+            : position(pos), prevPosition(pos), direction(dir), speed(spd), lifetime(life), active(true) {}
+        Rectangle getHitbox() const;
+    };
+
 private:
     float chargeTime = 0.0f;
     bool charging = false;
     float maxChargeTime = 1.0f;
-    mutable Vector2 position;
-    struct Arrow {
-    Vector2 position;
-    Vector2 prevPosition;
-    Vector2 direction;
-    float speed;
-    float lifetime;
-    bool active;
-    bool fullyCharged;  
-};
+    float minChargeTime = 0.2f;
+    mutable Vector2 position = {0, 0};
     std::vector<Arrow> activeArrows;
     Texture2D arrowTexture;
     Camera2D defaultCamera = { 0 };
-    float minChargeTime = 0.2f;
 };

@@ -44,20 +44,15 @@ void Map::applyConwayAutomata() {
     for (int t = 0; t < numThreads; ++t) gens.emplace_back(rd());
     std::uniform_int_distribution<> chunkSizeDist(MIN_CONWAY_CHUNK_SIZE_X, MAX_CONWAY_CHUNK_SIZE_X - 2);
     std::uniform_int_distribution<> chunkYSizeDist(MIN_CONWAY_CHUNK_SIZE_Y, MAX_CONWAY_CHUNK_SIZE_Y);
-    // Make chunk shapes more horizontal sometimes
-    std::uniform_int_distribution<> horizontalBiasDist(0, 2); // 0: normal, 1: horizontal, 2: vertical
-    // Increase deletion chance by biasing shouldChunkBeAliveDist
-    std::uniform_int_distribution<> shouldChunkBeAliveDist(0, CHUNK_ALIVE_ROLL_MAX + 3); // More values, so alive is rarer
-    // 2. Reduce chunk spacing for denser chunk processing, but not zero to avoid freezing
-    std::uniform_int_distribution<> chunkSpacingDist(0, 1); // Small, but not zero
+    std::uniform_int_distribution<> horizontalBiasDist(0, 2);
+    std::uniform_int_distribution<> shouldChunkBeAliveDist(0, CHUNK_ALIVE_ROLL_MAX + 3);
+    std::uniform_int_distribution<> chunkSpacingDist(0, 1);
     std::mutex processedTilesMutex;
     std::vector<std::vector<bool>> processedTiles(width, std::vector<bool>(height, false));
-    // Debug counters
     std::atomic<int> createdCount(0);
     std::atomic<int> deletedCount(0);
     std::atomic<int> skippedCount(0);
 
-    // First pass: count eligible tiles for creation and deletion
     int totalCreatable = 0, totalDeletable = 0;
     for (int x = 0; x < width; ++x) {
         for (int y = 0; y < height; ++y) {
@@ -96,16 +91,15 @@ void Map::applyConwayAutomata() {
                         }
                     }
                     bool shouldChunkBeAlive = (shouldChunkBeAliveDist(gen) == CHUNK_ALIVE_SUCCESS_ROLL);
-                    // Horizontal/vertical/normal chunk shape
                     int bias = horizontalBiasDist(gen);
                     int currentChunkSizeX, currentChunkSizeY;
-                    if (bias == 1) { // horizontal
+                    if (bias == 1) {
                         currentChunkSizeX = MAX_CONWAY_CHUNK_SIZE_X;
                         currentChunkSizeY = chunkYSizeDist(gen);
-                    } else if (bias == 2) { // vertical
+                    } else if (bias == 2) {
                         currentChunkSizeX = chunkSizeDist(gen);
                         currentChunkSizeY = MAX_CONWAY_CHUNK_SIZE_Y;
-                    } else { // normal
+                    } else {
                         currentChunkSizeX = chunkSizeDist(gen);
                         currentChunkSizeY = chunkYSizeDist(gen);
                     }
@@ -132,7 +126,6 @@ void Map::applyConwayAutomata() {
                         startY += chunkSpacingDist(gen);
                         continue;
                     }
-                    // Count how many tiles in this chunk are creatable/deletable
                     int chunkCreatable = 0, chunkDeletable = 0;
                     for (int y = startY; y < chunkEndY; ++y) {
                         for (int x = startX; x < chunkEndX; ++x) {
@@ -146,7 +139,6 @@ void Map::applyConwayAutomata() {
                             }
                         }
                     }
-                    // Only process if we have not exceeded the balanced limit
                     bool doCreate = false, doDelete = false;
                     if (shouldChunkBeAlive && runningCreated + chunkCreatable <= maxBalanced) {
                         doCreate = true;
@@ -189,7 +181,6 @@ void Map::applyConwayAutomata() {
     }
     for (auto& th : threads) th.join();
     tiles = nextTiles;
-    // Debug output
     printf("[ConwayAutomata] Created: %d, Deleted: %d, Skipped: %d\n", createdCount.load(), deletedCount.load(), skippedCount.load());
 }
 
@@ -245,15 +236,11 @@ void Map::updateTransitions(float dt) {
                         if (timer >= GLITCH_TIME) {
                             if (tiles[x][y] == TILE_ID_TEMP_CREATE_A) {
                                 tiles[x][y] = TILE_ID_PLATFORM;
-                                // Mark Conway-created tiles as eligible for future deletion
                                 isOriginalSolid[x][y] = false;
-                                // Clear Conway protection for newly created tiles to ensure they can be deleted
                                 isConwayProtected[x][y] = false;
                             } else if (tiles[x][y] == TILE_ID_TEMP_CREATE_B) {
                                 tiles[x][y] = TILE_ID_PLATFORM;
-                                // Mark Conway-created tiles as eligible for future deletion
                                 isOriginalSolid[x][y] = false;
-                                // Clear Conway protection for newly created tiles to ensure they can be deleted
                                 isConwayProtected[x][y] = false;
                             }
                             transitionTimers[x][y] = 0.0f;

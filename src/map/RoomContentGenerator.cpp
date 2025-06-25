@@ -189,9 +189,6 @@ void RoomContentGenerator::generateLaddersAndRopes(Map& map, const Room& room, s
 }
 
 void RoomContentGenerator::generateTreasureRoomContent(Map& map, const Room& room, std::mt19937& gen) {
-    printf("DEBUG: Generating treasure room content for room at (%d,%d) to (%d,%d)\n", 
-           room.startX, room.startY, room.endX, room.endY);
-    
     const int room_width = room.endX - room.startX;
     const int room_height = room.endY - room.startY;
     int treasureX = room.startX + room_width / 2;
@@ -208,10 +205,6 @@ void RoomContentGenerator::generateTreasureRoomContent(Map& map, const Room& roo
         if (map.tiles[treasureX][treasureY] == EMPTY_TILE_VALUE) {
             map.tiles[treasureX][treasureY] = CHEST_TILE_VALUE;
             map.isOriginalSolid[treasureX][treasureY] = false;
-            printf("DEBUG: Placed main chest at (%d,%d)\n", treasureX, treasureY);
-        } else {
-            printf("DEBUG: Could not place main chest at (%d,%d) - tile value is %d\n", 
-                   treasureX, treasureY, map.tiles[treasureX][treasureY]);
         }
     }
 
@@ -224,12 +217,10 @@ void RoomContentGenerator::generateTreasureRoomContent(Map& map, const Room& roo
         int x_coord = xDist(gen);
         int y_coord = yDist(gen);
         if (map.isInsideBounds(x_coord, y_coord)) {
-            
             if (map.isInsideBounds(x_coord, y_coord + 1) && map.tiles[x_coord][y_coord + 1] == EMPTY_TILE_VALUE) {
                 map.tiles[x_coord][y_coord + 1] = DEFAULT_TILE_VALUE;
                 map.isOriginalSolid[x_coord][y_coord + 1] = true;
             }
-            
             if (map.tiles[x_coord][y_coord] == EMPTY_TILE_VALUE) {
                 map.tiles[x_coord][y_coord] = CHEST_TILE_VALUE;
                 map.isOriginalSolid[x_coord][y_coord] = false;

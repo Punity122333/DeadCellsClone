@@ -46,23 +46,6 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures) :
     }
     for (auto& f : futures) f.get();
 
-    // REMOVE the texture loading loop from here
-    /*
-    int numTiles = 0;
-    {
-        for (int i = 0; ; ++i) {
-            char path_buffer[64];
-            snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
-            if (!std::filesystem::exists(path_buffer)) break;
-            numTiles++;
-        }
-    }
-    for (int i = 0; i < numTiles; ++i) {
-        char path_buffer[64];
-        snprintf(path_buffer, sizeof(path_buffer), "../resources/tiles/tile%03d.png", i);
-        tileTextures.push_back(LoadTexture(path_buffer));
-    }
-    */
 
     for (int x = 0; x < width; x++) {
         tiles[x][height - 1] = BORDER_TILE_VALUE; isOriginalSolid[x][height - 1] = true;
