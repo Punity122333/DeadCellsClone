@@ -81,6 +81,12 @@ Bow::Bow()
     chargeTime = BOW_DEFAULT_CHARGE_TIME;
 }
 
+Bow::~Bow() {
+    if (arrowTexture.id > 0) {
+        UnloadTexture(arrowTexture);
+    }
+}
+
 void Bow::startAttack() {
     if (!charging) {
         Weapon::startAttack(); 

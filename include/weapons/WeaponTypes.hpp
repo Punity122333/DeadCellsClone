@@ -45,6 +45,7 @@ private:
 class Bow : public Weapon {
 public:
     Bow();
+    ~Bow();
     void update(float dt, const Camera2D& gameCamera, bool playerFacingRight) override;
     void draw(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;

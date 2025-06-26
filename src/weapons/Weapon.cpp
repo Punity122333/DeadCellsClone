@@ -4,6 +4,12 @@ Weapon::Weapon(const std::string& name, WeaponType type, float baseDamage, float
     : name(name), type(type), baseDamage(baseDamage), attackSpeed(attackSpeed), range(range) {
 }
 
+Weapon::~Weapon() {
+    if (texture.id > 0) {
+        UnloadTexture(texture);
+    }
+}
+
 void Weapon::update(float dt, const Camera2D& gameCamera, bool playerFacingRight) {
     if (attacking) {
         attackTimer -= dt;

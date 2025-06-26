@@ -49,7 +49,8 @@ Game::Game() {
     player = std::make_unique<Player>(*map);
     camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
 
-    spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons); // FIX: spawn both enemy types
+    spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons);
+    
 
     sceneTexture = LoadRenderTexture(screenWidth, screenHeight);
 
@@ -129,6 +130,7 @@ void Game::run() {
             }
 
             map->updateTransitions(dt);
+            map->updateParticles(dt, player->getPosition());
             player->update(dt, *map, camera->getCamera(), scrapHounds, automatons);
             camera->update();
             player->checkWeaponHits(scrapHounds, automatons);

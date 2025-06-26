@@ -17,7 +17,7 @@ enum class WeaponType {
 class Weapon {
 public:
     Weapon(const std::string& name, WeaponType type, float baseDamage, float attackSpeed, float range);
-    virtual ~Weapon() = default;
+    virtual ~Weapon();
     virtual void update(float dt, const Camera2D& gameCamera, bool playerFacingRight);
     virtual void startAttack();
     virtual void draw(Vector2 playerPosition, bool facingRight) const;

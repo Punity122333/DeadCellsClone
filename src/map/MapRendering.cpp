@@ -46,6 +46,23 @@ namespace {
 
 
 void Map::draw(const Camera2D& camera) const {
+    static bool colorsInitialized = false;
+    static std::vector<std::vector<Color>> treasureColors;
+    static std::vector<std::vector<Color>> shopColors;
+    static std::vector<std::vector<Color>> specialColors;
+    if (!colorsInitialized) {
+        treasureColors.resize(width, std::vector<Color>(height, WHITE));
+        shopColors.resize(width, std::vector<Color>(height, WHITE));
+        specialColors.resize(width, std::vector<Color>(height, WHITE));
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                treasureColors[x][y] = {(unsigned char)GetRandomValue(180, 255), (unsigned char)GetRandomValue(0, 255), (unsigned char)GetRandomValue(180, 255), 255};
+                shopColors[x][y] = {(unsigned char)GetRandomValue(0, 255), (unsigned char)GetRandomValue(180, 255), (unsigned char)GetRandomValue(0, 180), 255};
+                specialColors[x][y] = {(unsigned char)GetRandomValue(100, 200), (unsigned char)GetRandomValue(100, 200), (unsigned char)GetRandomValue(200, 255), 255};
+            }
+        }
+        colorsInitialized = true;
+    }
     
 
     float viewX = camera.target.x - (camera.offset.x / camera.zoom);
@@ -86,25 +103,19 @@ void Map::draw(const Camera2D& camera) const {
                         DrawTexture(tileTextures[idx], x * 32, y * 32, WHITE);
                     } else if (tile == TREASURE_TILE_VALUE) {
                         float alpha = std::min(transitionTimers[x][y] / GLITCH_TIME, 1.0f);
-                        int r = GetRandomValue(180, 255);
-                        int g = GetRandomValue(0, 255);
-                        int b = GetRandomValue(180, 255);
-                        Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
+                        Color glitchColor = treasureColors[x][y];
+                        glitchColor.a = (unsigned char)(alpha * 255);
                         DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
                     } else if (tile == SHOP_TILE_VALUE) {
                         float alpha = 1.0f - (transitionTimers[x][y] / GLITCH_TIME);
                         alpha = std::max(alpha, 0.0f);
-                        int r = GetRandomValue(0, 255);
-                        int g = GetRandomValue(180, 255);
-                        int b = GetRandomValue(0, 180);
-                        Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
+                        Color glitchColor = shopColors[x][y];
+                        glitchColor.a = (unsigned char)(alpha * 255);
                         DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
                     } else if (tile == 8) {
                         float alpha = std::min(transitionTimers[x][y] / GLITCH_TIME, 1.0f);
-                        int r = GetRandomValue(100, 200);
-                        int g = GetRandomValue(100, 200);
-                        int b = GetRandomValue(200, 255);
-                        Color glitchColor = { (unsigned char)r, (unsigned char)g, (unsigned char)b, (unsigned char)(alpha * 255) };
+                        Color glitchColor = specialColors[x][y];
+                        glitchColor.a = (unsigned char)(alpha * 255);
                         DrawRectangle(x * 32, y * 32, 32, 32, glitchColor);
                     } else if (tile == TILE_HIGHLIGHT_CREATE) {
                         float alpha = getBlinkAlpha(transitionTimers[x][y], BLINK_CYCLE_TIME, MIN_HIGHLIGHT_OPACITY);
@@ -123,22 +134,33 @@ void Map::draw(const Camera2D& camera) const {
                     } else if (tile == CHEST_TILE_VALUE) {
                         DrawRectangle(x * 32, y * 32, 32, 32, BROWN); 
                     }
-                    
                 }
             }
         }
     }
 
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < height; ++y) {
-            if (tiles[x][y] == CHEST_TILE_VALUE) {
-                Rectangle chestRect = { x*32.0f, y*32.0f, 32.0f, 32.0f };
-                if (CheckCollisionRecs(visibleWorldRect, chestRect)) {
-                    DrawRectangle(x * 32, y * 32, 32, 32, BROWN);
-                }
+    // Render particles
+    {
+        std::lock_guard<std::mutex> lock(particlesMutex);
+        printf("[DEBUG] Map::draw: particles.size() = %zu\n", particles.size());
+        int visibleCount = 0;
+        for (const auto& particle : particles) {
+            printf("[DEBUG] Particle pos=(%.2f, %.2f) size=%.2f color=(%d,%d,%d,%d)\n",
+                   particle.position.x, particle.position.y, particle.size,
+                   particle.color.r, particle.color.g, particle.color.b, particle.color.a);
+            if (particle.position.x >= visibleWorldRect.x - 32 && 
+                particle.position.x <= visibleWorldRect.x + visibleWorldRect.width + 32 &&
+                particle.position.y >= visibleWorldRect.y - 32 && 
+                particle.position.y <= visibleWorldRect.y + visibleWorldRect.height + 32) {
+                visibleCount++;
+                printf("[DEBUG] Drawing particle at (%.2f, %.2f)\n", particle.position.x, particle.position.y);
+                DrawCircleV(particle.position, particle.size, particle.color);
             }
         }
+        printf("[DEBUG] Map::draw: visible particles = %d\n", visibleCount);
     }
-
     
+    if (renderedChunks > 0) {
+        
+    }
 }

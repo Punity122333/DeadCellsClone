@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include <vector>
 #include <random>
+#include <mutex>
 
 namespace MapConstants {
     constexpr int TILE_HIGHLIGHT_CREATE = 11;
@@ -61,6 +62,18 @@ namespace MapConstants {
     int rollPercent(std::mt19937& gen);
 }
 
+struct TileParticle {
+    Vector2 position;
+    Vector2 velocity;
+    Color color;
+    float life;
+    float maxLife;
+    float size;
+    
+    TileParticle(Vector2 pos, Vector2 vel, Color col, float lifetime, float sz)
+        : position(pos), velocity(vel), color(col), life(lifetime), maxLife(lifetime), size(sz) {}
+};
+
 struct Room {
     int startX, startY, endX, endY;
     enum Type { NORMAL, TREASURE, SHOP }; 
@@ -104,6 +117,9 @@ public:
     void draw(const Camera2D& camera) const;
     void applyConwayAutomata();
     void updateTransitions(float dt);
+    void updateParticles(float dt, Vector2 playerPosition = {0, 0});
+    void createPopEffect(Vector2 position);
+    void createSuctionEffect(Vector2 position);
 
     bool isInsideBounds(int x, int y) const;
 
@@ -132,10 +148,13 @@ private:
     int height;
     std::vector<std::vector<int>> tiles;
     std::vector<std::vector<float>> transitionTimers;
+    std::vector<std::vector<int>> cooldownMap;
     std::vector<std::vector<bool>> isOriginalSolid;
     std::vector<std::vector<bool>> isConwayProtected;
     std::vector<Texture2D> tileTextures; // This will now store a copy or reference
     std::vector<Room> generatedRooms;
+    std::vector<TileParticle> particles;
+    mutable std::mutex particlesMutex;
 };
 
 #endif // MAP_HPP

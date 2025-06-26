@@ -15,7 +15,13 @@ struct Particle {
     Vector2 velocity;
     float age;
     float lifetime;
+    
+    Particle() = default;
+    Particle(Vector2 pos, Vector2 vel, float a, float life)
+        : position(pos), velocity(vel), age(a), lifetime(life) {}
 };
+
+
 
 class Player {
 public:
