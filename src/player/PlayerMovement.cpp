@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "effects/ParticleSystem.hpp"
 #include <raylib.h>
 #include "raymath.h"
 
@@ -151,12 +152,9 @@ void Player::handleMovementInput(float dt) {
             if (fabs(velocity.x) > 0.1f) {
                 dustTimer -= dt;
                 if (dustTimer <= 0.0f) {
-                    Particle p;
-                    p.position = { position.x + hitboxOffsetX + hitboxWidth/2, position.y + hitboxOffsetY + hitboxHeight - 4 };
-                    p.velocity = { (float)GetRandomValue(-20, 20), (float)GetRandomValue(-60, -20) };
-                    p.lifetime = 0.25f;
-                    p.age = 0.0f;
-                    dustParticles.push_back(p);
+                    Vector2 dustPos = { position.x + hitboxOffsetX + hitboxWidth/2, position.y + hitboxOffsetY + hitboxHeight - 4 };
+                    Vector2 dustVel = { (float)GetRandomValue(-20, 20), (float)GetRandomValue(-60, -20) };
+                    ParticleSystem::getInstance().createDustParticle(dustPos, dustVel, 0.25f);
                     dustTimer = 0.04f; 
                 }
             } else {

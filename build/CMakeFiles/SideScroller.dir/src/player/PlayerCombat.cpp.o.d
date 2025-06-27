@@ -196,7 +196,9 @@ CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o: \
  /usr/include/c++/13/stdexcept /usr/include/c++/13/bits/atomic_futex.h \
  /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_function.h \
  /usr/include/c++/13/bits/std_thread.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/WeaponTypes.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/ScrapHound.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Automaton.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ParticleSystem.hpp \
  /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h

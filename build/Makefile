@@ -273,6 +273,30 @@ src/Pathfinding.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.s
 .PHONY : src/Pathfinding.cpp.s
 
+src/PauseMenuUI.o: src/PauseMenuUI.cpp.o
+.PHONY : src/PauseMenuUI.o
+
+# target to build an object file
+src/PauseMenuUI.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/PauseMenuUI.cpp.o
+.PHONY : src/PauseMenuUI.cpp.o
+
+src/PauseMenuUI.i: src/PauseMenuUI.cpp.i
+.PHONY : src/PauseMenuUI.i
+
+# target to preprocess a source file
+src/PauseMenuUI.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/PauseMenuUI.cpp.i
+.PHONY : src/PauseMenuUI.cpp.i
+
+src/PauseMenuUI.s: src/PauseMenuUI.cpp.s
+.PHONY : src/PauseMenuUI.s
+
+# target to generate assembly for a file
+src/PauseMenuUI.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/PauseMenuUI.cpp.s
+.PHONY : src/PauseMenuUI.cpp.s
+
 src/TitleScreenUI.o: src/TitleScreenUI.cpp.o
 .PHONY : src/TitleScreenUI.o
 
@@ -320,6 +344,30 @@ src/core/Spawner.s: src/core/Spawner.cpp.s
 src/core/Spawner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/Spawner.cpp.s
 .PHONY : src/core/Spawner.cpp.s
+
+src/effects/ParticleSystem.o: src/effects/ParticleSystem.cpp.o
+.PHONY : src/effects/ParticleSystem.o
+
+# target to build an object file
+src/effects/ParticleSystem.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleSystem.cpp.o
+.PHONY : src/effects/ParticleSystem.cpp.o
+
+src/effects/ParticleSystem.i: src/effects/ParticleSystem.cpp.i
+.PHONY : src/effects/ParticleSystem.i
+
+# target to preprocess a source file
+src/effects/ParticleSystem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleSystem.cpp.i
+.PHONY : src/effects/ParticleSystem.cpp.i
+
+src/effects/ParticleSystem.s: src/effects/ParticleSystem.cpp.s
+.PHONY : src/effects/ParticleSystem.s
+
+# target to generate assembly for a file
+src/effects/ParticleSystem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleSystem.cpp.s
+.PHONY : src/effects/ParticleSystem.cpp.s
 
 src/enemies/automaton/Automaton.o: src/enemies/automaton/Automaton.cpp.o
 .PHONY : src/enemies/automaton/Automaton.o
@@ -972,12 +1020,18 @@ help:
 	@echo "... src/Pathfinding.o"
 	@echo "... src/Pathfinding.i"
 	@echo "... src/Pathfinding.s"
+	@echo "... src/PauseMenuUI.o"
+	@echo "... src/PauseMenuUI.i"
+	@echo "... src/PauseMenuUI.s"
 	@echo "... src/TitleScreenUI.o"
 	@echo "... src/TitleScreenUI.i"
 	@echo "... src/TitleScreenUI.s"
 	@echo "... src/core/Spawner.o"
 	@echo "... src/core/Spawner.i"
 	@echo "... src/core/Spawner.s"
+	@echo "... src/effects/ParticleSystem.o"
+	@echo "... src/effects/ParticleSystem.i"
+	@echo "... src/effects/ParticleSystem.s"
 	@echo "... src/enemies/automaton/Automaton.o"
 	@echo "... src/enemies/automaton/Automaton.i"
 	@echo "... src/enemies/automaton/Automaton.s"

@@ -2,12 +2,8 @@
 #include <raylib.h>
 
 void Player::draw() const {
-    for (auto& p : dustParticles) {
-        float alpha = 1.0f - (p.age / p.lifetime);
-        Color c = { 200, 200, 180, (unsigned char)(alpha * 180) };
-        DrawCircleV(p.position, 4, c);
-    }
-
+    // Particles are now handled by the dedicated ParticleSystem
+    
     if (textureLoadedAtomic.load(std::memory_order_acquire)) { 
         Color tint = WHITE;
         if (invincibilityTimer > 0.0f && (int)(invincibilityTimer * 10) % 2 == 0) {

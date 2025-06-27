@@ -205,8 +205,10 @@ CMakeFiles/SideScroller.dir/src/Game.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/GameUI.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/TitleScreenUI.hpp \
  /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/PauseMenuUI.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/FishEyeGradient.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Spawner.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ParticleSystem.hpp \
  /usr/include/c++/13/algorithm /usr/include/c++/13/bits/stl_algo.h \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \

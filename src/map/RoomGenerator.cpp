@@ -34,17 +34,17 @@ void RoomGenerator::generateRoomsAndConnections(Map& map, std::mt19937& gen) {
     placeLaddersAndRopes(map, ladders_to_place, ropes_to_place);
     protectEmptyTilesNearWalls(map);
 
-    printf("DEBUG: Final chest verification - scanning entire map for chest tiles:\n");
+    
     int chestCount = 0;
     for (int x = 0; x < map.getWidth(); ++x) {
         for (int y = 0; y < map.getHeight(); ++y) {
             if (map.tiles[x][y] == CHEST_TILE_VALUE) {
                 chestCount++;
-                printf("DEBUG: Found chest tile at (%d,%d)\n", x, y);
+               
             }
         }
     }
-    printf("DEBUG: Total chest tiles found in final map: %d\n", chestCount);
+    
 }
 
 void RoomGenerator::createRoomGrid(Map& map, std::mt19937& gen, std::vector<Room>& rooms_vector,
@@ -251,7 +251,7 @@ void RoomGenerator::generateAllRoomContent(Map& map, const std::vector<Room>& ro
             RoomContentGenerator::generateRoomContent(map, room, gen);
         }
     }
-    printf("DEBUG: Generated %d treasure rooms total\n", treasureRoomCount);
+    
 }
 
 void RoomGenerator::protectEmptyTilesNearWalls(Map& map) {

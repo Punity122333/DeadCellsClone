@@ -5,6 +5,8 @@
 #include "Spawner.hpp" 
 #include "GameUI.hpp"
 #include "TitleScreenUI.hpp"
+#include "PauseMenuUI.hpp"
+#include "effects/ParticleSystem.hpp"
 #include <algorithm>
 #include <filesystem>
 
@@ -21,6 +23,7 @@ namespace GamePaths {
 Game::Game() {
     InitWindow(screenWidth, screenHeight, "Cellular Automata");
     SetTargetFPS(60);
+    SetExitKey(KEY_F4);
 
     Image icon = LoadImage(GamePaths::Icon);
     ImageFormat(&icon, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8); 
@@ -61,6 +64,7 @@ Game::Game() {
 
     gameUI = std::make_unique<GameUI>(screenWidth, screenHeight);
     titleScreenUI = std::make_unique<TitleScreenUI>(screenWidth, screenHeight);
+    pauseMenuUI = std::make_unique<PauseMenuUI>(screenWidth, screenHeight);
 }
 
 Game::~Game() {
@@ -122,6 +126,10 @@ void Game::run() {
         }
 
         if (currentState == GameState::PLAYING) {
+            if (IsKeyPressed(KEY_ESCAPE)) {
+                currentState = GameState::PAUSED;
+            }
+            
             automataTimer += dt;
 
             if (automataTimer >= automataInterval) {
@@ -131,6 +139,7 @@ void Game::run() {
 
             map->updateTransitions(dt);
             map->updateParticles(dt, player->getPosition());
+            ParticleSystem::getInstance().update(dt);
             player->update(dt, *map, camera->getCamera(), scrapHounds, automatons);
             camera->update();
             player->checkWeaponHits(scrapHounds, automatons);
@@ -185,78 +194,101 @@ void Game::run() {
                 currentState = GameState::GAME_OVER;
             }
 
+        } else if (currentState == GameState::PAUSED) {
+            pauseMenuUI->update(dt);
+            int action = pauseMenuUI->draw();
+            if (action == 1) {
+                currentState = GameState::PLAYING;
+            } else if (action == 2) {
+                
+            } else if (action == 3) {
+                currentState = GameState::TITLE;
+            }
+            if (IsKeyPressed(KEY_ESCAPE)) {
+                currentState = GameState::PLAYING;
+            }
+
         } else if (currentState == GameState::GAME_OVER) {
             if (IsKeyPressed(KEY_R)) {
                 resetGame();
             }
         }
         
-        BeginTextureMode(sceneTexture);
-        ClearBackground(BLACK);
-        DrawTexture(fisheyeBackground, 0, 0, WHITE);
-        BeginMode2D(camera->getCamera());
-        map->draw(camera->getCamera());
-        player->draw();
+        if (currentState == GameState::PLAYING || currentState == GameState::PAUSED) {
+            BeginTextureMode(sceneTexture);
+            ClearBackground(BLACK);
+            DrawTexture(fisheyeBackground, 0, 0, WHITE);
+            BeginMode2D(camera->getCamera());
+            map->draw(camera->getCamera());
+            player->draw();
+            ParticleSystem::getInstance().draw();
 
-        Vector2 topLeftWorld = GetScreenToWorld2D({0.0f, 0.0f}, camera->getCamera());
-        Vector2 bottomRightWorld = GetScreenToWorld2D({(float)screenWidth, (float)screenHeight}, camera->getCamera());
+            Vector2 topLeftWorld = GetScreenToWorld2D({0.0f, 0.0f}, camera->getCamera());
+            Vector2 bottomRightWorld = GetScreenToWorld2D({(float)screenWidth, (float)screenHeight}, camera->getCamera());
 
-        Rectangle cameraViewWorld = {
-            topLeftWorld.x,
-            topLeftWorld.y,
-            bottomRightWorld.x - topLeftWorld.x,
-            bottomRightWorld.y - topLeftWorld.y
-        };
+            Rectangle cameraViewWorld = {
+                topLeftWorld.x,
+                topLeftWorld.y,
+                bottomRightWorld.x - topLeftWorld.x,
+                bottomRightWorld.y - topLeftWorld.y
+            };
 
-        for (const auto& enemy : scrapHounds) {
-            if (enemy.isAlive()) {
-                Rectangle enemyRect = { 
-                    enemy.getPosition().x, 
-                    enemy.getPosition().y, 
-                    32.0f, 
-                    32.0f  
-                }; 
-                if (CheckCollisionRecs(enemyRect, cameraViewWorld)) {
-                    enemy.draw();
-                    if (IsKeyDown(KEY_TAB)) { 
-                        DrawRectangleLines((int)enemy.getPosition().x, (int)enemy.getPosition().y, 32, 32, RED);
+            for (const auto& enemy : scrapHounds) {
+                if (enemy.isAlive()) {
+                    Rectangle enemyRect = { 
+                        enemy.getPosition().x, 
+                        enemy.getPosition().y, 
+                        32.0f, 
+                        32.0f  
+                    }; 
+                    if (CheckCollisionRecs(enemyRect, cameraViewWorld)) {
+                        enemy.draw();
+                        if (IsKeyDown(KEY_TAB)) { 
+                            DrawRectangleLines((int)enemy.getPosition().x, (int)enemy.getPosition().y, 32, 32, RED);
+                        }
                     }
                 }
             }
-        }
-        
-        for (const auto& automaton : automatons) {
-            if (automaton.isAlive()) {
-                Rectangle automatonRect = automaton.getHitbox();
-                if (CheckCollisionRecs(automatonRect, cameraViewWorld)) {
-                    automaton.draw();
-                    if (IsKeyDown(KEY_TAB)) { 
-                        DrawRectangleLines((int)automatonRect.x, (int)automatonRect.y, (int)automatonRect.width, (int)automatonRect.height, BLUE);
+            
+            for (const auto& automaton : automatons) {
+                if (automaton.isAlive()) {
+                    Rectangle automatonRect = automaton.getHitbox();
+                    if (CheckCollisionRecs(automatonRect, cameraViewWorld)) {
+                        automaton.draw();
+                        if (IsKeyDown(KEY_TAB)) { 
+                            DrawRectangleLines((int)automatonRect.x, (int)automatonRect.y, (int)automatonRect.width, (int)automatonRect.height, BLUE);
+                        }
                     }
                 }
             }
+            
+            if (IsKeyDown(KEY_TAB) && player->isAttacking()) {
+                Rectangle swordHitbox = player->getSwordHitbox();
+                DrawRectangleRec(swordHitbox, ColorAlpha(GREEN, 0.5f));
+            }
+            
+            EndMode2D();
+            EndTextureMode();
+            
+            BeginDrawing();
+            ClearBackground(BLACK);
+            BeginShaderMode(*activeShader);
+
+            Rectangle src = { 0, 0, (float)sceneTexture.texture.width, -(float)sceneTexture.texture.height };
+            Rectangle dst = { 0, 0, (float)screenWidth, (float)screenHeight };
+            Vector2 origin = { 0, 0 };
+            DrawTexturePro(sceneTexture.texture, src, dst, origin, 0.0f, WHITE);
+
+            EndShaderMode();
+            
+            if (currentState == GameState::PLAYING) {
+                gameUI->draw(*player, screenWidth, screenHeight, currentState);
+            } else if (currentState == GameState::PAUSED) {
+                gameUI->draw(*player, screenWidth, screenHeight, GameState::PLAYING);
+                pauseMenuUI->draw();
+            }
+
+            EndDrawing();
         }
-        
-        if (IsKeyDown(KEY_TAB) && player->isAttacking()) {
-            Rectangle swordHitbox = player->getSwordHitbox();
-            DrawRectangleRec(swordHitbox, ColorAlpha(GREEN, 0.5f));
-        }
-        
-        EndMode2D();
-        EndTextureMode();
-        
-        BeginDrawing();
-        ClearBackground(BLACK);
-        BeginShaderMode(*activeShader);
-
-        Rectangle src = { 0, 0, (float)sceneTexture.texture.width, -(float)sceneTexture.texture.height };
-        Rectangle dst = { 0, 0, (float)screenWidth, (float)screenHeight };
-        Vector2 origin = { 0, 0 };
-        DrawTexturePro(sceneTexture.texture, src, dst, origin, 0.0f, WHITE);
-
-        EndShaderMode();
-        gameUI->draw(*player, screenWidth, screenHeight, currentState);
-
-        EndDrawing();
     }
 }

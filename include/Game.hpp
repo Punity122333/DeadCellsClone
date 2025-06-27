@@ -6,14 +6,16 @@
 #include "enemies/ScrapHound.hpp"
 #include "enemies/Automaton.hpp"
 #include "GameUI.hpp"
-#include "TitleScreenUI.hpp" // Include TitleScreenUI
+#include "TitleScreenUI.hpp"
+#include "PauseMenuUI.hpp"
 #include <memory>
 #include <raylib.h>
 #include <vector>
 
 enum class GameState {
-    TITLE, // Added title screen state
+    TITLE,
     PLAYING,
+    PAUSED,
     GAME_OVER
 };
 
@@ -40,7 +42,8 @@ private:
     std::vector<Automaton> automatons; // Add automatons vector
     Spawner spawner;
     GameState currentState;
-    std::vector<Texture2D> tileTextures; // Add to Game class
+    std::vector<Texture2D> tileTextures;
     std::unique_ptr<GameUI> gameUI;
-    std::unique_ptr<TitleScreenUI> titleScreenUI; // Add title screen UI
+    std::unique_ptr<TitleScreenUI> titleScreenUI;
+    std::unique_ptr<PauseMenuUI> pauseMenuUI;
 };

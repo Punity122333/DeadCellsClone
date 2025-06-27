@@ -1,13 +1,14 @@
 #include "Player.hpp"
 #include "enemies/ScrapHound.hpp"
+#include "effects/ParticleSystem.hpp"
 #include "raymath.h"
 #include <algorithm>
 #include <raylib.h>
 #include "weapons/WeaponTypes.hpp"
 #include <future>
 #include <thread>
-
-#include <chrono> 
+#include <chrono>
+#include <cmath> 
 
 Image LoadImageAsync(const std::string& path) {
     Image image = LoadImage(path.c_str());
@@ -18,10 +19,10 @@ Image LoadImageAsync(const std::string& path) {
 }
 
 Player::Player(const Map &map) {
-    // Find a treasure room to spawn in first, then fall back to other rooms
+    
     const auto& rooms = map.getGeneratedRooms();
     if (!rooms.empty()) {
-        // Look for a treasure room first
+        
         const Room* spawnRoom = nullptr;
         for (const auto& room : rooms) {
             if (room.type == Room::TREASURE) {
@@ -29,7 +30,7 @@ Player::Player(const Map &map) {
                 break;
             }
         }
-        // If no treasure room found, use first room
+        
         if (spawnRoom == nullptr) {
             spawnRoom = &rooms[0];
         }
@@ -137,53 +138,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
     } else if (velocity.x < -10.0f || IsKeyDown(KEY_A)) {
         facingRight = false;
     }
-    updateParticles(dt);
     checkWeaponHits(enemies, automatons);
-}
-
-void Player::updateParticles(float dt) {
-    size_t numThreads = std::thread::hardware_concurrency();
-    if (numThreads == 0) numThreads = 2; 
-    
-    if (dustParticles.empty()) {
-        return;
-    }
-
-    size_t chunkSize = (dustParticles.size() + numThreads - 1) / numThreads;
-    std::vector<std::future<void>> futures;
-    futures.reserve(numThreads); 
-
-    for (size_t t = 0; t < numThreads; ++t) {
-        size_t start = t * chunkSize;
-        size_t end = std::min(start + chunkSize, dustParticles.size());
-
-        if (start >= end) {
-            continue; 
-        }
-
-        futures.push_back(std::async(std::launch::async, [&, start, end, dt]() { 
-            for (size_t i = start; i < end; ++i) {
-                if (i < dustParticles.size()) { 
-                    auto& p = dustParticles[i]; 
-                    p.position = Vector2Add(p.position, Vector2Scale(p.velocity, dt));
-                    p.velocity.y += 600 * dt; 
-                    p.age += dt;
-                }
-            }
-        }));
-    }
-
-    for (auto& f : futures) {
-        if (f.valid()) { 
-            f.get();
-        }
-    }
-
-    dustParticles.erase(
-        std::remove_if(dustParticles.begin(), dustParticles.end(),
-            [](const Particle& p) { return p.age > p.lifetime; }),
-        dustParticles.end()
-    );
 }
 
 Vector2 Player::getPosition() const {

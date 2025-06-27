@@ -10,17 +10,6 @@
 class ScrapHound;
 class Automaton;
 
-struct Particle {
-    Vector2 position;
-    Vector2 velocity;
-    float age;
-    float lifetime;
-    
-    Particle() = default;
-    Particle(Vector2 pos, Vector2 vel, float a, float life)
-        : position(pos), velocity(vel), age(a), lifetime(life) {}
-};
-
 
 
 class Player {
@@ -67,7 +56,6 @@ private:
     Vector2 position;
     bool ledgeGrabbed = false;
     Vector2 ledgeGrabPos = {0};
-    std::vector<Particle> dustParticles;
     Vector2 velocity;
     float dropTimer = 0.0f;
     const float DROP_TIME = 0.5f;
@@ -117,5 +105,4 @@ private:
     void updateCoyoteTimer(float dt);
     void handleJumpInput(const Map& map, float dt);
     void handleLedgeGrabInput();
-    void updateParticles(float dt);
 };

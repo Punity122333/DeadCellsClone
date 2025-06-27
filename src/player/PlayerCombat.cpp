@@ -1,8 +1,10 @@
 #include "Player.hpp"
 
 #include "weapons/Weapon.hpp"
+#include "weapons/WeaponTypes.hpp"
 #include "enemies/ScrapHound.hpp"
 #include "enemies/Automaton.hpp"
+#include "effects/ParticleSystem.hpp"
 #include <raylib.h>
 #include <vector>
 #include <memory>
@@ -51,6 +53,15 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
         return;
     }
 
+    // Check for fully charged bow shot muzzle flash
+    if (currentWeapon->getType() == WeaponType::BOW) {
+        Bow* bow = static_cast<Bow*>(currentWeapon);
+        if (bow->isFullyCharged()) {
+            Vector2 muzzlePos = {position.x + (facingRight ? 30.0f : -30.0f), position.y + 20.0f};
+            ParticleSystem::getInstance().createExplosionParticles(muzzlePos, 8, YELLOW);
+        }
+    }
+
     Rectangle weaponHitbox = currentWeapon->getHitbox(position, facingRight);
     if (weaponHitbox.width == 0 || weaponHitbox.height == 0) {
         return;
@@ -78,6 +89,10 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
                             std::lock_guard<std::mutex> lock(enemyMutex);
                             enemy.takeDamage(currentWeapon->getDamage());
                             enemy.applyKnockback(currentWeapon->getKnockback(facingRight));
+                            
+                            // Add particle explosion on enemy damage
+                            Vector2 hitPos = {enemyHitbox.x + enemyHitbox.width/2, enemyHitbox.y + enemyHitbox.height/2};
+                            ParticleSystem::getInstance().createExplosionParticles(hitPos, 6, RED);
                         }
                     }
                 }
@@ -105,6 +120,10 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
                             std::lock_guard<std::mutex> lock(automatonMutex);
                             automaton.takeDamage(currentWeapon->getDamage());
                             automaton.applyKnockback(currentWeapon->getKnockback(facingRight));
+                            
+                            // Add particle explosion on automaton damage
+                            Vector2 hitPos = {enemyHitbox.x + enemyHitbox.width/2, enemyHitbox.y + enemyHitbox.height/2};
+                            ParticleSystem::getInstance().createExplosionParticles(hitPos, 6, ORANGE);
                         }
                     }
                 }

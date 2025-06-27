@@ -50,6 +50,7 @@ public:
     void draw(Vector2 playerPosition, bool facingRight) const override;
     void startAttack() override;
     bool isCharging() const;
+    bool isFullyCharged() const;
     void fireArrow(Vector2 position, Vector2 direction);
     void updateArrows(float dt);
     void updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, int substeps);

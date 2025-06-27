@@ -253,6 +253,10 @@ bool Bow::isCharging() const {
     return charging;
 }
 
+bool Bow::isFullyCharged() const {
+    return charging && chargeTime >= maxChargeTime;
+}
+
 void Bow::updatePosition(Vector2 newPosition) {
     position = newPosition;
 }

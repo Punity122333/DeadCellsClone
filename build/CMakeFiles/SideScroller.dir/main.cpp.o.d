@@ -204,4 +204,5 @@ CMakeFiles/SideScroller.dir/main.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Camera.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/GameUI.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/TitleScreenUI.hpp \
- /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h
+ /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/PauseMenuUI.hpp

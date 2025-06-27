@@ -8,15 +8,40 @@
 #include <cmath>
 #include <algorithm>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846f
+#endif
 
-namespace {
+
+namespace MapConstants {
     constexpr int BORDER_TILE_VALUE = 1;
+    constexpr int CHUNK_SIZE = 16;
+    constexpr size_t MAX_PARTICLES = 160;
+    constexpr float GRAVITY_MULTIPLIER = 200.0f;
+    constexpr float DAMPING = 0.98f;
+    constexpr int POP_PARTICLE_COUNT = 5;
+    constexpr int SUCTION_PARTICLE_COUNT = 4;
+    constexpr float POP_SPEED_MIN = 50.0f;
+    constexpr float POP_SPEED_MAX = 120.0f;
+    constexpr float POP_SIZE_MIN = 1.0f;
+    constexpr float POP_SIZE_MAX = 2.5f;
+    constexpr float POP_LIFE_MIN = 0.2f;
+    constexpr float POP_LIFE_MAX = 0.6f;
+    constexpr float SUCTION_RADIUS_MIN = 12.0f;
+    constexpr float SUCTION_RADIUS_MAX = 20.0f;
+    constexpr float SUCTION_SIZE_MIN = 0.5f;
+    constexpr float SUCTION_SIZE_MAX = 1.5f;
+    constexpr float SUCTION_LIFE_MIN = 0.4f;
+    constexpr float SUCTION_LIFE_MAX = 0.8f;
+    constexpr float SUCTION_VEL_MULT = 1.8f;
 }
+
+using namespace MapConstants;
 
 constexpr int CHUNK_SIZE = 16;
 
 
-// Modified constructor
+
 Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures) :
     width(w),
     height(h),
@@ -25,7 +50,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures) :
     cooldownMap(w, std::vector<int>(h, 0)),
     isOriginalSolid(w, std::vector<bool>(h, false)),
     isConwayProtected(w, std::vector<bool>(h, false)),
-    tileTextures(loadedTileTextures) // Assign pre-loaded textures
+    tileTextures(loadedTileTextures) 
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -122,9 +147,6 @@ Map::~Map() {
 void Map::updateParticles(float dt, Vector2 playerPosition) {
     std::lock_guard<std::mutex> lock(particlesMutex);
     
-    constexpr size_t MAX_PARTICLES = 350;
-    
-    // First, sort particles by distance to player (closest first) before applying cap
     if (particles.size() > MAX_PARTICLES) {
         std::sort(particles.begin(), particles.end(), [&playerPosition](const auto& a, const auto& b) {
             float distA = (a.position.x - playerPosition.x) * (a.position.x - playerPosition.x) + 
@@ -133,13 +155,11 @@ void Map::updateParticles(float dt, Vector2 playerPosition) {
                          (b.position.y - playerPosition.y) * (b.position.y - playerPosition.y);
             return distA < distB;
         });
-        
-        // Keep only the closest particles to the player
         particles.erase(particles.begin() + MAX_PARTICLES, particles.end());
     }
     
-    const float gravity = 200.0f * dt;
-    const float damping = 0.98f;
+    const float gravity = GRAVITY_MULTIPLIER * dt;
+    const float damping = DAMPING;
     
     for (auto it = particles.begin(); it != particles.end();) {
         it->life -= dt;
@@ -150,7 +170,6 @@ void Map::updateParticles(float dt, Vector2 playerPosition) {
             it->position.y += it->velocity.y * dt;
             it->velocity.x *= damping;
             it->velocity.y = it->velocity.y * damping + gravity;
-            
             float alpha = it->life / it->maxLife;
             it->color.a = (unsigned char)(255 * alpha);
             ++it;
@@ -161,10 +180,10 @@ void Map::updateParticles(float dt, Vector2 playerPosition) {
 void Map::createPopEffect(Vector2 position) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> angleDist(0.0f, 2.0f * PI);
-    std::uniform_real_distribution<float> speedDist(50.0f, 120.0f);
-    std::uniform_real_distribution<float> sizeDist(1.0f, 2.5f);
-    std::uniform_real_distribution<float> lifeDist(0.2f, 0.6f);
+    std::uniform_real_distribution<float> angleDist(0.0f, 2.0f * M_PI);
+    std::uniform_real_distribution<float> speedDist(POP_SPEED_MIN, POP_SPEED_MAX);
+    std::uniform_real_distribution<float> sizeDist(POP_SIZE_MIN, POP_SIZE_MAX);
+    std::uniform_real_distribution<float> lifeDist(POP_LIFE_MIN, POP_LIFE_MAX);
     
     static const Color colors[] = {
         {255, 100, 100, 255},
@@ -175,15 +194,14 @@ void Map::createPopEffect(Vector2 position) {
     };
     
     std::lock_guard<std::mutex> lock(particlesMutex);
-    particles.reserve(particles.size() + 5);
-    for (int i = 0; i < 5; ++i) {
+    particles.reserve(particles.size() + POP_PARTICLE_COUNT);
+    for (int i = 0; i < POP_PARTICLE_COUNT; ++i) {
         float angle = angleDist(gen);
         float speed = speedDist(gen);
         Vector2 velocity = {cosf(angle) * speed, sinf(angle) * speed};
         float size = sizeDist(gen);
         float life = lifeDist(gen);
         Color color = colors[i];
-        
         particles.emplace_back(position, velocity, color, life, size);
     }
 }
@@ -191,10 +209,10 @@ void Map::createPopEffect(Vector2 position) {
 void Map::createSuctionEffect(Vector2 position) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> angleDist(0.0f, 2.0f * PI);
-    std::uniform_real_distribution<float> radiusDist(12.0f, 20.0f);
-    std::uniform_real_distribution<float> sizeDist(0.5f, 1.5f);
-    std::uniform_real_distribution<float> lifeDist(0.4f, 0.8f);
+    std::uniform_real_distribution<float> angleDist(0.0f, 2.0f * M_PI);
+    std::uniform_real_distribution<float> radiusDist(SUCTION_RADIUS_MIN, SUCTION_RADIUS_MAX);
+    std::uniform_real_distribution<float> sizeDist(SUCTION_SIZE_MIN, SUCTION_SIZE_MAX);
+    std::uniform_real_distribution<float> lifeDist(SUCTION_LIFE_MIN, SUCTION_LIFE_MAX);
     
     static const Color colors[] = {
         {200, 50, 50, 255},
@@ -204,8 +222,8 @@ void Map::createSuctionEffect(Vector2 position) {
     };
     
     std::lock_guard<std::mutex> lock(particlesMutex);
-    particles.reserve(particles.size() + 4);
-    for (int i = 0; i < 4; ++i) {
+    particles.reserve(particles.size() + SUCTION_PARTICLE_COUNT);
+    for (int i = 0; i < SUCTION_PARTICLE_COUNT; ++i) {
         float angle = angleDist(gen);
         float radius = radiusDist(gen);
         Vector2 startPos = {
@@ -213,13 +231,12 @@ void Map::createSuctionEffect(Vector2 position) {
             position.y + sinf(angle) * radius
         };
         Vector2 velocity = {
-            (position.x - startPos.x) * 1.8f,
-            (position.y - startPos.y) * 1.8f
+            (position.x - startPos.x) * SUCTION_VEL_MULT,
+            (position.y - startPos.y) * SUCTION_VEL_MULT
         };
         float size = sizeDist(gen);
         float life = lifeDist(gen);
         Color color = colors[i];
-        
         particles.emplace_back(startPos, velocity, color, life, size);
     }
 }
