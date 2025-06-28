@@ -53,15 +53,6 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
         return;
     }
 
-    // Check for fully charged bow shot muzzle flash
-    if (currentWeapon->getType() == WeaponType::BOW) {
-        Bow* bow = static_cast<Bow*>(currentWeapon);
-        if (bow->isFullyCharged()) {
-            Vector2 muzzlePos = {position.x + (facingRight ? 30.0f : -30.0f), position.y + 20.0f};
-            ParticleSystem::getInstance().createExplosionParticles(muzzlePos, 8, YELLOW);
-        }
-    }
-
     Rectangle weaponHitbox = currentWeapon->getHitbox(position, facingRight);
     if (weaponHitbox.width == 0 || weaponHitbox.height == 0) {
         return;
@@ -72,7 +63,6 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
     size_t numThreads = std::thread::hardware_concurrency();
     if (numThreads == 0) numThreads = 2;
 
-    // Multithreaded enemy hit checks
     size_t enemyChunk = (enemies.size() + numThreads - 1) / numThreads;
     std::vector<std::future<void>> enemyFutures;
     for (size_t t = 0; t < numThreads; ++t) {
@@ -90,7 +80,6 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
                             enemy.takeDamage(currentWeapon->getDamage());
                             enemy.applyKnockback(currentWeapon->getKnockback(facingRight));
                             
-                            // Add particle explosion on enemy damage
                             Vector2 hitPos = {enemyHitbox.x + enemyHitbox.width/2, enemyHitbox.y + enemyHitbox.height/2};
                             ParticleSystem::getInstance().createExplosionParticles(hitPos, 6, RED);
                         }
@@ -103,7 +92,6 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
         if (f.valid()) f.get();
     }
 
-    // Multithreaded automaton hit checks
     size_t automatonChunk = (automatons.size() + numThreads - 1) / numThreads;
     std::vector<std::future<void>> automatonFutures;
     for (size_t t = 0; t < numThreads; ++t) {
@@ -121,7 +109,6 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
                             automaton.takeDamage(currentWeapon->getDamage());
                             automaton.applyKnockback(currentWeapon->getKnockback(facingRight));
                             
-                            // Add particle explosion on automaton damage
                             Vector2 hitPos = {enemyHitbox.x + enemyHitbox.width/2, enemyHitbox.y + enemyHitbox.height/2};
                             ParticleSystem::getInstance().createExplosionParticles(hitPos, 6, ORANGE);
                         }

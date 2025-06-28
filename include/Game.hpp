@@ -5,9 +5,8 @@
 #include "Camera.hpp"
 #include "enemies/ScrapHound.hpp"
 #include "enemies/Automaton.hpp"
-#include "GameUI.hpp"
-#include "TitleScreenUI.hpp"
-#include "PauseMenuUI.hpp"
+#include "ui/UIController.hpp"
+#include "core/GameLoop.hpp"
 #include <memory>
 #include <raylib.h>
 #include <vector>
@@ -25,11 +24,14 @@ public:
     ~Game();
 
     void run();
-    void resetGame(); // Added resetGame declaration
+    void resetGame();
     
 private:
     const int screenWidth = 1280;
     const int screenHeight = 720;
+    
+    std::unique_ptr<Core::GameLoop> gameLoop;
+    
     Shader bloomShader;
     std::unique_ptr<Map> map;
     std::unique_ptr<Player> player;
@@ -39,11 +41,19 @@ private:
     Shader chromaticAberrationShader;
     Shader* activeShader;
     std::vector<ScrapHound> scrapHounds;
-    std::vector<Automaton> automatons; // Add automatons vector
+    std::vector<Automaton> automatons;
     Spawner spawner;
     GameState currentState;
     std::vector<Texture2D> tileTextures;
-    std::unique_ptr<GameUI> gameUI;
-    std::unique_ptr<TitleScreenUI> titleScreenUI;
-    std::unique_ptr<PauseMenuUI> pauseMenuUI;
+    std::unique_ptr<UI::UIController> uiController;
+    
+    float automataTimer;
+    const float automataInterval = 5.0f;
+    float fadeAlpha;
+    bool fadingToPlay;
+    
+    void update(float deltaTime);
+    void render(float interpolation);
+    void handleInput();
+    void initializeResources();
 };

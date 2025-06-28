@@ -1,6 +1,8 @@
 #include "weapons/WeaponTypes.hpp"
 #include "enemies/ScrapHound.hpp"
 #include "enemies/Automaton.hpp"
+#include "effects/ParticleSystem.hpp"
+#include "map/Map.hpp"
 
 #include <cmath>
 #include <cfloat>
@@ -162,6 +164,9 @@ void Bow::fireArrow(Vector2 startPosition, Vector2 direction) {
     chargeRatio = fmaxf(0.0f, fminf(chargeRatio, 1.0f)); 
     float calculatedSpeed = MIN_ARROW_SPEED + (MAX_THEORETICAL_ARROW_SPEED - MIN_ARROW_SPEED) * chargeRatio;
     float arrowSpeed = fminf(calculatedSpeed, EFFECTIVE_SPEED_CAP);
+    
+    bool wasFullyCharged = (chargeRatio >= 1.0f);
+    
     Arrow arrow;
     arrow.position = { startPosition.x, startPosition.y + ARROW_START_Y_OFFSET };
     arrow.prevPosition = arrow.position;  
@@ -169,19 +174,37 @@ void Bow::fireArrow(Vector2 startPosition, Vector2 direction) {
     arrow.speed = arrowSpeed; 
     arrow.lifetime = ARROW_LIFETIME;
     arrow.active = true;
+    arrow.wasFullyCharged = wasFullyCharged;
+    arrow.particleTimer = 0.0f;
     activeArrows.push_back(arrow);
 }
 
-void Bow::updateArrows(float dt) { 
+void Bow::updateArrows(float dt, const Map& map) { 
     for (auto& arrow : activeArrows) {
         if (!arrow.active) continue; 
-
-        
 
         arrow.prevPosition = arrow.position;  
         arrow.position.x += arrow.direction.x * arrow.speed * dt;
         arrow.position.y += arrow.direction.y * arrow.speed * dt;
         arrow.lifetime -= dt;
+        
+        // Check for wall collisions
+        int tileX = (int)(arrow.position.x / 32);
+        int tileY = (int)(arrow.position.y / 32);
+        if (map.isSolidTile(tileX, tileY)) {
+            arrow.active = false;
+            continue;
+        }
+        
+        // Spawn particles continuously for all arrows
+        arrow.particleTimer += dt;
+        constexpr float PARTICLE_SPAWN_INTERVAL = 0.05f; // Spawn particles every 0.05 seconds
+        if (arrow.particleTimer >= PARTICLE_SPAWN_INTERVAL) {
+            Color particleColor = arrow.wasFullyCharged ? RED : YELLOW;
+            ParticleSystem::getInstance().createExplosionParticles(arrow.position, 3, particleColor);
+            arrow.particleTimer = 0.0f;
+        }
+        
         if (arrow.lifetime <= 0.0f) {
             arrow.active = false; 
         }
@@ -211,17 +234,34 @@ void Bow::checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Aut
     }
 }
 
-void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, int substeps) {
+void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, int substeps, const Map& map) {
+    float substepDt = dt / substeps;
     for (int s = 0; s < substeps; ++s) {
         for (auto& arrow : activeArrows) {
             if (!arrow.active) continue; 
 
-        
-
             arrow.prevPosition = arrow.position;  
-            arrow.position.x += arrow.direction.x * arrow.speed * dt;
-            arrow.position.y += arrow.direction.y * arrow.speed * dt;
-            arrow.lifetime -= dt;
+            arrow.position.x += arrow.direction.x * arrow.speed * substepDt;
+            arrow.position.y += arrow.direction.y * arrow.speed * substepDt;
+            arrow.lifetime -= substepDt;
+            
+            // Check for wall collisions
+            int tileX = (int)(arrow.position.x / 32);
+            int tileY = (int)(arrow.position.y / 32);
+            if (map.isSolidTile(tileX, tileY)) {
+                arrow.active = false;
+                continue;
+            }
+            
+            // Spawn particles continuously for all arrows
+            arrow.particleTimer += substepDt;
+            constexpr float PARTICLE_SPAWN_INTERVAL = 0.05f; // Spawn particles every 0.05 seconds
+            if (arrow.particleTimer >= PARTICLE_SPAWN_INTERVAL) {
+                Color particleColor = arrow.wasFullyCharged ? RED : YELLOW;
+                ParticleSystem::getInstance().createExplosionParticles(arrow.position, 3, particleColor);
+                arrow.particleTimer = 0.0f;
+            }
+            
             if (arrow.lifetime <= 0.0f) {
                 arrow.active = false; 
             }

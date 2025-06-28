@@ -5,6 +5,7 @@
 
 class ScrapHound;
 class Automaton;
+class Map;
 
 class Sword : public Weapon {
 public:
@@ -52,8 +53,8 @@ public:
     bool isCharging() const;
     bool isFullyCharged() const;
     void fireArrow(Vector2 position, Vector2 direction);
-    void updateArrows(float dt);
-    void updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, int substeps);
+    void updateArrows(float dt, const Map& map);
+    void updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, int substeps, const Map& map);
     void drawArrows() const;
     void checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons);
     void updatePosition(Vector2 newPosition);
@@ -69,9 +70,11 @@ public:
         float speed = 0.0f;
         float lifetime = 1.0f;
         bool active = true;
+        bool wasFullyCharged = false;
+        float particleTimer = 0.0f;
         Arrow() = default;
-        Arrow(Vector2 pos, Vector2 dir, float spd = 400.0f, float life = 1.0f)
-            : position(pos), prevPosition(pos), direction(dir), speed(spd), lifetime(life), active(true) {}
+        Arrow(Vector2 pos, Vector2 dir, float spd = 400.0f, float life = 1.0f, bool fullyCharged = false)
+            : position(pos), prevPosition(pos), direction(dir), speed(spd), lifetime(life), active(true), wasFullyCharged(fullyCharged), particleTimer(0.0f) {}
         Rectangle getHitbox() const;
     };
 

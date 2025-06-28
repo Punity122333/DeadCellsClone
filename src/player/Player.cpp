@@ -1,12 +1,10 @@
 #include "Player.hpp"
 #include "enemies/ScrapHound.hpp"
-#include "effects/ParticleSystem.hpp"
-#include "raymath.h"
-#include <algorithm>
+
 #include <raylib.h>
 #include "weapons/WeaponTypes.hpp"
 #include <future>
-#include <thread>
+
 #include <chrono>
 #include <cmath> 
 
@@ -118,7 +116,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
 
                 if (bow->hasActiveArrows()) {
                     int default_substeps = 1;
-                    bow->updateArrowsWithSubsteps(dt, enemies, automatons, default_substeps);
+                    bow->updateArrowsWithSubsteps(dt, enemies, automatons, default_substeps, map);
                 }
             }
         } else {

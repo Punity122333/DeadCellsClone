@@ -225,30 +225,6 @@ src/Game.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Game.cpp.s
 .PHONY : src/Game.cpp.s
 
-src/GameUI.o: src/GameUI.cpp.o
-.PHONY : src/GameUI.o
-
-# target to build an object file
-src/GameUI.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameUI.cpp.o
-.PHONY : src/GameUI.cpp.o
-
-src/GameUI.i: src/GameUI.cpp.i
-.PHONY : src/GameUI.i
-
-# target to preprocess a source file
-src/GameUI.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameUI.cpp.i
-.PHONY : src/GameUI.cpp.i
-
-src/GameUI.s: src/GameUI.cpp.s
-.PHONY : src/GameUI.s
-
-# target to generate assembly for a file
-src/GameUI.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameUI.cpp.s
-.PHONY : src/GameUI.cpp.s
-
 src/Pathfinding.o: src/Pathfinding.cpp.o
 .PHONY : src/Pathfinding.o
 
@@ -273,53 +249,149 @@ src/Pathfinding.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Pathfinding.cpp.s
 .PHONY : src/Pathfinding.cpp.s
 
-src/PauseMenuUI.o: src/PauseMenuUI.cpp.o
-.PHONY : src/PauseMenuUI.o
+src/core/Core.o: src/core/Core.cpp.o
+.PHONY : src/core/Core.o
 
 # target to build an object file
-src/PauseMenuUI.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/PauseMenuUI.cpp.o
-.PHONY : src/PauseMenuUI.cpp.o
+src/core/Core.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/Core.cpp.o
+.PHONY : src/core/Core.cpp.o
 
-src/PauseMenuUI.i: src/PauseMenuUI.cpp.i
-.PHONY : src/PauseMenuUI.i
+src/core/Core.i: src/core/Core.cpp.i
+.PHONY : src/core/Core.i
 
 # target to preprocess a source file
-src/PauseMenuUI.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/PauseMenuUI.cpp.i
-.PHONY : src/PauseMenuUI.cpp.i
+src/core/Core.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/Core.cpp.i
+.PHONY : src/core/Core.cpp.i
 
-src/PauseMenuUI.s: src/PauseMenuUI.cpp.s
-.PHONY : src/PauseMenuUI.s
+src/core/Core.s: src/core/Core.cpp.s
+.PHONY : src/core/Core.s
 
 # target to generate assembly for a file
-src/PauseMenuUI.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/PauseMenuUI.cpp.s
-.PHONY : src/PauseMenuUI.cpp.s
+src/core/Core.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/Core.cpp.s
+.PHONY : src/core/Core.cpp.s
 
-src/TitleScreenUI.o: src/TitleScreenUI.cpp.o
-.PHONY : src/TitleScreenUI.o
+src/core/EventManager.o: src/core/EventManager.cpp.o
+.PHONY : src/core/EventManager.o
 
 # target to build an object file
-src/TitleScreenUI.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/TitleScreenUI.cpp.o
-.PHONY : src/TitleScreenUI.cpp.o
+src/core/EventManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/EventManager.cpp.o
+.PHONY : src/core/EventManager.cpp.o
 
-src/TitleScreenUI.i: src/TitleScreenUI.cpp.i
-.PHONY : src/TitleScreenUI.i
+src/core/EventManager.i: src/core/EventManager.cpp.i
+.PHONY : src/core/EventManager.i
 
 # target to preprocess a source file
-src/TitleScreenUI.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/TitleScreenUI.cpp.i
-.PHONY : src/TitleScreenUI.cpp.i
+src/core/EventManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/EventManager.cpp.i
+.PHONY : src/core/EventManager.cpp.i
 
-src/TitleScreenUI.s: src/TitleScreenUI.cpp.s
-.PHONY : src/TitleScreenUI.s
+src/core/EventManager.s: src/core/EventManager.cpp.s
+.PHONY : src/core/EventManager.s
 
 # target to generate assembly for a file
-src/TitleScreenUI.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/TitleScreenUI.cpp.s
-.PHONY : src/TitleScreenUI.cpp.s
+src/core/EventManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/EventManager.cpp.s
+.PHONY : src/core/EventManager.cpp.s
+
+src/core/GameLoop.o: src/core/GameLoop.cpp.o
+.PHONY : src/core/GameLoop.o
+
+# target to build an object file
+src/core/GameLoop.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GameLoop.cpp.o
+.PHONY : src/core/GameLoop.cpp.o
+
+src/core/GameLoop.i: src/core/GameLoop.cpp.i
+.PHONY : src/core/GameLoop.i
+
+# target to preprocess a source file
+src/core/GameLoop.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GameLoop.cpp.i
+.PHONY : src/core/GameLoop.cpp.i
+
+src/core/GameLoop.s: src/core/GameLoop.cpp.s
+.PHONY : src/core/GameLoop.s
+
+# target to generate assembly for a file
+src/core/GameLoop.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GameLoop.cpp.s
+.PHONY : src/core/GameLoop.cpp.s
+
+src/core/GameStates.o: src/core/GameStates.cpp.o
+.PHONY : src/core/GameStates.o
+
+# target to build an object file
+src/core/GameStates.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.o
+.PHONY : src/core/GameStates.cpp.o
+
+src/core/GameStates.i: src/core/GameStates.cpp.i
+.PHONY : src/core/GameStates.i
+
+# target to preprocess a source file
+src/core/GameStates.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.i
+.PHONY : src/core/GameStates.cpp.i
+
+src/core/GameStates.s: src/core/GameStates.cpp.s
+.PHONY : src/core/GameStates.s
+
+# target to generate assembly for a file
+src/core/GameStates.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.s
+.PHONY : src/core/GameStates.cpp.s
+
+src/core/InputManager.o: src/core/InputManager.cpp.o
+.PHONY : src/core/InputManager.o
+
+# target to build an object file
+src/core/InputManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/InputManager.cpp.o
+.PHONY : src/core/InputManager.cpp.o
+
+src/core/InputManager.i: src/core/InputManager.cpp.i
+.PHONY : src/core/InputManager.i
+
+# target to preprocess a source file
+src/core/InputManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/InputManager.cpp.i
+.PHONY : src/core/InputManager.cpp.i
+
+src/core/InputManager.s: src/core/InputManager.cpp.s
+.PHONY : src/core/InputManager.s
+
+# target to generate assembly for a file
+src/core/InputManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/InputManager.cpp.s
+.PHONY : src/core/InputManager.cpp.s
+
+src/core/ResourceManager.o: src/core/ResourceManager.cpp.o
+.PHONY : src/core/ResourceManager.o
+
+# target to build an object file
+src/core/ResourceManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/ResourceManager.cpp.o
+.PHONY : src/core/ResourceManager.cpp.o
+
+src/core/ResourceManager.i: src/core/ResourceManager.cpp.i
+.PHONY : src/core/ResourceManager.i
+
+# target to preprocess a source file
+src/core/ResourceManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/ResourceManager.cpp.i
+.PHONY : src/core/ResourceManager.cpp.i
+
+src/core/ResourceManager.s: src/core/ResourceManager.cpp.s
+.PHONY : src/core/ResourceManager.s
+
+# target to generate assembly for a file
+src/core/ResourceManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/ResourceManager.cpp.s
+.PHONY : src/core/ResourceManager.cpp.s
 
 src/core/Spawner.o: src/core/Spawner.cpp.o
 .PHONY : src/core/Spawner.o
@@ -344,6 +416,30 @@ src/core/Spawner.s: src/core/Spawner.cpp.s
 src/core/Spawner.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/Spawner.cpp.s
 .PHONY : src/core/Spawner.cpp.s
+
+src/core/StateManager.o: src/core/StateManager.cpp.o
+.PHONY : src/core/StateManager.o
+
+# target to build an object file
+src/core/StateManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/StateManager.cpp.o
+.PHONY : src/core/StateManager.cpp.o
+
+src/core/StateManager.i: src/core/StateManager.cpp.i
+.PHONY : src/core/StateManager.i
+
+# target to preprocess a source file
+src/core/StateManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/StateManager.cpp.i
+.PHONY : src/core/StateManager.cpp.i
+
+src/core/StateManager.s: src/core/StateManager.cpp.s
+.PHONY : src/core/StateManager.s
+
+# target to generate assembly for a file
+src/core/StateManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/StateManager.cpp.s
+.PHONY : src/core/StateManager.cpp.s
 
 src/effects/ParticleSystem.o: src/effects/ParticleSystem.cpp.o
 .PHONY : src/effects/ParticleSystem.o
@@ -873,6 +969,102 @@ src/player/PlayerRenderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/player/PlayerRenderer.cpp.s
 .PHONY : src/player/PlayerRenderer.cpp.s
 
+src/ui/GameHUDComponent.o: src/ui/GameHUDComponent.cpp.o
+.PHONY : src/ui/GameHUDComponent.o
+
+# target to build an object file
+src/ui/GameHUDComponent.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/GameHUDComponent.cpp.o
+.PHONY : src/ui/GameHUDComponent.cpp.o
+
+src/ui/GameHUDComponent.i: src/ui/GameHUDComponent.cpp.i
+.PHONY : src/ui/GameHUDComponent.i
+
+# target to preprocess a source file
+src/ui/GameHUDComponent.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/GameHUDComponent.cpp.i
+.PHONY : src/ui/GameHUDComponent.cpp.i
+
+src/ui/GameHUDComponent.s: src/ui/GameHUDComponent.cpp.s
+.PHONY : src/ui/GameHUDComponent.s
+
+# target to generate assembly for a file
+src/ui/GameHUDComponent.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/GameHUDComponent.cpp.s
+.PHONY : src/ui/GameHUDComponent.cpp.s
+
+src/ui/PauseMenuComponent.o: src/ui/PauseMenuComponent.cpp.o
+.PHONY : src/ui/PauseMenuComponent.o
+
+# target to build an object file
+src/ui/PauseMenuComponent.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/PauseMenuComponent.cpp.o
+.PHONY : src/ui/PauseMenuComponent.cpp.o
+
+src/ui/PauseMenuComponent.i: src/ui/PauseMenuComponent.cpp.i
+.PHONY : src/ui/PauseMenuComponent.i
+
+# target to preprocess a source file
+src/ui/PauseMenuComponent.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/PauseMenuComponent.cpp.i
+.PHONY : src/ui/PauseMenuComponent.cpp.i
+
+src/ui/PauseMenuComponent.s: src/ui/PauseMenuComponent.cpp.s
+.PHONY : src/ui/PauseMenuComponent.s
+
+# target to generate assembly for a file
+src/ui/PauseMenuComponent.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/PauseMenuComponent.cpp.s
+.PHONY : src/ui/PauseMenuComponent.cpp.s
+
+src/ui/TitleScreenComponent.o: src/ui/TitleScreenComponent.cpp.o
+.PHONY : src/ui/TitleScreenComponent.o
+
+# target to build an object file
+src/ui/TitleScreenComponent.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/TitleScreenComponent.cpp.o
+.PHONY : src/ui/TitleScreenComponent.cpp.o
+
+src/ui/TitleScreenComponent.i: src/ui/TitleScreenComponent.cpp.i
+.PHONY : src/ui/TitleScreenComponent.i
+
+# target to preprocess a source file
+src/ui/TitleScreenComponent.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/TitleScreenComponent.cpp.i
+.PHONY : src/ui/TitleScreenComponent.cpp.i
+
+src/ui/TitleScreenComponent.s: src/ui/TitleScreenComponent.cpp.s
+.PHONY : src/ui/TitleScreenComponent.s
+
+# target to generate assembly for a file
+src/ui/TitleScreenComponent.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/TitleScreenComponent.cpp.s
+.PHONY : src/ui/TitleScreenComponent.cpp.s
+
+src/ui/UIController.o: src/ui/UIController.cpp.o
+.PHONY : src/ui/UIController.o
+
+# target to build an object file
+src/ui/UIController.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/UIController.cpp.o
+.PHONY : src/ui/UIController.cpp.o
+
+src/ui/UIController.i: src/ui/UIController.cpp.i
+.PHONY : src/ui/UIController.i
+
+# target to preprocess a source file
+src/ui/UIController.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/UIController.cpp.i
+.PHONY : src/ui/UIController.cpp.i
+
+src/ui/UIController.s: src/ui/UIController.cpp.s
+.PHONY : src/ui/UIController.s
+
+# target to generate assembly for a file
+src/ui/UIController.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/UIController.cpp.s
+.PHONY : src/ui/UIController.cpp.s
+
 src/weapons/Bow.o: src/weapons/Bow.cpp.o
 .PHONY : src/weapons/Bow.o
 
@@ -1014,21 +1206,33 @@ help:
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
-	@echo "... src/GameUI.o"
-	@echo "... src/GameUI.i"
-	@echo "... src/GameUI.s"
 	@echo "... src/Pathfinding.o"
 	@echo "... src/Pathfinding.i"
 	@echo "... src/Pathfinding.s"
-	@echo "... src/PauseMenuUI.o"
-	@echo "... src/PauseMenuUI.i"
-	@echo "... src/PauseMenuUI.s"
-	@echo "... src/TitleScreenUI.o"
-	@echo "... src/TitleScreenUI.i"
-	@echo "... src/TitleScreenUI.s"
+	@echo "... src/core/Core.o"
+	@echo "... src/core/Core.i"
+	@echo "... src/core/Core.s"
+	@echo "... src/core/EventManager.o"
+	@echo "... src/core/EventManager.i"
+	@echo "... src/core/EventManager.s"
+	@echo "... src/core/GameLoop.o"
+	@echo "... src/core/GameLoop.i"
+	@echo "... src/core/GameLoop.s"
+	@echo "... src/core/GameStates.o"
+	@echo "... src/core/GameStates.i"
+	@echo "... src/core/GameStates.s"
+	@echo "... src/core/InputManager.o"
+	@echo "... src/core/InputManager.i"
+	@echo "... src/core/InputManager.s"
+	@echo "... src/core/ResourceManager.o"
+	@echo "... src/core/ResourceManager.i"
+	@echo "... src/core/ResourceManager.s"
 	@echo "... src/core/Spawner.o"
 	@echo "... src/core/Spawner.i"
 	@echo "... src/core/Spawner.s"
+	@echo "... src/core/StateManager.o"
+	@echo "... src/core/StateManager.i"
+	@echo "... src/core/StateManager.s"
 	@echo "... src/effects/ParticleSystem.o"
 	@echo "... src/effects/ParticleSystem.i"
 	@echo "... src/effects/ParticleSystem.s"
@@ -1095,6 +1299,18 @@ help:
 	@echo "... src/player/PlayerRenderer.o"
 	@echo "... src/player/PlayerRenderer.i"
 	@echo "... src/player/PlayerRenderer.s"
+	@echo "... src/ui/GameHUDComponent.o"
+	@echo "... src/ui/GameHUDComponent.i"
+	@echo "... src/ui/GameHUDComponent.s"
+	@echo "... src/ui/PauseMenuComponent.o"
+	@echo "... src/ui/PauseMenuComponent.i"
+	@echo "... src/ui/PauseMenuComponent.s"
+	@echo "... src/ui/TitleScreenComponent.o"
+	@echo "... src/ui/TitleScreenComponent.i"
+	@echo "... src/ui/TitleScreenComponent.s"
+	@echo "... src/ui/UIController.o"
+	@echo "... src/ui/UIController.i"
+	@echo "... src/ui/UIController.s"
 	@echo "... src/weapons/Bow.o"
 	@echo "... src/weapons/Bow.i"
 	@echo "... src/weapons/Bow.s"

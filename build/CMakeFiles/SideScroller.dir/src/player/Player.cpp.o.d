@@ -197,12 +197,5 @@ CMakeFiles/SideScroller.dir/src/player/Player.cpp.o: \
  /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_function.h \
  /usr/include/c++/13/bits/std_thread.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/ScrapHound.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ParticleSystem.hpp \
- /usr/local/include/raymath.h /usr/include/c++/13/math.h \
- /usr/include/c++/13/algorithm /usr/include/c++/13/bits/stl_algo.h \
- /usr/include/c++/13/bits/algorithmfwd.h \
- /usr/include/c++/13/bits/stl_heap.h \
- /usr/include/c++/13/pstl/glue_algorithm_defs.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/WeaponTypes.hpp \
- /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h \
  /usr/include/c++/13/chrono
