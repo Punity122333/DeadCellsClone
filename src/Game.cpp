@@ -33,10 +33,22 @@ Game::Game()
 
     auto& resourceManager = Core::GetResourceManager();
     
-    Image icon = LoadImage(GamePaths::Icon);
-    ImageFormat(&icon, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8); 
-    SetWindowIcon(icon);
-    UnloadImage(icon);
+    // Set up resource search paths
+    resourceManager.setSearchPaths({"../resources/", "./resources/", "../shader/", "./shader/"});
+    
+    // Enable hot-reloading in debug builds
+    #ifdef DEBUG
+    resourceManager.setHotReloadEnabled(true);
+    #endif
+    
+    // Load icon using ResourceManager
+    auto iconHandle = resourceManager.loadTexture(GamePaths::Icon);
+    if (iconHandle.isValid()) {
+        Image icon = LoadImageFromTexture(*iconHandle.get());
+        ImageFormat(&icon, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8); 
+        SetWindowIcon(icon);
+        UnloadImage(icon);
+    }
 
     initializeResources();
     
@@ -58,12 +70,7 @@ Game::Game()
 Game::~Game() {
     auto& resourceManager = Core::GetResourceManager();
     
-    UnloadTexture(fisheyeBackground);
-    UnloadShader(bloomShader);
-    UnloadShader(chromaticAberrationShader);
-    for (const auto& texture : tileTextures) {
-        UnloadTexture(texture);
-    }
+    // ResourceManager handles cleanup automatically
     camera.reset();
     player.reset();
     map.reset();
@@ -71,21 +78,35 @@ Game::~Game() {
 }
 
 void Game::initializeResources() {
+    auto& resourceManager = Core::GetResourceManager();
+    
     Color innerCyan = { 0, 80, 80, 255 };
     Color outerPrussianBlue = { 0, 30, 50, 255 };
     fisheyeBackground = CreateFisheyeGradient(screenWidth, screenHeight, innerCyan, outerPrussianBlue);
 
+    // Load tile textures using ResourceManager
+    std::vector<std::string> tilePaths;
     int numTiles = 0;
     for (int i = 0; ; ++i) {
         char path_buffer[64];
         snprintf(path_buffer, sizeof(path_buffer), GamePaths::Tile, i);
         if (!std::filesystem::exists(path_buffer)) break;
+        tilePaths.push_back(path_buffer);
         numTiles++;
     }
-    for (int i = 0; i < numTiles; ++i) {
-        char path_buffer[64];
-        snprintf(path_buffer, sizeof(path_buffer), GamePaths::Tile, i);
-        tileTextures.push_back(LoadTexture(path_buffer));
+    
+    // Preload all tile textures at once
+    resourceManager.preloadBatch(tilePaths);
+    
+    // Get the loaded textures
+    tileTextureHandles.clear();
+    tileTextures.clear();
+    for (const auto& path : tilePaths) {
+        auto handle = resourceManager.getTexture(path);
+        if (handle.isValid()) {
+            tileTextureHandles.push_back(handle);
+            tileTextures.push_back(*handle.get());
+        }
     }
 
     map = std::make_unique<Map>(500, 300, tileTextures);
@@ -95,9 +116,18 @@ void Game::initializeResources() {
     spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons);
 
     sceneTexture = LoadRenderTexture(screenWidth, screenHeight);
-    bloomShader = LoadShader(0, GamePaths::BloomShader);
-    chromaticAberrationShader = LoadShader(0, GamePaths::ChromaticAberrationShader);
-    activeShader = &bloomShader;
+    
+    // Load shaders using ResourceManager
+    bloomShaderHandle = resourceManager.loadShader("", GamePaths::BloomShader);
+    chromaticAberrationShaderHandle = resourceManager.loadShader("", GamePaths::ChromaticAberrationShader);
+    
+    if (bloomShaderHandle.isValid()) {
+        bloomShader = *bloomShaderHandle.get();
+        activeShader = bloomShaderHandle.get();
+    }
+    if (chromaticAberrationShaderHandle.isValid()) {
+        chromaticAberrationShader = *chromaticAberrationShaderHandle.get();
+    }
 }
 
 void Game::resetGame() {
@@ -117,12 +147,33 @@ void Game::run() {
     gameLoop->run();
 }
 
+void Game::showResourceStats() {
+    auto& resourceManager = Core::GetResourceManager();
+    auto stats = resourceManager.getMemoryStats();
+    
+    // This could be displayed in a debug overlay or console
+    // For now, we'll just track the stats for potential use
+    // In a real implementation, you might render this on screen
+}
+
 void Game::update(float deltaTime) {
     auto& inputManager = Core::GetInputManager();
     auto& eventManager = Core::GetEventManager();
+    auto& resourceManager = Core::GetResourceManager();
     
     inputManager.update(deltaTime);
     eventManager.processEvents();
+    
+    // Check for hot-reload in debug builds
+    #ifdef DEBUG
+    resourceManager.checkForHotReload();
+    #endif
+    
+    // Display resource statistics when debug key is held
+    if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) {
+        auto stats = resourceManager.getMemoryStats();
+        // Stats can be displayed in debug overlay
+    }
     
     if (currentState == GameState::TITLE) {
         uiController->update(deltaTime, currentState);
@@ -140,7 +191,7 @@ void Game::update(float deltaTime) {
         map->updateTransitions(deltaTime);
         map->updateParticles(deltaTime, player->getPosition());
         ParticleSystem::getInstance().update(deltaTime);
-        player->update(deltaTime, *map, camera->getCamera(), scrapHounds, automatons);
+        player->update(deltaTime, *map, camera->getCamera(), scrapHounds, automatons, inputManager);
         camera->update();
         player->checkWeaponHits(scrapHounds, automatons);
 
@@ -195,13 +246,13 @@ void Game::update(float deltaTime) {
     } else if (currentState == GameState::PAUSED) {
         uiController->update(deltaTime, currentState);
     } else if (currentState == GameState::GAME_OVER) {
-        if (inputManager.isActionPressed(Core::InputAction::INTERACT)) {
-            resetGame();
-        }
+        uiController->update(deltaTime, currentState);
     }
 }
 
 void Game::render(float interpolation) {
+    auto& inputManager = Core::GetInputManager();
+    
     if (currentState == GameState::TITLE) {
         BeginDrawing();
         ClearBackground(BLACK);
@@ -258,7 +309,7 @@ void Game::render(float interpolation) {
                 }; 
                 if (CheckCollisionRecs(enemyRect, cameraViewWorld)) {
                     enemy.draw();
-                    if (IsKeyDown(KEY_TAB)) { 
+                    if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) { 
                         DrawRectangleLines((int)enemy.getPosition().x, (int)enemy.getPosition().y, 32, 32, RED);
                     }
                 }
@@ -270,14 +321,14 @@ void Game::render(float interpolation) {
                 Rectangle automatonRect = automaton.getHitbox();
                 if (CheckCollisionRecs(automatonRect, cameraViewWorld)) {
                     automaton.draw();
-                    if (IsKeyDown(KEY_TAB)) { 
+                    if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) { 
                         DrawRectangleLines((int)automatonRect.x, (int)automatonRect.y, (int)automatonRect.width, (int)automatonRect.height, BLUE);
                     }
                 }
             }
         }
         
-        if (IsKeyDown(KEY_TAB) && player->isAttacking()) {
+        if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE) && player->isAttacking()) {
             Rectangle swordHitbox = player->getSwordHitbox();
             DrawRectangleRec(swordHitbox, ColorAlpha(GREEN, 0.5f));
         }
@@ -300,6 +351,13 @@ void Game::render(float interpolation) {
             UI::UIAction action = uiController->draw(currentState);
             if (action == UI::UIAction::RESUME) {
                 currentState = GameState::PLAYING;
+            } else if (action == UI::UIAction::QUIT_TO_MENU) {
+                currentState = GameState::TITLE;
+            }
+        } else if (currentState == GameState::GAME_OVER) {
+            UI::UIAction action = uiController->draw(currentState);
+            if (action == UI::UIAction::RESTART) {
+                resetGame();
             } else if (action == UI::UIAction::QUIT_TO_MENU) {
                 currentState = GameState::TITLE;
             }

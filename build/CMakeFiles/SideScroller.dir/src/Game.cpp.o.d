@@ -186,49 +186,50 @@ CMakeFiles/SideScroller.dir/src/Game.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Player.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/Weapon.hpp \
- /usr/include/c++/13/memory /usr/include/c++/13/bits/stl_tempbuf.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \
+ /usr/include/c++/13/unordered_map \
+ /usr/include/c++/13/bits/unordered_map.h \
+ /usr/include/c++/13/bits/hashtable.h \
+ /usr/include/c++/13/bits/hashtable_policy.h \
+ /usr/include/c++/13/ext/aligned_buffer.h \
+ /usr/include/c++/13/bits/enable_special_members.h \
+ /usr/include/c++/13/bits/node_handle.h \
+ /usr/include/c++/13/bits/erase_if.h /usr/include/c++/13/functional \
+ /usr/include/c++/13/bits/std_function.h /usr/include/c++/13/array \
+ /usr/include/c++/13/compare /usr/include/c++/13/bits/stl_algo.h \
+ /usr/include/c++/13/bits/algorithmfwd.h \
+ /usr/include/c++/13/bits/stl_heap.h \
+ /usr/include/c++/13/bits/stl_tempbuf.h /usr/include/c++/13/memory \
  /usr/include/c++/13/bits/stl_raw_storage_iter.h \
  /usr/include/c++/13/bits/align.h /usr/include/c++/13/bits/unique_ptr.h \
  /usr/include/c++/13/bits/shared_ptr.h \
  /usr/include/c++/13/bits/shared_ptr_base.h \
  /usr/include/c++/13/bits/allocated_ptr.h \
- /usr/include/c++/13/ext/aligned_buffer.h \
  /usr/include/c++/13/ext/concurrence.h \
  /usr/include/c++/13/bits/shared_ptr_atomic.h \
  /usr/include/c++/13/backward/auto_ptr.h \
  /usr/include/c++/13/pstl/glue_memory_defs.h /usr/include/c++/13/future \
  /usr/include/c++/13/condition_variable /usr/include/c++/13/system_error \
  /usr/include/c++/13/stdexcept /usr/include/c++/13/bits/atomic_futex.h \
- /usr/include/c++/13/bits/std_function.h \
  /usr/include/c++/13/bits/std_thread.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Camera.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/ui/UIController.hpp \
  /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h \
- /usr/include/c++/13/unordered_map \
- /usr/include/c++/13/bits/unordered_map.h \
- /usr/include/c++/13/bits/hashtable.h \
- /usr/include/c++/13/bits/hashtable_policy.h \
- /usr/include/c++/13/bits/enable_special_members.h \
- /usr/include/c++/13/bits/node_handle.h \
- /usr/include/c++/13/bits/erase_if.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/GameLoop.hpp \
- /usr/include/c++/13/functional /usr/include/c++/13/array \
- /usr/include/c++/13/compare /usr/include/c++/13/bits/stl_algo.h \
- /usr/include/c++/13/bits/algorithmfwd.h \
- /usr/include/c++/13/bits/stl_heap.h /usr/include/c++/13/chrono \
+ /usr/include/c++/13/chrono \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ResourceManager.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/FishEyeGradient.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Spawner.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ParticleSystem.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/Core.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/GameLoop.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/StateManager.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ResourceManager.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/EventManager.hpp \
  /usr/include/c++/13/queue /usr/include/c++/13/deque \
  /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
- /usr/include/c++/13/bits/stl_queue.h /usr/include/c++/13/typeindex \
- /usr/include/c++/13/algorithm \
+ /usr/include/c++/13/bits/stl_queue.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ThreadPool.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/Core.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ResourceManager.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/EventManager.hpp \
+ /usr/include/c++/13/typeindex /usr/include/c++/13/algorithm \
  /usr/include/c++/13/pstl/glue_algorithm_defs.h \
  /usr/include/c++/13/filesystem /usr/include/c++/13/bits/fs_fwd.h \
  /usr/include/c++/13/bits/fs_path.h /usr/include/c++/13/locale \

@@ -3,6 +3,11 @@
 #include <cstdlib>
 #include <thread>
 #include <algorithm>
+#include <future>
+
+ParticleSystem::ParticleSystem() {
+    threadPool = std::make_unique<ThreadPool>();
+}
 
 ParticleSystem& ParticleSystem::getInstance() {
     static ParticleSystem instance;
@@ -10,136 +15,150 @@ ParticleSystem& ParticleSystem::getInstance() {
 }
 
 void ParticleSystem::createExplosion(Vector2 position, int count, Color color, float duration, float speed) {
-    std::lock_guard<std::mutex> lock(particleMutex);
-    for (int i = 0; i < count; ++i) {
-        Particle particle;
-        particle.position = position;
+    auto future = threadPool->enqueue([=]() {
+        std::vector<Particle> newParticles;
+        newParticles.reserve(count);
         
-        // Random angle for explosion
-        float angle = ((float)rand() / RAND_MAX) * 2.0f * PI;
-        float velocityMagnitude = speed * (0.5f + ((float)rand() / RAND_MAX) * 0.5f);
+        for (int i = 0; i < count; ++i) {
+            Particle particle;
+            particle.position = position;
+            
+            float angle = ((float)rand() / RAND_MAX) * 2.0f * M_PI;
+            float velocityMagnitude = speed * (0.5f + ((float)rand() / RAND_MAX) * 0.5f);
+            
+            particle.velocity.x = cos(angle) * velocityMagnitude;
+            particle.velocity.y = sin(angle) * velocityMagnitude;
+            
+            particle.color = color;
+            particle.life = duration;
+            particle.maxLife = duration;
+            particle.size = 2.0f + ((float)rand() / RAND_MAX) * 3.0f;
+            
+            newParticles.push_back(particle);
+        }
         
-        particle.velocity.x = cos(angle) * velocityMagnitude;
-        particle.velocity.y = sin(angle) * velocityMagnitude;
-        
-        particle.color = color;
-        particle.life = duration;
-        particle.maxLife = duration;
-        particle.size = 2.0f + ((float)rand() / RAND_MAX) * 3.0f;
-        
-        particles.push_back(particle);
-    }
+        {
+            std::lock_guard<std::mutex> lock(pendingMutex);
+            pendingParticles.push(std::move(newParticles));
+        }
+    });
 }
 
 void ParticleSystem::createDustParticle(Vector2 position, Vector2 velocity, float lifetime) {
-    std::lock_guard<std::mutex> lock(particleMutex);
-    Particle particle;
-    particle.position = position;
-    particle.velocity = velocity;
-    particle.color = { 200, 200, 180, 180 };
-    particle.life = lifetime;
-    particle.maxLife = lifetime;
-    particle.size = 4.0f;
-    particles.push_back(particle);
-}
-
-void ParticleSystem::createExplosionParticles(Vector2 position, int count, Color baseColor) {
-    std::lock_guard<std::mutex> lock(particleMutex);
-    for (int i = 0; i < count; ++i) {
-        // Random angle for explosion
-        float angle = ((float)rand() / RAND_MAX) * 2.0f * PI;
-        float speed = 50.0f + ((float)rand() / RAND_MAX) * 100.0f;
-        
-        Vector2 velocity = {
-            (float)(cos(angle) * speed),
-            (float)(sin(angle) * speed)
-        };
-        
-        float lifetime = 0.3f + ((float)rand() / RAND_MAX) * 0.4f;
-        float size = 1.0f + ((float)rand() / RAND_MAX) * 3.0f;
-        
-        Color particleColor = baseColor;
-        // Add some variation to the color
-        particleColor.r = (unsigned char)std::max(0, std::min(255, (int)particleColor.r + (rand() % 40) - 20));
-        particleColor.g = (unsigned char)std::max(0, std::min(255, (int)particleColor.g + (rand() % 40) - 20));
-        particleColor.b = (unsigned char)std::max(0, std::min(255, (int)particleColor.b + (rand() % 40) - 20));
+    auto future = threadPool->enqueue([=]() {
+        std::vector<Particle> newParticles;
+        newParticles.reserve(1);
         
         Particle particle;
         particle.position = position;
         particle.velocity = velocity;
-        particle.color = particleColor;
+        particle.color = { 200, 200, 180, 180 };
         particle.life = lifetime;
         particle.maxLife = lifetime;
-        particle.size = size;
+        particle.size = 4.0f;
         
-        particles.push_back(particle);
+        newParticles.push_back(particle);
+        
+        {
+            std::lock_guard<std::mutex> lock(pendingMutex);
+            pendingParticles.push(std::move(newParticles));
+        }
+    });
+}
+
+void ParticleSystem::createExplosionParticles(Vector2 position, int count, Color baseColor) {
+    auto future = threadPool->enqueue([=]() {
+        std::vector<Particle> newParticles;
+        newParticles.reserve(count);
+        
+        for (int i = 0; i < count; ++i) {
+            float angle = ((float)rand() / RAND_MAX) * 2.0f * M_PI;
+            float speed = 50.0f + ((float)rand() / RAND_MAX) * 100.0f;
+            
+            Vector2 velocity = {
+                (float)(cos(angle) * speed),
+                (float)(sin(angle) * speed)
+            };
+            
+            float lifetime = 0.3f + ((float)rand() / RAND_MAX) * 0.4f;
+            float size = 1.0f + ((float)rand() / RAND_MAX) * 3.0f;
+            
+            Color particleColor = baseColor;
+            particleColor.r = (unsigned char)std::max(0, std::min(255, (int)particleColor.r + (rand() % 40) - 20));
+            particleColor.g = (unsigned char)std::max(0, std::min(255, (int)particleColor.g + (rand() % 40) - 20));
+            particleColor.b = (unsigned char)std::max(0, std::min(255, (int)particleColor.b + (rand() % 40) - 20));
+            
+            Particle particle;
+            particle.position = position;
+            particle.velocity = velocity;
+            particle.color = particleColor;
+            particle.life = lifetime;
+            particle.maxLife = lifetime;
+            particle.size = size;
+            
+            newParticles.push_back(particle);
+        }
+        
+        {
+            std::lock_guard<std::mutex> lock(pendingMutex);
+            pendingParticles.push(std::move(newParticles));
+        }
+    });
+}
+
+void ParticleSystem::processPendingParticles() {
+    std::lock_guard<std::mutex> pendingLock(pendingMutex);
+    while (!pendingParticles.empty()) {
+        auto& newParticles = pendingParticles.front();
+        particles.insert(particles.end(), newParticles.begin(), newParticles.end());
+        pendingParticles.pop();
+    }
+}
+
+void ParticleSystem::updateParticleRange(size_t start, size_t end, float deltaTime) {
+    for (size_t i = start; i < end; ++i) {
+        auto& particle = particles[i];
+        particle.life -= deltaTime;
+        
+        particle.position.x += particle.velocity.x * deltaTime;
+        particle.position.y += particle.velocity.y * deltaTime;
+        
+        particle.velocity.y += 200.0f * deltaTime;
+        particle.velocity.x *= 0.98f;
+        particle.velocity.y *= 0.98f;
+        
+        float alpha = particle.life / particle.maxLife;
+        particle.color.a = (unsigned char)(255 * alpha);
     }
 }
 
 void ParticleSystem::update(float deltaTime) {
-    std::lock_guard<std::mutex> lock(particleMutex);
+    processPendingParticles();
     
     if (particles.empty()) return;
     
-    // Multithreaded particle update
-    size_t numThreads = std::thread::hardware_concurrency();
-    if (numThreads == 0) numThreads = 2;
+    size_t numThreads = std::min(static_cast<size_t>(std::thread::hardware_concurrency()), particles.size() / 100 + 1);
     
-    if (particles.size() < numThreads * 10) {
-        // For small particle counts, use single thread to avoid overhead
-        for (auto& particle : particles) {
-            particle.life -= deltaTime;
-            
-            // Update position
-            particle.position.x += particle.velocity.x * deltaTime;
-            particle.position.y += particle.velocity.y * deltaTime;
-            
-            // Apply gravity and friction
-            particle.velocity.y += 200.0f * deltaTime; // gravity
-            particle.velocity.x *= 0.98f; // friction
-            particle.velocity.y *= 0.98f;
-            
-            // Fade out over time
-            float alpha = particle.life / particle.maxLife;
-            particle.color.a = (unsigned char)(255 * alpha);
-        }
+    if (particles.size() < 500 || numThreads <= 1) {
+        updateParticleRange(0, particles.size(), deltaTime);
     } else {
-        // Use multithreading for large particle counts
         size_t particlesPerThread = particles.size() / numThreads;
-        std::vector<std::thread> threads;
+        std::vector<std::future<void>> futures;
         
         for (size_t t = 0; t < numThreads; ++t) {
             size_t start = t * particlesPerThread;
             size_t end = (t == numThreads - 1) ? particles.size() : start + particlesPerThread;
             
-            threads.emplace_back([&, start, end, deltaTime]() {
-                for (size_t i = start; i < end; ++i) {
-                    auto& particle = particles[i];
-                    particle.life -= deltaTime;
-                    
-                    // Update position
-                    particle.position.x += particle.velocity.x * deltaTime;
-                    particle.position.y += particle.velocity.y * deltaTime;
-                    
-                    // Apply gravity and friction
-                    particle.velocity.y += 200.0f * deltaTime; // gravity
-                    particle.velocity.x *= 0.98f; // friction
-                    particle.velocity.y *= 0.98f;
-                    
-                    // Fade out over time
-                    float alpha = particle.life / particle.maxLife;
-                    particle.color.a = (unsigned char)(255 * alpha);
-                }
-            });
+            futures.push_back(threadPool->enqueue([this, start, end, deltaTime]() {
+                updateParticleRange(start, end, deltaTime);
+            }));
         }
         
-        // Wait for all threads to complete
-        for (auto& thread : threads) {
-            thread.join();
+        for (auto& future : futures) {
+            future.wait();
         }
     }
     
-    // Remove dead particles
     particles.erase(
         std::remove_if(particles.begin(), particles.end(),
             [](const Particle& p) { return p.life <= 0.0f; }),
@@ -157,4 +176,9 @@ void ParticleSystem::draw() {
 void ParticleSystem::clear() {
     std::lock_guard<std::mutex> lock(particleMutex);
     particles.clear();
+    
+    std::lock_guard<std::mutex> pendingLock(pendingMutex);
+    while (!pendingParticles.empty()) {
+        pendingParticles.pop();
+    }
 }

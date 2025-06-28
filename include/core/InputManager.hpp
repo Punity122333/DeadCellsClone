@@ -11,6 +11,8 @@ namespace Core {
 enum class InputAction {
     MOVE_LEFT,
     MOVE_RIGHT,
+    MOVE_UP,
+    MOVE_DOWN,
     JUMP,
     ATTACK,
     BLOCK,

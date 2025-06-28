@@ -60,7 +60,7 @@ Player::Player(const Map &map) {
     hitboxHeight = height * 0.9f;
 }
 
-void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons) {
+void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, Core::InputManager& inputManager) {
     if (!imageFutureRetrieved.load(std::memory_order_acquire)) {
         if (imageFuture.valid()) {
             auto status = imageFuture.wait_for(std::chrono::seconds(0));
@@ -88,18 +88,18 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
     if (invincibilityTimer > 0.0f) {
         invincibilityTimer -= dt;
     }
-    applyGravity(dt);
+    applyGravity(dt, inputManager);
     updateLadderState(map);
     updateWallState(map);
-    updateLedgeGrab(map);
-    handleMovementInput(dt);
-    handleDropThrough(map);
+    updateLedgeGrab(map, inputManager);
+    handleMovementInput(dt, inputManager);
+    handleDropThrough(map, inputManager);
     updateDropTimer(dt);
     Vector2 nextPos = computeNextPosition(dt);
     handleCollisions(nextPos, map, dt);
     updateCoyoteTimer(dt);
-    handleJumpInput(map, dt);
-    handleLedgeGrabInput();
+    handleJumpInput(map, dt, inputManager);
+    handleLedgeGrabInput(inputManager);
     position = nextPos;
 
     if (weapons.size() > 0 && currentWeaponIndex < weapons.size()) {
@@ -109,7 +109,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
         if (currentWeapon->getType() == WeaponType::BOW) {
             Bow* bow = dynamic_cast<Bow*>(currentWeapon);
             if (bow) {
-                if ((IsKeyPressed(KEY_J) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) && !bow->isCharging()) {
+                if ((inputManager.isActionPressed(Core::InputAction::ATTACK)) && !bow->isCharging()) {
                     attack();
                 }
                 bow->updatePosition(position);
@@ -120,20 +120,20 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
                 }
             }
         } else {
-            if (IsKeyPressed(KEY_J) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            if (inputManager.isActionPressed(Core::InputAction::ATTACK)) {
                 attack();
             }
         }
     }
 
     for (int i = 0; i < 9; i++) {
-        if (IsKeyPressed(KEY_ONE + i) && i < (int)weapons.size()) {
+        if (inputManager.isActionPressed(static_cast<Core::InputAction>(static_cast<int>(Core::InputAction::SWITCH_WEAPON_1) + i)) && i < (int)weapons.size()) {
             switchWeapon(i);
         }
     }
-    if (velocity.x > 10.0f || IsKeyDown(KEY_D)) {
+    if (velocity.x > 10.0f || inputManager.isActionHeld(Core::InputAction::MOVE_RIGHT)) {
         facingRight = true;
-    } else if (velocity.x < -10.0f || IsKeyDown(KEY_A)) {
+    } else if (velocity.x < -10.0f || inputManager.isActionHeld(Core::InputAction::MOVE_LEFT)) {
         facingRight = false;
     }
     checkWeaponHits(enemies, automatons);

@@ -1,9 +1,9 @@
 #ifndef CORE_CORE_HPP
 #define CORE_CORE_HPP
 
-#include "core/GameLoop.hpp"
+
 #include "core/InputManager.hpp"
-#include "core/StateManager.hpp"
+
 #include "core/ResourceManager.hpp"
 #include "core/EventManager.hpp"
 #include <string>

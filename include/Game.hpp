@@ -7,6 +7,7 @@
 #include "enemies/Automaton.hpp"
 #include "ui/UIController.hpp"
 #include "core/GameLoop.hpp"
+#include "core/ResourceManager.hpp"
 #include <memory>
 #include <raylib.h>
 #include <vector>
@@ -25,6 +26,7 @@ public:
 
     void run();
     void resetGame();
+    void showResourceStats(); // Debug method to display resource usage
     
 private:
     const int screenWidth = 1280;
@@ -45,6 +47,9 @@ private:
     Spawner spawner;
     GameState currentState;
     std::vector<Texture2D> tileTextures;
+    std::vector<Core::ResourceHandle<Texture2D>> tileTextureHandles;
+    Core::ResourceHandle<Shader> bloomShaderHandle;
+    Core::ResourceHandle<Shader> chromaticAberrationShaderHandle;
     std::unique_ptr<UI::UIController> uiController;
     
     float automataTimer;
@@ -56,4 +61,11 @@ private:
     void render(float interpolation);
     void handleInput();
     void initializeResources();
+    
+    // Note: For more advanced state management, consider using Core::StateManager
+    // instead of the simple GameState enum. This would allow for:
+    // - State stacking (pause over playing)
+    // - Automatic state transitions
+    // - Better separation of concerns
+    // - Debug state information
 };

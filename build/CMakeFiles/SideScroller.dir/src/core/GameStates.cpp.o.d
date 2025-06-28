@@ -169,21 +169,19 @@ CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.o: \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/uniform_int_dist.h /usr/local/include/raylib.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/Core.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/GameLoop.hpp \
- /usr/include/c++/13/chrono /usr/include/c++/13/bits/chrono.h \
- /usr/include/c++/13/ratio /usr/include/c++/13/cstdint \
- /usr/include/c++/13/limits /usr/include/c++/13/ctime \
- /usr/include/c++/13/bits/parse_numbers.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ResourceManager.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/EventManager.hpp \
  /usr/include/c++/13/queue /usr/include/c++/13/deque \
  /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
  /usr/include/c++/13/bits/stl_queue.h /usr/include/c++/13/typeindex \
- /usr/include/c++/13/mutex \
+ /usr/include/c++/13/mutex /usr/include/c++/13/bits/chrono.h \
+ /usr/include/c++/13/ratio /usr/include/c++/13/cstdint \
+ /usr/include/c++/13/limits /usr/include/c++/13/ctime \
+ /usr/include/c++/13/bits/parse_numbers.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h \
  /usr/include/c++/13/bits/std_mutex.h \
- /usr/include/c++/13/bits/unique_lock.h \
+ /usr/include/c++/13/bits/unique_lock.h /usr/include/c++/13/chrono \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Game.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Spawner.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
@@ -220,6 +218,7 @@ CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Player.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/Weapon.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \
  /usr/include/c++/13/future /usr/include/c++/13/condition_variable \
  /usr/include/c++/13/system_error /usr/include/c++/13/stdexcept \
  /usr/include/c++/13/bits/atomic_futex.h \
@@ -228,4 +227,5 @@ CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/ui/UIController.hpp \
  /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/GameLoop.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ResourceManager.hpp \
  /usr/local/include/raymath.h /usr/include/c++/13/math.h

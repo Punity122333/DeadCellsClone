@@ -1,6 +1,7 @@
 #pragma once
 #include "map/Map.hpp"
 #include "weapons/Weapon.hpp"  
+#include "core/InputManager.hpp"
 #include <raylib.h>
 #include <vector>
 #include <memory>
@@ -16,7 +17,7 @@ class Player {
 public:
     Player(const Map &map);
     ~Player();
-    void update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons); 
+    void update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, Core::InputManager& inputManager); 
     void draw() const;
     
     Vector2 getPosition() const;
@@ -93,16 +94,16 @@ private:
     int currentFrame;    
     int framesCounter;   
     int framesSpeed;
-    void applyGravity(float dt);
+    void applyGravity(float dt, Core::InputManager& inputManager);
     void updateLadderState(const Map& map);
     void updateWallState(const Map& map);
-    void updateLedgeGrab(const Map& map);
-    void handleMovementInput(float dt);
-    void handleDropThrough(const Map& map);
+    void updateLedgeGrab(const Map& map, Core::InputManager& inputManager);
+    void handleMovementInput(float dt, Core::InputManager& inputManager);
+    void handleDropThrough(const Map& map, Core::InputManager& inputManager);
     void updateDropTimer(float dt);
     Vector2 computeNextPosition(float dt);
     void handleCollisions(Vector2& nextPos, const Map& map, float dt);
     void updateCoyoteTimer(float dt);
-    void handleJumpInput(const Map& map, float dt);
-    void handleLedgeGrabInput();
+    void handleJumpInput(const Map& map, float dt, Core::InputManager& inputManager);
+    void handleLedgeGrabInput(Core::InputManager& inputManager);
 };

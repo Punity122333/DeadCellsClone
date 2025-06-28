@@ -2,6 +2,10 @@
 #include <raylib.h>
 #include <vector>
 #include <mutex>
+#include <atomic>
+#include <queue>
+#include <memory>
+#include "effects/ThreadPool.hpp"
 
 struct Particle {
     Vector2 position;
@@ -10,6 +14,11 @@ struct Particle {
     float life;
     float maxLife;
     float size;
+};
+
+struct ParticleCreationJob {
+    std::vector<Particle> particles;
+    std::function<void(std::vector<Particle>&)> creationFunction;
 };
 
 class ParticleSystem {
@@ -21,16 +30,21 @@ public:
     void draw();
     void clear();
     
-    // Thread-safe particle creation methods
     void createDustParticle(Vector2 position, Vector2 velocity, float lifetime);
     void createExplosionParticles(Vector2 position, int count, Color baseColor);
 
 private:
     std::vector<Particle> particles;
+    std::queue<std::vector<Particle>> pendingParticles;
     std::mutex particleMutex;
-    ParticleSystem() = default;
+    std::mutex pendingMutex;
+    std::unique_ptr<ThreadPool> threadPool;
     
-    // Delete copy constructor and assignment operator
+    ParticleSystem();
+    
     ParticleSystem(const ParticleSystem&) = delete;
     ParticleSystem& operator=(const ParticleSystem&) = delete;
+    
+    void processPendingParticles();
+    void updateParticleRange(size_t start, size_t end, float deltaTime);
 };

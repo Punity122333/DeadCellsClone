@@ -27,7 +27,8 @@ namespace UI {
         SETTINGS = 2,
         QUIT = 3,
         RESUME = 1,
-        QUIT_TO_MENU = 3
+        QUIT_TO_MENU = 3,
+        RESTART = 4
     };
 
     struct UIDrawData {

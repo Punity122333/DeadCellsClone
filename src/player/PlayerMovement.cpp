@@ -1,13 +1,14 @@
 #include "Player.hpp"
 #include "effects/ParticleSystem.hpp"
+#include "core/InputManager.hpp"
 #include <raylib.h>
 #include "raymath.h"
 
-void Player::applyGravity(float dt) {
+void Player::applyGravity(float dt, Core::InputManager& inputManager) {
     if (onLadder) {
         velocity.y = 0; 
     } else if (onRope) {
-        if (IsKeyDown(KEY_W) || IsKeyPressed(KEY_SPACE)) {
+        if (inputManager.isActionHeld(Core::InputAction::MOVE_UP) || inputManager.isActionPressed(Core::InputAction::JUMP)) {
             velocity.y = 0;
         } else {
             velocity.y = 60; 
@@ -75,7 +76,7 @@ void Player::updateWallState(const Map& map) {
     canWallJump = !onGround && (touchingWallLeft || touchingWallRight);
 }
 
-void Player::updateLedgeGrab(const Map& map) {
+void Player::updateLedgeGrab(const Map& map, Core::InputManager& inputManager) {
     static bool climbingLedge = false;
     static Vector2 climbStartPos = {0, 0};
     static Vector2 climbEndPos = {0, 0};
@@ -98,7 +99,7 @@ void Player::updateLedgeGrab(const Map& map) {
     }
 
     if (!onGround && !onLadder && velocity.y > 0 && !ledgeGrabbed && !climbingLedge) {
-        int dir = (IsKeyDown(KEY_A) ? -1 : (IsKeyDown(KEY_D) ? 1 : 0));
+        int dir = (inputManager.isActionHeld(Core::InputAction::MOVE_LEFT) ? -1 : (inputManager.isActionHeld(Core::InputAction::MOVE_RIGHT) ? 1 : 0));
         if (dir != 0) {
             int handX = (int)((position.x + hitboxOffsetX + hitboxWidth / 2 + dir * hitboxWidth * 0.5f) / 32);
             int chestY = (int)((position.y + hitboxOffsetY + hitboxHeight * 0.5f) / 32);
@@ -122,28 +123,28 @@ void Player::updateLedgeGrab(const Map& map) {
     }
 }
 
-void Player::handleMovementInput(float dt) {
+void Player::handleMovementInput(float dt, Core::InputManager& inputManager) {
     float targetVelX = 0.0f;
     static float dustTimer = 0.0f;
 
     if (onLadder || onRope) { 
-        if (IsKeyDown(KEY_W)) {
+        if (inputManager.isActionHeld(Core::InputAction::MOVE_UP)) {
             velocity.y = -speed;
-        } else if (IsKeyDown(KEY_S)) {
+        } else if (inputManager.isActionHeld(Core::InputAction::MOVE_DOWN)) {
             velocity.y = speed;
         } else if (onLadder) {
             velocity.y = 0;
         }
-        if (IsKeyDown(KEY_A)) {
+        if (inputManager.isActionHeld(Core::InputAction::MOVE_LEFT)) {
             targetVelX = -speed;
-        } else if (IsKeyDown(KEY_D)) {
+        } else if (inputManager.isActionHeld(Core::InputAction::MOVE_RIGHT)) {
             targetVelX = speed;
         }
         velocity.x = targetVelX; 
     } else {
-        if (IsKeyDown(KEY_A)) {
+        if (inputManager.isActionHeld(Core::InputAction::MOVE_LEFT)) {
             targetVelX = -speed;
-        } else if (IsKeyDown(KEY_D)) {
+        } else if (inputManager.isActionHeld(Core::InputAction::MOVE_RIGHT)) {
             targetVelX = speed;
         }
         if (onGround) {
@@ -170,8 +171,8 @@ void Player::handleMovementInput(float dt) {
     }
 }
 
-void Player::handleDropThrough(const Map& map) {
-    if (onGround && IsKeyDown(KEY_S) && IsKeyPressed(KEY_SPACE)) {
+void Player::handleDropThrough(const Map& map, Core::InputManager& inputManager) {
+    if (onGround && inputManager.isActionHeld(Core::InputAction::MOVE_DOWN) && inputManager.isActionPressed(Core::InputAction::JUMP)) {
         int belowTileY = (int)((position.y + hitboxOffsetY + hitboxHeight + 1) / 32);
         int belowTileX = (int)((position.x + hitboxOffsetX + hitboxWidth / 2) / 32);
         if (belowTileY < map.getHeight() - 1 && map.isSolidTile(belowTileX, belowTileY)) {
@@ -197,14 +198,14 @@ void Player::updateCoyoteTimer(float dt) {
         coyoteTimer -= dt;
 }
 
-void Player::handleJumpInput(const Map& map, float dt) {
+void Player::handleJumpInput(const Map& map, float dt, Core::InputManager& inputManager) {
     static float wallJumpLockTimer = 0.0f;
     const float wallJumpLockTime = 0.15f;
     if (wallJumpLockTimer > 0.0f) wallJumpLockTimer -= dt;
 
     bool canJump = (coyoteTimer > 0.0f) || canLadderJump;
 
-    if (IsKeyPressed(KEY_SPACE) && !IsKeyDown(KEY_S)) {
+    if (inputManager.isActionPressed(Core::InputAction::JUMP) && !inputManager.isActionHeld(Core::InputAction::MOVE_DOWN)) {
         if (canJump) {
             velocity.y = -700;
             coyoteTimer = 0.0f;
@@ -220,14 +221,14 @@ void Player::handleJumpInput(const Map& map, float dt) {
     }
 }
 
-void Player::handleLedgeGrabInput() {
+void Player::handleLedgeGrabInput(Core::InputManager& inputManager) {
     if (ledgeGrabbed) {
         position = ledgeGrabPos;
 
-        if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_W)) {
+        if (inputManager.isActionPressed(Core::InputAction::JUMP) || inputManager.isActionPressed(Core::InputAction::MOVE_UP)) {
             velocity.y = -700;
             ledgeGrabbed = false;
-        } else if (IsKeyPressed(KEY_S)) {
+        } else if (inputManager.isActionPressed(Core::InputAction::MOVE_DOWN)) {
             velocity.y = 100;
             ledgeGrabbed = false;
         } else {

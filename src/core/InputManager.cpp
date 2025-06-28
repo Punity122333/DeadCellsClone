@@ -245,12 +245,15 @@ void InputManager::setupDefaultBindings() {
     bindKey(InputAction::MOVE_LEFT, KEY_LEFT);
     bindKey(InputAction::MOVE_RIGHT, KEY_D);
     bindKey(InputAction::MOVE_RIGHT, KEY_RIGHT);
+    bindKey(InputAction::MOVE_UP, KEY_W);
+    bindKey(InputAction::MOVE_UP, KEY_UP);
+    bindKey(InputAction::MOVE_DOWN, KEY_S);
+    bindKey(InputAction::MOVE_DOWN, KEY_DOWN);
     bindKey(InputAction::JUMP, KEY_SPACE);
-    bindKey(InputAction::JUMP, KEY_W);
-    bindKey(InputAction::JUMP, KEY_UP);
 
     // Combat
     bindMouseButton(InputAction::ATTACK, MOUSE_BUTTON_LEFT);
+    bindKey(InputAction::ATTACK, KEY_J);
     bindKey(InputAction::ATTACK, KEY_X);
     bindMouseButton(InputAction::BLOCK, MOUSE_BUTTON_RIGHT);
     bindKey(InputAction::BLOCK, KEY_C);

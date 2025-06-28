@@ -465,6 +465,30 @@ src/effects/ParticleSystem.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleSystem.cpp.s
 .PHONY : src/effects/ParticleSystem.cpp.s
 
+src/effects/ThreadPool.o: src/effects/ThreadPool.cpp.o
+.PHONY : src/effects/ThreadPool.o
+
+# target to build an object file
+src/effects/ThreadPool.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.o
+.PHONY : src/effects/ThreadPool.cpp.o
+
+src/effects/ThreadPool.i: src/effects/ThreadPool.cpp.i
+.PHONY : src/effects/ThreadPool.i
+
+# target to preprocess a source file
+src/effects/ThreadPool.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.i
+.PHONY : src/effects/ThreadPool.cpp.i
+
+src/effects/ThreadPool.s: src/effects/ThreadPool.cpp.s
+.PHONY : src/effects/ThreadPool.s
+
+# target to generate assembly for a file
+src/effects/ThreadPool.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.s
+.PHONY : src/effects/ThreadPool.cpp.s
+
 src/enemies/automaton/Automaton.o: src/enemies/automaton/Automaton.cpp.o
 .PHONY : src/enemies/automaton/Automaton.o
 
@@ -993,6 +1017,30 @@ src/ui/GameHUDComponent.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/GameHUDComponent.cpp.s
 .PHONY : src/ui/GameHUDComponent.cpp.s
 
+src/ui/GameOverComponent.o: src/ui/GameOverComponent.cpp.o
+.PHONY : src/ui/GameOverComponent.o
+
+# target to build an object file
+src/ui/GameOverComponent.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/GameOverComponent.cpp.o
+.PHONY : src/ui/GameOverComponent.cpp.o
+
+src/ui/GameOverComponent.i: src/ui/GameOverComponent.cpp.i
+.PHONY : src/ui/GameOverComponent.i
+
+# target to preprocess a source file
+src/ui/GameOverComponent.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/GameOverComponent.cpp.i
+.PHONY : src/ui/GameOverComponent.cpp.i
+
+src/ui/GameOverComponent.s: src/ui/GameOverComponent.cpp.s
+.PHONY : src/ui/GameOverComponent.s
+
+# target to generate assembly for a file
+src/ui/GameOverComponent.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/GameOverComponent.cpp.s
+.PHONY : src/ui/GameOverComponent.cpp.s
+
 src/ui/PauseMenuComponent.o: src/ui/PauseMenuComponent.cpp.o
 .PHONY : src/ui/PauseMenuComponent.o
 
@@ -1236,6 +1284,9 @@ help:
 	@echo "... src/effects/ParticleSystem.o"
 	@echo "... src/effects/ParticleSystem.i"
 	@echo "... src/effects/ParticleSystem.s"
+	@echo "... src/effects/ThreadPool.o"
+	@echo "... src/effects/ThreadPool.i"
+	@echo "... src/effects/ThreadPool.s"
 	@echo "... src/enemies/automaton/Automaton.o"
 	@echo "... src/enemies/automaton/Automaton.i"
 	@echo "... src/enemies/automaton/Automaton.s"
@@ -1302,6 +1353,9 @@ help:
 	@echo "... src/ui/GameHUDComponent.o"
 	@echo "... src/ui/GameHUDComponent.i"
 	@echo "... src/ui/GameHUDComponent.s"
+	@echo "... src/ui/GameOverComponent.o"
+	@echo "... src/ui/GameOverComponent.i"
+	@echo "... src/ui/GameOverComponent.s"
 	@echo "... src/ui/PauseMenuComponent.o"
 	@echo "... src/ui/PauseMenuComponent.i"
 	@echo "... src/ui/PauseMenuComponent.s"

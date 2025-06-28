@@ -2,6 +2,7 @@
 #include "ui/TitleScreenComponent.hpp"
 #include "ui/PauseMenuComponent.hpp"
 #include "ui/GameHUDComponent.hpp"
+#include "ui/GameOverComponent.hpp"
 #include "Game.hpp"
 
 #include <chrono>
@@ -25,6 +26,7 @@ namespace UI {
         components[ComponentType::TITLE_SCREEN] = std::make_unique<TitleScreenComponent>(screenWidth, screenHeight);
         components[ComponentType::PAUSE_MENU] = std::make_unique<PauseMenuComponent>(screenWidth, screenHeight);
         components[ComponentType::GAME_HUD] = std::make_unique<GameHUDComponent>(screenWidth, screenHeight);
+        components[ComponentType::GAME_OVER] = std::make_unique<GameOverComponent>(screenWidth, screenHeight);
     }
 
     void UIController::update(float dt, GameState currentState, const Player* player) {
@@ -37,8 +39,10 @@ namespace UI {
                 targetComponent = ComponentType::TITLE_SCREEN;
                 break;
             case GameState::PLAYING:
-            case GameState::GAME_OVER:
                 targetComponent = ComponentType::GAME_HUD;
+                break;
+            case GameState::GAME_OVER:
+                targetComponent = ComponentType::GAME_OVER;
                 break;
             case GameState::PAUSED:
                 targetComponent = ComponentType::PAUSE_MENU;
