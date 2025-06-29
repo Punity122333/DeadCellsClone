@@ -3,6 +3,9 @@
 
 #include <random>
 
+// Forward declaration
+class FastRNG;
+
 namespace MapConstants {
     constexpr int ROOM_PLACEMENT_SKIP_CHANCE_PERCENT = 5;
     constexpr int HALLWAY_CREATION_SKIP_PERCENT = 20;
@@ -52,6 +55,7 @@ namespace MapConstants {
     constexpr int CHUNK_ALIVE_SUCCESS_ROLL = 0;
 
     int rollPercent(std::mt19937& gen);
+    int rollPercentFast(FastRNG& rng);
 }
 
 #endif

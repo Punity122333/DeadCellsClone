@@ -331,6 +331,9 @@ LoadingState::LoadingState(std::function<void()> loadFunction, const std::string
     , m_loadingProgress(0.0f)
     , m_loadingText("Loading")
     , m_dotAnimation(0.0f)
+    , m_animationTime(0.0f)
+    , m_pulseAnimation(0.0f)
+    , m_rotationAnimation(0.0f)
 {
 }
 
@@ -338,6 +341,9 @@ void LoadingState::onEnter() {
     m_loadingComplete = false;
     m_loadingProgress = 0.0f;
     m_dotAnimation = 0.0f;
+    m_animationTime = 0.0f;
+    m_pulseAnimation = 0.0f;
+    m_rotationAnimation = 0.0f;
 }
 
 void LoadingState::onExit() {
@@ -346,23 +352,21 @@ void LoadingState::onExit() {
 
 void LoadingState::update(float deltaTime) {
     m_dotAnimation += deltaTime * 2.0f;
+    m_animationTime += deltaTime;
+    m_pulseAnimation += deltaTime * 3.0f;
+    m_rotationAnimation += deltaTime * 2.0f;
     
     if (!m_loadingComplete) {
-        // Simulate loading progress
-        m_loadingProgress += deltaTime * 0.5f; // 2 second load time
+        m_loadingProgress += deltaTime * 0.5f;
         
         if (m_loadingProgress >= 1.0f) {
             m_loadingProgress = 1.0f;
             
-            // Execute load function
             if (m_loadFunction) {
                 m_loadFunction();
             }
             
             m_loadingComplete = true;
-            
-            // Transition to next state after a brief delay
-            // This would typically be done through the state manager
         }
     }
 }
@@ -373,7 +377,6 @@ void LoadingState::render(float interpolation) {
     
     ClearBackground(BLACK);
     
-    // Loading text with animated dots
     std::string loadingDisplay = m_loadingText;
     int dots = (int)(m_dotAnimation) % 4;
     for (int i = 0; i < dots; ++i) {
@@ -383,7 +386,6 @@ void LoadingState::render(float interpolation) {
     int textWidth = MeasureText(loadingDisplay.c_str(), 30);
     DrawText(loadingDisplay.c_str(), (screenWidth - textWidth) / 2, screenHeight / 2 - 50, 30, WHITE);
     
-    // Progress bar
     int barWidth = 400;
     int barHeight = 20;
     int barX = (screenWidth - barWidth) / 2;
@@ -393,11 +395,63 @@ void LoadingState::render(float interpolation) {
     DrawRectangle(barX, barY, (int)(barWidth * m_loadingProgress), barHeight, GREEN);
     DrawRectangleLines(barX, barY, barWidth, barHeight, WHITE);
     
-    // Progress percentage
     char progressText[16];
     snprintf(progressText, sizeof(progressText), "%.0f%%", m_loadingProgress * 100.0f);
     int progressWidth = MeasureText(progressText, 20);
     DrawText(progressText, (screenWidth - progressWidth) / 2, barY + 30, 20, WHITE);
+    
+    float centerX = screenWidth / 2.0f;
+    float centerY = screenHeight / 2.0f + 100.0f;
+    
+    for (int i = 0; i < 8; ++i) {
+        float angle = m_rotationAnimation + i * 45.0f * DEG2RAD;
+        float radius = 60.0f + 20.0f * sin(m_pulseAnimation + i * 0.5f);
+        float x = centerX + cos(angle) * radius;
+        float y = centerY + sin(angle) * radius;
+        
+        float pulseSize = 8.0f + 4.0f * sin(m_pulseAnimation * 2.0f + i * 0.3f);
+        Color orbitColor = {
+            (unsigned char)(100 + 155 * sin(m_animationTime + i * 0.7f)),
+            (unsigned char)(150 + 105 * cos(m_animationTime * 1.2f + i * 0.4f)),
+            (unsigned char)(200 + 55 * sin(m_animationTime * 0.8f + i * 0.6f)),
+            255
+        };
+        
+        DrawCircle((int)x, (int)y, pulseSize, orbitColor);
+        DrawCircleLines((int)x, (int)y, pulseSize + 2.0f, Fade(WHITE, 0.6f));
+    }
+    
+    for (int i = 0; i < 12; ++i) {
+        float angle = -m_rotationAnimation * 0.7f + i * 30.0f * DEG2RAD;
+        float radius = 35.0f + 10.0f * cos(m_animationTime * 1.5f + i * 0.4f);
+        float x = centerX + cos(angle) * radius;
+        float y = centerY + sin(angle) * radius;
+        
+        float size = 3.0f + 2.0f * sin(m_animationTime * 3.0f + i * 0.8f);
+        Color sparkleColor = {255, 255, 255, (unsigned char)(100 + 155 * sin(m_animationTime * 2.0f + i))};
+        
+        DrawCircle((int)x, (int)y, size, sparkleColor);
+    }
+    
+    float waveAmplitude = 15.0f;
+    float waveFrequency = 0.02f;
+    for (int x = 0; x < screenWidth; x += 4) {
+        float waveY = centerY + 150.0f + waveAmplitude * sin(x * waveFrequency + m_animationTime * 2.0f);
+        float intensity = 0.3f + 0.4f * sin(x * 0.01f + m_animationTime);
+        Color waveColor = {
+            (unsigned char)(0 + 100 * intensity),
+            (unsigned char)(100 + 155 * intensity),
+            (unsigned char)(200 + 55 * intensity),
+            (unsigned char)(50 + 100 * intensity)
+        };
+        
+        DrawPixel(x, (int)waveY, waveColor);
+        DrawPixel(x, (int)waveY + 1, Fade(waveColor, 0.5f));
+    }
+    
+    float glowRadius = 80.0f + 20.0f * sin(m_pulseAnimation * 0.8f);
+    DrawCircleGradient((int)centerX, (int)centerY, glowRadius, 
+                      Fade(SKYBLUE, 0.05f), Fade(BLUE, 0.0f));
 }
 
 void LoadingState::handleInput(float deltaTime) {

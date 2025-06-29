@@ -5,6 +5,10 @@
 #include <vector>
 #include <random>
 #include <mutex>
+#include <functional>
+
+// Progress callback type for map generation
+using ProgressCallback = std::function<void(float)>;
 
 namespace MapConstants {
     constexpr int TILE_HIGHLIGHT_CREATE = 11;
@@ -13,7 +17,7 @@ namespace MapConstants {
     constexpr float GLITCH_TIME = 0.5f;
     constexpr float BLINK_CYCLE_TIME = 1.0f;
     constexpr float MIN_HIGHLIGHT_OPACITY = 0.1f;
-    constexpr int ROOM_PLACEMENT_SKIP_CHANCE_PERCENT = 5;
+    constexpr int ROOM_PLACEMENT_SKIP_CHANCE_PERCENT = 2;
     constexpr int HALLWAY_CREATION_SKIP_PERCENT = 20;
     constexpr int MIN_ROOM_SLOT_WIDTH_CONST = 25;
     constexpr int MIN_ROOM_SLOT_HEIGHT_CONST = 20;
@@ -99,13 +103,19 @@ struct Rope {
 
 class RoomContentGenerator;
 class RoomGenerator;
+class RoomGridGenerator;
+class RoomConnectionGenerator;
+class LadderRopePlacer;
 
 class Map {
     friend class RoomContentGenerator;
     friend class RoomGenerator;
+    friend class RoomGridGenerator;
+    friend class RoomConnectionGenerator;
+    friend class LadderRopePlacer;
     
 public:
-    Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures); // Modified constructor
+    Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, ProgressCallback progressCallback = nullptr); // Modified constructor
     ~Map();
 
     void placeBorders();

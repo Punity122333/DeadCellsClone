@@ -129,6 +129,9 @@ private:
     float m_loadingProgress;
     std::string m_loadingText;
     float m_dotAnimation;
+    float m_animationTime;
+    float m_pulseAnimation;
+    float m_rotationAnimation;
 };
 
 }

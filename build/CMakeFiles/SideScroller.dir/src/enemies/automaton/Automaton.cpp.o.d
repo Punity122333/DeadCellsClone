@@ -180,12 +180,8 @@ CMakeFiles/SideScroller.dir/src/enemies/automaton/Automaton.cpp.o: \
  /usr/include/c++/13/bits/random.tcc /usr/include/c++/13/numeric \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
- /usr/include/c++/13/pstl/execution_defs.h \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Pathfinding.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Player.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/Weapon.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \
+ /usr/include/c++/13/pstl/execution_defs.h /usr/include/c++/13/functional \
+ /usr/include/c++/13/bits/std_function.h \
  /usr/include/c++/13/unordered_map \
  /usr/include/c++/13/bits/unordered_map.h \
  /usr/include/c++/13/bits/hashtable.h \
@@ -193,12 +189,17 @@ CMakeFiles/SideScroller.dir/src/enemies/automaton/Automaton.cpp.o: \
  /usr/include/c++/13/ext/aligned_buffer.h \
  /usr/include/c++/13/bits/enable_special_members.h \
  /usr/include/c++/13/bits/node_handle.h \
- /usr/include/c++/13/bits/erase_if.h /usr/include/c++/13/functional \
- /usr/include/c++/13/bits/std_function.h /usr/include/c++/13/array \
+ /usr/include/c++/13/bits/erase_if.h /usr/include/c++/13/array \
  /usr/include/c++/13/compare /usr/include/c++/13/bits/stl_algo.h \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
- /usr/include/c++/13/bits/stl_tempbuf.h /usr/include/c++/13/memory \
+ /usr/include/c++/13/bits/stl_tempbuf.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Pathfinding.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Player.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/Weapon.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \
+ /usr/include/c++/13/memory \
  /usr/include/c++/13/bits/stl_raw_storage_iter.h \
  /usr/include/c++/13/bits/align.h /usr/include/c++/13/bits/unique_ptr.h \
  /usr/include/c++/13/bits/shared_ptr.h \

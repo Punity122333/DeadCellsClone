@@ -3,13 +3,14 @@
 #include "ui/PauseMenuComponent.hpp"
 #include "ui/GameHUDComponent.hpp"
 #include "ui/GameOverComponent.hpp"
+#include "ui/LoadingScreenComponent.hpp"
 #include "Game.hpp"
 
 #include <chrono>
 
 namespace UI {
     UIController::UIController(int width, int height) 
-        : screenWidth(width), screenHeight(height), activeComponent(ComponentType::TITLE_SCREEN) {
+        : screenWidth(width), screenHeight(height), activeComponent(ComponentType::LOADING_SCREEN) {
         initializeComponents();
         backgroundThread = std::thread(&UIController::handleBackgroundThread, this);
     }
@@ -23,6 +24,7 @@ namespace UI {
     }
 
     void UIController::initializeComponents() {
+        components[ComponentType::LOADING_SCREEN] = std::make_unique<LoadingScreenComponent>(screenWidth, screenHeight);
         components[ComponentType::TITLE_SCREEN] = std::make_unique<TitleScreenComponent>(screenWidth, screenHeight);
         components[ComponentType::PAUSE_MENU] = std::make_unique<PauseMenuComponent>(screenWidth, screenHeight);
         components[ComponentType::GAME_HUD] = std::make_unique<GameHUDComponent>(screenWidth, screenHeight);
@@ -35,6 +37,9 @@ namespace UI {
         
         ComponentType targetComponent;
         switch (currentState) {
+            case GameState::LOADING:
+                targetComponent = ComponentType::LOADING_SCREEN;
+                break;
             case GameState::TITLE:
                 targetComponent = ComponentType::TITLE_SCREEN;
                 break;
@@ -48,7 +53,7 @@ namespace UI {
                 targetComponent = ComponentType::PAUSE_MENU;
                 break;
             default:
-                targetComponent = ComponentType::TITLE_SCREEN;
+                targetComponent = ComponentType::LOADING_SCREEN;
                 break;
         }
         
@@ -136,5 +141,20 @@ namespace UI {
         data.ready = true;
         
         currentBuffer = nextBuffer;
+    }
+    
+    void UIController::setLoadingProgress(float progress) {
+        if (components.find(ComponentType::LOADING_SCREEN) != components.end()) {
+            auto* loadingScreen = static_cast<LoadingScreenComponent*>(components[ComponentType::LOADING_SCREEN].get());
+            loadingScreen->setProgress(progress);
+        }
+    }
+    
+    LoadingScreenComponent* UIController::getLoadingScreen() {
+        auto it = components.find(ComponentType::LOADING_SCREEN);
+        if (it != components.end()) {
+            return static_cast<LoadingScreenComponent*>(it->second.get());
+        }
+        return nullptr;
     }
 }

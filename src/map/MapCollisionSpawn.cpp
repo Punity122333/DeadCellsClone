@@ -1,7 +1,7 @@
 #include "map/Map.hpp"
 #include <stack>
 #include <vector>
-#include <random>
+#include <cstdio>
 
 using namespace MapConstants;
 
@@ -41,28 +41,37 @@ bool Map::isTileEmpty(int x, int y) const {
 }
 
 Vector2 Map::findEmptySpawn() const {
-    int totalEmpty = countEmptyTiles();
-    if (totalEmpty == 0) {
-        return {DEFAULT_SPAWN_COORD_COMPONENT_FLOAT, DEFAULT_SPAWN_COORD_COMPONENT_FLOAT};
-    }
-    std::vector<std::pair<int, int>> candidates;
-    for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET; ++y) {
+    printf("[Map] Finding spawn position...\n");
+    
+    // Simple approach: just find any empty tile that has solid ground below it
+    // This is much faster and works well for spawn finding
+    for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET - 1; ++y) {
         for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
-            if (tiles[x][y] == EMPTY_TILE_VALUE) {
-                int reachable = countReachableEmptyTiles(x, y);
-                if (reachable >= static_cast<float>(totalEmpty) * 0.75f) {
-                    candidates.emplace_back(x, y);
-                }
+            // Check if this position is empty and has solid ground below
+            if (tiles[x][y] == EMPTY_TILE_VALUE && 
+                y + 1 < height && 
+                isSolidTile(x, y + 1)) {
+                
+                Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
+                printf("[Map] Found spawn position: (%.1f, %.1f)\n", spawn.x, spawn.y);
+                return spawn;
             }
         }
     }
-    if (!candidates.empty()) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, candidates.size() - 1);
-        auto [x, y] = candidates[dis(gen)];
-        return { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
+    
+    // Fallback: just find any empty tile
+    printf("[Map] No ground-based spawn found, searching for any empty tile\n");
+    for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET; ++y) {
+        for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
+            if (tiles[x][y] == EMPTY_TILE_VALUE) {
+                Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
+                printf("[Map] Fallback spawn position: (%.1f, %.1f)\n", spawn.x, spawn.y);
+                return spawn;
+            }
+        }
     }
+    
+    printf("[Map] No valid spawn found, using default position\n");
     return {DEFAULT_SPAWN_COORD_COMPONENT_FLOAT, DEFAULT_SPAWN_COORD_COMPONENT_FLOAT};
 }
 

@@ -14,6 +14,7 @@ enum class GameState;
 
 namespace UI {
     enum class ComponentType {
+        LOADING_SCREEN,
         TITLE_SCREEN,
         GAME_HUD,
         PAUSE_MENU,
@@ -60,6 +61,10 @@ namespace UI {
         UIAction draw(GameState currentState, const Player* player = nullptr);
         void switchToComponent(ComponentType type);
         void reset();
+        
+        // Loading screen specific methods
+        void setLoadingProgress(float progress);
+        class LoadingScreenComponent* getLoadingScreen();
         
     private:
         void initializeComponents();

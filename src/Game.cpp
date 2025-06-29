@@ -4,6 +4,7 @@
 #include "FishEyeGradient.hpp"
 #include "Spawner.hpp" 
 #include "ui/UIController.hpp"
+#include "ui/LoadingScreenComponent.hpp"
 #include "effects/ParticleSystem.hpp"
 #include "core/Core.hpp"
 #include <algorithm>
@@ -70,6 +71,23 @@ Game::Game()
 Game::~Game() {
     auto& resourceManager = Core::GetResourceManager();
     
+    // Wait for map generation thread to complete if it's running
+    // Set completion flags first to signal the thread to finish
+    mapGenerationInProgress.store(false, std::memory_order_release);
+    mapGenerationComplete.store(true, std::memory_order_release);
+    
+    if (mapGenerationThread) {
+        if (mapGenerationThread->joinable()) {
+            try {
+                mapGenerationThread->join();
+            } catch (...) {
+                // If join fails, detach as last resort
+                mapGenerationThread->detach();
+            }
+        }
+        mapGenerationThread.reset();
+    }
+    
     // ResourceManager handles cleanup automatically
     camera.reset();
     player.reset();
@@ -109,12 +127,7 @@ void Game::initializeResources() {
         }
     }
 
-    map = std::make_unique<Map>(500, 300, tileTextures);
-    player = std::make_unique<Player>(*map);
-    camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
-
-    spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons);
-
+    // Don't create map yet - this will be done during game start with loading screen
     sceneTexture = LoadRenderTexture(screenWidth, screenHeight);
     
     // Load shaders using ResourceManager
@@ -131,16 +144,86 @@ void Game::initializeResources() {
 }
 
 void Game::resetGame() {
-    map = std::make_unique<Map>(500, 300, tileTextures);
-    player = std::make_unique<Player>(*map);
-    camera = std::make_unique<GameCamera>(screenWidth, screenHeight, *player);
+    // Set loading state and reset loading progress
+    currentState = GameState::LOADING;
+    loadingStartTime = GetTime(); // Record when loading started
+    uiController->getLoadingScreen()->setProgress(0.0f);
+    
+    // Clear existing game objects
     scrapHounds.clear();
     automatons.clear();
-    spawner.spawnEnemiesInRooms(*map, scrapHounds, automatons); 
-    currentState = GameState::PLAYING;
     automataTimer = 0.0f;
     fadeAlpha = 0.0f;
     fadingToPlay = false;
+    
+    // Start async map generation
+    mapGenerationInProgress = true;
+    mapGenerationComplete = false;
+    
+    mapGenerationThread = std::make_unique<std::thread>([this]() {
+        try {
+            // Create progress callback to update loading screen
+            auto progressCallback = [this](float progress) {
+                if (uiController && uiController->getLoadingScreen()) {
+                    uiController->getLoadingScreen()->setProgress(progress);
+                }
+            };
+            
+            // Ensure we start with some progress to show the loading has begun
+            progressCallback(0.01f);
+            
+            // Generate the map with progress tracking
+            auto newMap = std::make_unique<Map>(500, 300, tileTextures, progressCallback);
+            auto newPlayer = std::make_unique<Player>(*newMap);
+            auto newCamera = std::make_unique<GameCamera>(screenWidth, screenHeight, *newPlayer);
+            
+            // Store references to spawner for safe access
+            std::vector<ScrapHound> newScrapHounds;
+            std::vector<Automaton> newAutomatons;
+            
+            // Spawn enemies using local vectors
+            spawner.spawnEnemiesInRooms(*newMap, newScrapHounds, newAutomatons);
+            
+            // Atomically update the main thread objects only after everything is ready
+            // This prevents the main thread from accessing partially constructed objects
+            map = std::move(newMap);
+            player = std::move(newPlayer);
+            camera = std::move(newCamera);
+            scrapHounds = std::move(newScrapHounds);
+            automatons = std::move(newAutomatons);
+            
+            // Ensure progress is at 100% before marking as complete
+            progressCallback(1.0f);
+            
+            // Add a small delay to ensure UI updates are processed
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            
+            // Mark generation as complete with proper memory ordering - this must be last
+            mapGenerationInProgress.store(false, std::memory_order_release);
+            mapGenerationComplete.store(true, std::memory_order_release);
+        } catch (const std::exception& e) {
+            // Log the error and ensure loading completes even on failure
+            if (uiController && uiController->getLoadingScreen()) {
+                uiController->getLoadingScreen()->setProgress(1.0f);
+            }
+            mapGenerationInProgress.store(false, std::memory_order_release);
+            mapGenerationComplete.store(true, std::memory_order_release);
+        } catch (...) {
+            // Handle any other exceptions
+            if (uiController && uiController->getLoadingScreen()) {
+                uiController->getLoadingScreen()->setProgress(1.0f);
+            }
+            mapGenerationInProgress.store(false, std::memory_order_release);
+            mapGenerationComplete.store(true, std::memory_order_release);
+        }
+    });
+}
+
+void Game::startNewGame() {
+    resetGame();
+    
+    std::atomic_thread_fence(std::memory_order_release);
+    fadingToPlay = true;
 }
 
 void Game::run() {
@@ -150,13 +233,23 @@ void Game::run() {
 void Game::showResourceStats() {
     auto& resourceManager = Core::GetResourceManager();
     auto stats = resourceManager.getMemoryStats();
-    
-    // This could be displayed in a debug overlay or console
-    // For now, we'll just track the stats for potential use
-    // In a real implementation, you might render this on screen
+
 }
 
 void Game::update(float deltaTime) {
+    Core::GetInputManager().update(deltaTime);
+    
+    std::atomic_thread_fence(std::memory_order_acquire);
+    if (fadingToPlay) {
+        fadeAlpha += deltaTime * 2.0f;
+        if (fadeAlpha >= 1.0f) {
+            fadeAlpha = 1.0f;
+            startNewGame();
+            fadingToPlay = false;
+            fadeAlpha = 0.0f;
+        }
+    }
+
     auto& inputManager = Core::GetInputManager();
     auto& eventManager = Core::GetEventManager();
     auto& resourceManager = Core::GetResourceManager();
@@ -180,7 +273,53 @@ void Game::update(float deltaTime) {
         return;
     }
 
+    if (currentState == GameState::LOADING) {
+
+        if (mapGenerationComplete.load(std::memory_order_acquire)) {
+            // Simplified thread handling to avoid memory corruption
+            if (mapGenerationThread) {
+                if (mapGenerationThread->joinable()) {
+                    // Simple join with quick timeout check
+                    try {
+                        mapGenerationThread->join();
+                        mapGenerationThread.reset();
+                        currentState = GameState::PLAYING;
+                    } catch (const std::exception&) {
+                        // If join fails, detach and continue
+                        mapGenerationThread->detach();
+                        mapGenerationThread.reset();
+                        currentState = GameState::PLAYING;
+                    }
+                } else {
+                    mapGenerationThread.reset();
+                    currentState = GameState::PLAYING;
+                }
+            } else {
+                currentState = GameState::PLAYING;
+            }
+        } else {
+            // Check for timeout
+            float loadingTime = GetTime() - loadingStartTime;
+            if (loadingTime > loadingTimeoutSeconds) {
+                // Force completion on timeout
+                mapGenerationInProgress.store(false, std::memory_order_release);
+                mapGenerationComplete.store(true, std::memory_order_release);
+                if (uiController && uiController->getLoadingScreen()) {
+                    uiController->getLoadingScreen()->setProgress(1.0f);
+                }
+            }
+        }
+        uiController->update(deltaTime, currentState);
+        return;
+    }
+
     if (currentState == GameState::PLAYING) {
+
+        if (mapGenerationInProgress.load(std::memory_order_acquire) || !map || !player || !camera) {
+            uiController->update(deltaTime, currentState);
+            return;
+        }
+        
         automataTimer += deltaTime;
 
         if (automataTimer >= automataInterval) {
@@ -253,6 +392,16 @@ void Game::update(float deltaTime) {
 void Game::render(float interpolation) {
     auto& inputManager = Core::GetInputManager();
     
+    if (currentState == GameState::LOADING) {
+        BeginDrawing();
+        ClearBackground(BLACK);
+        UI::UIAction action = uiController->draw(currentState);
+
+        
+        EndDrawing();
+        return;
+    }
+    
     if (currentState == GameState::TITLE) {
         BeginDrawing();
         ClearBackground(BLACK);
@@ -262,7 +411,7 @@ void Game::render(float interpolation) {
             fadeAlpha += GetFrameTime() * 1.5f;
             if (fadeAlpha >= 1.0f) {
                 fadeAlpha = 1.0f;
-                resetGame();
+                startNewGame();
                 fadingToPlay = false;
                 fadeAlpha = 0.0f;
             }
@@ -279,6 +428,17 @@ void Game::render(float interpolation) {
     }
     
     if (currentState == GameState::PLAYING || currentState == GameState::PAUSED) {
+        // Safety check: don't render game objects if they're not fully initialized
+        if (mapGenerationInProgress || !map || !player || !camera) {
+            BeginDrawing();
+            ClearBackground(BLACK);
+            if (uiController) {
+                uiController->draw(GameState::LOADING);
+            }
+            EndDrawing();
+            return;
+        }
+        
         uiController->update(GetFrameTime(), currentState, player.get());
         
         BeginTextureMode(sceneTexture);

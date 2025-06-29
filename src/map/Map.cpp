@@ -42,7 +42,7 @@ constexpr int CHUNK_SIZE = 16;
 
 
 
-Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures) :
+Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, ProgressCallback progressCallback) :
     width(w),
     height(h),
     tiles(w, std::vector<int>(h, 0)),
@@ -52,58 +52,137 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures) :
     isConwayProtected(w, std::vector<bool>(h, false)),
     tileTextures(loadedTileTextures) 
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    try {
+        // Report initial progress
+        if (progressCallback) progressCallback(0.0f);
+        std::random_device rd;
+        std::mt19937 gen(rd());
 
-    size_t numThreads = std::thread::hardware_concurrency();
-    if (numThreads == 0) numThreads = 2;
-    size_t calculated_chunk_size = (width + numThreads - 1) / numThreads;
-    std::vector<std::future<void>> futures;
-    for (size_t t = 0; t < numThreads; ++t) {
-        size_t start = t * calculated_chunk_size;
-        size_t end = std::min(start + calculated_chunk_size, (size_t)width);
-        futures.push_back(std::async(std::launch::async, [&, start, end]() {
-            for (size_t x = start; x < end; ++x) {
+        size_t numThreads = std::thread::hardware_concurrency();
+        if (numThreads == 0) numThreads = 2;
+        
+        // Optimize initial tile setup with better load balancing
+        size_t totalTiles = width * height;
+        size_t tilesPerThread = (totalTiles + numThreads - 1) / numThreads;
+        std::vector<std::future<void>> futures;
+        
+        try {
+            for (size_t t = 0; t < numThreads; ++t) {
+                size_t startTile = t * tilesPerThread;
+                size_t endTile = std::min(startTile + tilesPerThread, totalTiles);
+                
+                if (startTile < endTile) {
+                    futures.push_back(std::async(std::launch::async, [&, startTile, endTile]() {
+                        for (size_t tileIdx = startTile; tileIdx < endTile; ++tileIdx) {
+                            int x = tileIdx % width;
+                            int y = tileIdx / width;
+                            tiles[x][y] = 0;
+                            isOriginalSolid[x][y] = false;
+                            isConwayProtected[x][y] = false;
+                        }
+                    }));
+                }
+            }
+            for (auto& f : futures) f.get();
+        } catch (...) {
+            // Fallback to single-threaded execution if async fails
+            for (int x = 0; x < width; ++x) {
                 for (int y = 0; y < height; ++y) {
                     tiles[x][y] = 0;
                     isOriginalSolid[x][y] = false;
                     isConwayProtected[x][y] = false;
                 }
             }
-        }));
-    }
-    for (auto& f : futures) f.get();
-
-
-    for (int x = 0; x < width; x++) {
-        tiles[x][height - 1] = BORDER_TILE_VALUE; isOriginalSolid[x][height - 1] = true;
-        tiles[x][0] = BORDER_TILE_VALUE;         isOriginalSolid[x][0] = true;
-    }
-    for (int y = 0; y < height; y++) {
-        tiles[width - 1][y] = BORDER_TILE_VALUE; isOriginalSolid[width - 1][y] = true;
-    }
-
-    
-
-    chunks.clear();
-    for (int cx = 0; cx < width; cx += CHUNK_SIZE) {
-        for (int cy = 0; cy < height; cy += CHUNK_SIZE) {
-            Chunk chunk;
-            chunk.startX = cx;
-            chunk.startY = cy;
-            chunk.endX = std::min(cx + CHUNK_SIZE, width) - 1;
-            chunk.endY = std::min(cy + CHUNK_SIZE, height) - 1;
-            chunks.push_back(chunk);
         }
-    }
+        
+        // Report progress after initial setup
+        if (progressCallback) progressCallback(0.15f);
 
-    
-    std::vector<std::future<void>> conwayFutures;
-    for (size_t t = 0; t < numThreads; ++t) {
-        size_t start = t * calculated_chunk_size;
-        size_t end = std::min(start + calculated_chunk_size, (size_t)width);
-        conwayFutures.push_back(std::async(std::launch::async, [&, start, end]() {
-            for (size_t x = start; x < end; ++x) {
+
+        // Parallelize border creation
+        std::vector<std::future<void>> borderFutures;
+        
+        // Top and bottom borders
+        borderFutures.push_back(std::async(std::launch::async, [&]() {
+            for (int x = 0; x < width; x++) {
+                tiles[x][height - 1] = BORDER_TILE_VALUE; 
+                isOriginalSolid[x][height - 1] = true;
+                tiles[x][0] = BORDER_TILE_VALUE;         
+                isOriginalSolid[x][0] = true;
+            }
+        }));
+        
+        // Left and right borders  
+        borderFutures.push_back(std::async(std::launch::async, [&]() {
+            for (int y = 0; y < height; y++) {
+                tiles[width - 1][y] = BORDER_TILE_VALUE; 
+                isOriginalSolid[width - 1][y] = true;
+                tiles[0][y] = BORDER_TILE_VALUE;
+                isOriginalSolid[0][y] = true;
+            }
+        }));
+        
+        // Wait for border creation to complete
+        for (auto& future : borderFutures) {
+            future.get();
+        }
+
+        // Report progress after borders
+        if (progressCallback) progressCallback(0.25f);
+
+        
+
+        // Optimize chunk creation
+        chunks.clear();
+        int totalChunks = ((width + CHUNK_SIZE - 1) / CHUNK_SIZE) * ((height + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        chunks.reserve(totalChunks);
+        
+        for (int cx = 0; cx < width; cx += CHUNK_SIZE) {
+            for (int cy = 0; cy < height; cy += CHUNK_SIZE) {
+                chunks.emplace_back(Chunk{
+                    cx,
+                    cy,
+                    std::min(cx + CHUNK_SIZE, width) - 1,
+                    std::min(cy + CHUNK_SIZE, height) - 1
+                });
+            }
+        }
+        
+        // Report progress after chunk creation
+        if (progressCallback) progressCallback(0.35f);
+
+        
+        std::vector<std::future<void>> conwayFutures;
+        
+        try {
+            for (size_t t = 0; t < numThreads; ++t) {
+                size_t startTile = t * tilesPerThread;
+                size_t endTile = std::min(startTile + tilesPerThread, totalTiles);
+                
+                if (startTile < endTile) {
+                    conwayFutures.push_back(std::async(std::launch::async, [&, startTile, endTile]() {
+                        for (size_t tileIdx = startTile; tileIdx < endTile; ++tileIdx) {
+                            int x = tileIdx % width;
+                            int y = tileIdx / width;
+                            if (isOriginalSolid[x][y]) {
+                                for (int dx = -2; dx <= 2; ++dx) {
+                                    for (int dy = -2; dy <= 2; ++dy) {
+                                        int nx = x + dx;
+                                        int ny = y + dy;
+                                        if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                                            isConwayProtected[nx][ny] = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }));
+                }
+            }
+            for (auto& f : conwayFutures) f.get();
+        } catch (...) {
+            // Fallback to single-threaded execution if async fails
+            for (int x = 0; x < width; ++x) {
                 for (int y = 0; y < height; ++y) {
                     if (isOriginalSolid[x][y]) {
                         for (int dx = -2; dx <= 2; ++dx) {
@@ -118,11 +197,20 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures) :
                     }
                 }
             }
-        }));
-    }
-    for (auto& f : conwayFutures) f.get();
+        }
+        
+        // Report progress after Conway protection setup
+        if (progressCallback) progressCallback(0.55f);
 
-    RoomGenerator::generateRoomsAndConnections(*this, gen);
+        RoomGenerator::generateRoomsAndConnections(*this, gen, progressCallback);
+        
+        // Report completion
+        if (progressCallback) progressCallback(1.0f);
+    } catch (...) {
+        // Ensure we always report completion even if something fails
+        if (progressCallback) progressCallback(1.0f);
+        throw; // Re-throw the exception so it can be handled at the game level
+    }
 }
 
 void Map::placeBorders() {

@@ -11,8 +11,11 @@
 #include <memory>
 #include <raylib.h>
 #include <vector>
+#include <thread>
+#include <atomic>
 
 enum class GameState {
+    LOADING,
     TITLE,
     PLAYING,
     PAUSED,
@@ -26,6 +29,7 @@ public:
 
     void run();
     void resetGame();
+    void startNewGame();
     void showResourceStats(); // Debug method to display resource usage
     
 private:
@@ -56,6 +60,13 @@ private:
     const float automataInterval = 5.0f;
     float fadeAlpha;
     bool fadingToPlay;
+    
+    // Async loading support
+    std::unique_ptr<std::thread> mapGenerationThread;
+    std::atomic<bool> mapGenerationInProgress{false};
+    std::atomic<bool> mapGenerationComplete{false};
+    float loadingStartTime;
+    const float loadingTimeoutSeconds = 30.0f; // 30 second timeout
     
     void update(float deltaTime);
     void render(float interpolation);

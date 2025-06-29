@@ -297,6 +297,30 @@ src/core/EventManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/EventManager.cpp.s
 .PHONY : src/core/EventManager.cpp.s
 
+src/core/FastRNG.o: src/core/FastRNG.cpp.o
+.PHONY : src/core/FastRNG.o
+
+# target to build an object file
+src/core/FastRNG.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/FastRNG.cpp.o
+.PHONY : src/core/FastRNG.cpp.o
+
+src/core/FastRNG.i: src/core/FastRNG.cpp.i
+.PHONY : src/core/FastRNG.i
+
+# target to preprocess a source file
+src/core/FastRNG.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/FastRNG.cpp.i
+.PHONY : src/core/FastRNG.cpp.i
+
+src/core/FastRNG.s: src/core/FastRNG.cpp.s
+.PHONY : src/core/FastRNG.s
+
+# target to generate assembly for a file
+src/core/FastRNG.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/FastRNG.cpp.s
+.PHONY : src/core/FastRNG.cpp.s
+
 src/core/GameLoop.o: src/core/GameLoop.cpp.o
 .PHONY : src/core/GameLoop.o
 
@@ -681,6 +705,30 @@ src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.s
 .PHONY : src/enemies/scraphound/ScrapHoundUpdateHelpers.cpp.s
 
+src/map/LadderRopePlacer.o: src/map/LadderRopePlacer.cpp.o
+.PHONY : src/map/LadderRopePlacer.o
+
+# target to build an object file
+src/map/LadderRopePlacer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/LadderRopePlacer.cpp.o
+.PHONY : src/map/LadderRopePlacer.cpp.o
+
+src/map/LadderRopePlacer.i: src/map/LadderRopePlacer.cpp.i
+.PHONY : src/map/LadderRopePlacer.i
+
+# target to preprocess a source file
+src/map/LadderRopePlacer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/LadderRopePlacer.cpp.i
+.PHONY : src/map/LadderRopePlacer.cpp.i
+
+src/map/LadderRopePlacer.s: src/map/LadderRopePlacer.cpp.s
+.PHONY : src/map/LadderRopePlacer.s
+
+# target to generate assembly for a file
+src/map/LadderRopePlacer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/LadderRopePlacer.cpp.s
+.PHONY : src/map/LadderRopePlacer.cpp.s
+
 src/map/Map.o: src/map/Map.cpp.o
 .PHONY : src/map/Map.o
 
@@ -825,6 +873,30 @@ src/map/MapRendering.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.s
 .PHONY : src/map/MapRendering.cpp.s
 
+src/map/RoomConnectionGenerator.o: src/map/RoomConnectionGenerator.cpp.o
+.PHONY : src/map/RoomConnectionGenerator.o
+
+# target to build an object file
+src/map/RoomConnectionGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomConnectionGenerator.cpp.o
+.PHONY : src/map/RoomConnectionGenerator.cpp.o
+
+src/map/RoomConnectionGenerator.i: src/map/RoomConnectionGenerator.cpp.i
+.PHONY : src/map/RoomConnectionGenerator.i
+
+# target to preprocess a source file
+src/map/RoomConnectionGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomConnectionGenerator.cpp.i
+.PHONY : src/map/RoomConnectionGenerator.cpp.i
+
+src/map/RoomConnectionGenerator.s: src/map/RoomConnectionGenerator.cpp.s
+.PHONY : src/map/RoomConnectionGenerator.s
+
+# target to generate assembly for a file
+src/map/RoomConnectionGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomConnectionGenerator.cpp.s
+.PHONY : src/map/RoomConnectionGenerator.cpp.s
+
 src/map/RoomContentGenerator.o: src/map/RoomContentGenerator.cpp.o
 .PHONY : src/map/RoomContentGenerator.o
 
@@ -872,6 +944,30 @@ src/map/RoomGenerator.s: src/map/RoomGenerator.cpp.s
 src/map/RoomGenerator.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomGenerator.cpp.s
 .PHONY : src/map/RoomGenerator.cpp.s
+
+src/map/RoomGridGenerator.o: src/map/RoomGridGenerator.cpp.o
+.PHONY : src/map/RoomGridGenerator.o
+
+# target to build an object file
+src/map/RoomGridGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomGridGenerator.cpp.o
+.PHONY : src/map/RoomGridGenerator.cpp.o
+
+src/map/RoomGridGenerator.i: src/map/RoomGridGenerator.cpp.i
+.PHONY : src/map/RoomGridGenerator.i
+
+# target to preprocess a source file
+src/map/RoomGridGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomGridGenerator.cpp.i
+.PHONY : src/map/RoomGridGenerator.cpp.i
+
+src/map/RoomGridGenerator.s: src/map/RoomGridGenerator.cpp.s
+.PHONY : src/map/RoomGridGenerator.s
+
+# target to generate assembly for a file
+src/map/RoomGridGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/RoomGridGenerator.cpp.s
+.PHONY : src/map/RoomGridGenerator.cpp.s
 
 src/player/Player.o: src/player/Player.cpp.o
 .PHONY : src/player/Player.o
@@ -1040,6 +1136,30 @@ src/ui/GameOverComponent.s: src/ui/GameOverComponent.cpp.s
 src/ui/GameOverComponent.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/GameOverComponent.cpp.s
 .PHONY : src/ui/GameOverComponent.cpp.s
+
+src/ui/LoadingScreenComponent.o: src/ui/LoadingScreenComponent.cpp.o
+.PHONY : src/ui/LoadingScreenComponent.o
+
+# target to build an object file
+src/ui/LoadingScreenComponent.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/LoadingScreenComponent.cpp.o
+.PHONY : src/ui/LoadingScreenComponent.cpp.o
+
+src/ui/LoadingScreenComponent.i: src/ui/LoadingScreenComponent.cpp.i
+.PHONY : src/ui/LoadingScreenComponent.i
+
+# target to preprocess a source file
+src/ui/LoadingScreenComponent.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/LoadingScreenComponent.cpp.i
+.PHONY : src/ui/LoadingScreenComponent.cpp.i
+
+src/ui/LoadingScreenComponent.s: src/ui/LoadingScreenComponent.cpp.s
+.PHONY : src/ui/LoadingScreenComponent.s
+
+# target to generate assembly for a file
+src/ui/LoadingScreenComponent.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/LoadingScreenComponent.cpp.s
+.PHONY : src/ui/LoadingScreenComponent.cpp.s
 
 src/ui/PauseMenuComponent.o: src/ui/PauseMenuComponent.cpp.o
 .PHONY : src/ui/PauseMenuComponent.o
@@ -1263,6 +1383,9 @@ help:
 	@echo "... src/core/EventManager.o"
 	@echo "... src/core/EventManager.i"
 	@echo "... src/core/EventManager.s"
+	@echo "... src/core/FastRNG.o"
+	@echo "... src/core/FastRNG.i"
+	@echo "... src/core/FastRNG.s"
 	@echo "... src/core/GameLoop.o"
 	@echo "... src/core/GameLoop.i"
 	@echo "... src/core/GameLoop.s"
@@ -1311,6 +1434,9 @@ help:
 	@echo "... src/enemies/scraphound/ScrapHoundUpdateHelpers.o"
 	@echo "... src/enemies/scraphound/ScrapHoundUpdateHelpers.i"
 	@echo "... src/enemies/scraphound/ScrapHoundUpdateHelpers.s"
+	@echo "... src/map/LadderRopePlacer.o"
+	@echo "... src/map/LadderRopePlacer.i"
+	@echo "... src/map/LadderRopePlacer.s"
 	@echo "... src/map/Map.o"
 	@echo "... src/map/Map.i"
 	@echo "... src/map/Map.s"
@@ -1329,12 +1455,18 @@ help:
 	@echo "... src/map/MapRendering.o"
 	@echo "... src/map/MapRendering.i"
 	@echo "... src/map/MapRendering.s"
+	@echo "... src/map/RoomConnectionGenerator.o"
+	@echo "... src/map/RoomConnectionGenerator.i"
+	@echo "... src/map/RoomConnectionGenerator.s"
 	@echo "... src/map/RoomContentGenerator.o"
 	@echo "... src/map/RoomContentGenerator.i"
 	@echo "... src/map/RoomContentGenerator.s"
 	@echo "... src/map/RoomGenerator.o"
 	@echo "... src/map/RoomGenerator.i"
 	@echo "... src/map/RoomGenerator.s"
+	@echo "... src/map/RoomGridGenerator.o"
+	@echo "... src/map/RoomGridGenerator.i"
+	@echo "... src/map/RoomGridGenerator.s"
 	@echo "... src/player/Player.o"
 	@echo "... src/player/Player.i"
 	@echo "... src/player/Player.s"
@@ -1356,6 +1488,9 @@ help:
 	@echo "... src/ui/GameOverComponent.o"
 	@echo "... src/ui/GameOverComponent.i"
 	@echo "... src/ui/GameOverComponent.s"
+	@echo "... src/ui/LoadingScreenComponent.o"
+	@echo "... src/ui/LoadingScreenComponent.i"
+	@echo "... src/ui/LoadingScreenComponent.s"
 	@echo "... src/ui/PauseMenuComponent.o"
 	@echo "... src/ui/PauseMenuComponent.i"
 	@echo "... src/ui/PauseMenuComponent.s"

@@ -19,28 +19,9 @@ Image LoadImageAsync(const std::string& path) {
 Player::Player(const Map &map) {
     
     const auto& rooms = map.getGeneratedRooms();
-    if (!rooms.empty()) {
-        
-        const Room* spawnRoom = nullptr;
-        for (const auto& room : rooms) {
-            if (room.type == Room::TREASURE) {
-                spawnRoom = &room;
-                break;
-            }
-        }
-        
-        if (spawnRoom == nullptr) {
-            spawnRoom = &rooms[0];
-        }
-        
-        int spawnX = (spawnRoom->startX + spawnRoom->endX) / 2;
-        int spawnY = (spawnRoom->startY + spawnRoom->endY) / 2;
-        position = { spawnX * 32.0f, spawnY * 32.0f };
-        printf("DEBUG: Player spawning in room type %d at tile coords (%d,%d), pixel coords (%.1f,%.1f)\n", 
-               spawnRoom->type, spawnX, spawnY, position.x, position.y);
-    } else {
-        position = map.findEmptySpawn();
-    }
+    
+    position = map.findEmptySpawn();
+    
     velocity = {0, 0};
     health = 100.0f;
     maxHealth = 100.0f;
