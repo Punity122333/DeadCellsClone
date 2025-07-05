@@ -5,6 +5,7 @@
 #include "enemies/ScrapHound.hpp"
 #include "enemies/Automaton.hpp"
 #include "effects/ParticleSystem.hpp"
+#include "core/GlobalThreadPool.hpp"
 #include <raylib.h>
 #include <vector>
 #include <memory>
@@ -69,7 +70,7 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
         size_t start = t * enemyChunk;
         size_t end = std::min(start + enemyChunk, enemies.size());
         if (start >= end) continue;
-        enemyFutures.push_back(std::async(std::launch::async, [&, start, end]() {
+        enemyFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&, start, end]() {
             for (size_t i = start; i < end; ++i) {
                 auto& enemy = enemies[i];
                 if (enemy.isAlive()) {
@@ -98,7 +99,7 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
         size_t start = t * automatonChunk;
         size_t end = std::min(start + automatonChunk, automatons.size());
         if (start >= end) continue;
-        automatonFutures.push_back(std::async(std::launch::async, [&, start, end]() {
+        automatonFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&, start, end]() {
             for (size_t i = start; i < end; ++i) {
                 auto& automaton = automatons[i];
                 if (automaton.isAlive()) {

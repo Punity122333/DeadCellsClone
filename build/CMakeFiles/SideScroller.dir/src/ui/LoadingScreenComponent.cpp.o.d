@@ -210,5 +210,4 @@ CMakeFiles/SideScroller.dir/src/ui/LoadingScreenComponent.cpp.o: \
  /usr/include/c++/13/condition_variable /usr/include/c++/13/system_error \
  /usr/include/c++/13/stdexcept /usr/include/c++/13/bits/atomic_futex.h \
  /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_thread.h \
- /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h \
- /usr/include/c++/13/chrono
+ /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h

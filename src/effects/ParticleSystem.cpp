@@ -1,4 +1,5 @@
 #include "effects/ParticleSystem.hpp"
+#include "effects/ParticleThreadPool.hpp"
 #include <cmath>
 #include <cstdlib>
 #include <thread>
@@ -6,7 +7,6 @@
 #include <future>
 
 ParticleSystem::ParticleSystem() {
-    threadPool = std::make_unique<ThreadPool>();
 }
 
 ParticleSystem& ParticleSystem::getInstance() {
@@ -15,7 +15,7 @@ ParticleSystem& ParticleSystem::getInstance() {
 }
 
 void ParticleSystem::createExplosion(Vector2 position, int count, Color color, float duration, float speed) {
-    auto future = threadPool->enqueue([=]() {
+    auto future = ParticleThreadPool::getInstance().getPool().enqueue([=]() {
         std::vector<Particle> newParticles;
         newParticles.reserve(count);
         
@@ -45,7 +45,7 @@ void ParticleSystem::createExplosion(Vector2 position, int count, Color color, f
 }
 
 void ParticleSystem::createDustParticle(Vector2 position, Vector2 velocity, float lifetime) {
-    auto future = threadPool->enqueue([=]() {
+    auto future = ParticleThreadPool::getInstance().getPool().enqueue([=]() {
         std::vector<Particle> newParticles;
         newParticles.reserve(1);
         
@@ -67,7 +67,7 @@ void ParticleSystem::createDustParticle(Vector2 position, Vector2 velocity, floa
 }
 
 void ParticleSystem::createExplosionParticles(Vector2 position, int count, Color baseColor) {
-    auto future = threadPool->enqueue([=]() {
+    auto future = ParticleThreadPool::getInstance().getPool().enqueue([=]() {
         std::vector<Particle> newParticles;
         newParticles.reserve(count);
         
@@ -149,7 +149,7 @@ void ParticleSystem::update(float deltaTime) {
             size_t start = t * particlesPerThread;
             size_t end = (t == numThreads - 1) ? particles.size() : start + particlesPerThread;
             
-            futures.push_back(threadPool->enqueue([this, start, end, deltaTime]() {
+            futures.push_back(ParticleThreadPool::getInstance().getPool().enqueue([this, start, end, deltaTime]() {
                 updateParticleRange(start, end, deltaTime);
             }));
         }

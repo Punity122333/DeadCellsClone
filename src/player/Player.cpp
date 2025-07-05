@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "enemies/ScrapHound.hpp"
+#include "core/GlobalThreadPool.hpp"
 
 #include <raylib.h>
 #include "weapons/WeaponTypes.hpp"
@@ -31,7 +32,9 @@ Player::Player(const Map &map) {
     weapons.push_back(std::make_unique<Bow>());
     currentWeaponIndex = 1;
 
-    imageFuture = std::async(std::launch::async, LoadImageAsync, "../resources/image.png");
+    imageFuture = GlobalThreadPool::getInstance().getMainPool().enqueue([]() {
+        return LoadImageAsync("../resources/image.png");
+    });
 
     width = 48;
     height = 60;

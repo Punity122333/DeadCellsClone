@@ -10,8 +10,10 @@ int main() {
     config.resourcePaths = {"../resources/", "./resources/", "../"};
     Core::ApplyConfig(config);
     
-    Game game;
-    game.run();
+    {
+        Game game;
+        game.run();
+    } // Game destructor is called here
     
     Core::Shutdown();
     return 0;

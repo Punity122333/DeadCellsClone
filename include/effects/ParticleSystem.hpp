@@ -2,10 +2,8 @@
 #include <raylib.h>
 #include <vector>
 #include <mutex>
-#include <atomic>
 #include <queue>
-#include <memory>
-#include "effects/ThreadPool.hpp"
+#include <functional>
 
 struct Particle {
     Vector2 position;
@@ -38,7 +36,6 @@ private:
     std::queue<std::vector<Particle>> pendingParticles;
     std::mutex particleMutex;
     std::mutex pendingMutex;
-    std::unique_ptr<ThreadPool> threadPool;
     
     ParticleSystem();
     

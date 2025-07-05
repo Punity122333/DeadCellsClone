@@ -3,6 +3,7 @@
 #include "map/RoomGridGenerator.hpp"
 #include "map/RoomConnectionGenerator.hpp"
 #include "map/LadderRopePlacer.hpp"
+#include "core/GlobalThreadPool.hpp"
 #include <cstdio>
 #include <future>
 #include <thread>
@@ -44,7 +45,7 @@ void RoomGenerator::generateRoomsAndConnections(Map& map, std::mt19937& gen, std
             size_t endX = std::min(startX + chunkSizeX, (size_t)(map.getWidth() - 1));
             
             if (startX < endX) {
-                tileFillFutures.push_back(std::async(std::launch::async, [&map, startX, endX]() {
+                tileFillFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&map, startX, endX]() {
                     for (size_t x_coord = startX; x_coord < endX; ++x_coord) {
                         for (int y_coord = 1; y_coord < map.getHeight() - 1; ++y_coord) {
                             map.tiles[x_coord][y_coord] = DEFAULT_TILE_VALUE;
@@ -90,7 +91,7 @@ void RoomGenerator::generateRoomsAndConnections(Map& map, std::mt19937& gen, std
         size_t endX = std::min(startX + chunkSizeX, (size_t)map.getWidth());
         
         if (startX < endX) {
-            chestCountFutures.push_back(std::async(std::launch::async, 
+            chestCountFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue(
                 [&map, &chestCount, startX, endX]() {
                     int localCount = 0;
                     for (size_t x = startX; x < endX; ++x) {
@@ -148,7 +149,7 @@ void RoomGenerator::generateAllRoomContent(Map& map, const std::vector<Room>& ro
         size_t endIdx = std::min(startIdx + roomsPerThread, rooms_vector.size());
         
         if (startIdx < endIdx) {
-            roomContentFutures.push_back(std::async(std::launch::async, 
+            roomContentFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue(
                 [&map, &rooms_vector, &threadGens, t, startIdx, endIdx]() {
                     auto& threadGen = threadGens[t];
                     for (size_t i = startIdx; i < endIdx; ++i) {
@@ -185,7 +186,7 @@ void RoomGenerator::protectEmptyTilesNearWalls(Map& map) {
         size_t endX = std::min(startX + chunkSizeX, (size_t)map.getWidth());
         
         if (startX < endX) {
-            wallProtectionFutures.push_back(std::async(std::launch::async, 
+            wallProtectionFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue(
                 [&map, startX, endX]() {
                     for (size_t x = startX; x < endX; ++x) {
                         for (int y = 0; y < map.getHeight(); ++y) {

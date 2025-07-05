@@ -11,7 +11,7 @@
 #include <memory>
 #include <raylib.h>
 #include <vector>
-#include <thread>
+#include <future>
 #include <atomic>
 
 enum class GameState {
@@ -62,7 +62,7 @@ private:
     bool fadingToPlay;
     
     // Async loading support
-    std::unique_ptr<std::thread> mapGenerationThread;
+    std::future<void> mapGenerationFuture;
     std::atomic<bool> mapGenerationInProgress{false};
     std::atomic<bool> mapGenerationComplete{false};
     float loadingStartTime;

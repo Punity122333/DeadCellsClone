@@ -7,8 +7,12 @@
 #include "ui/LoadingScreenComponent.hpp"
 #include "effects/ParticleSystem.hpp"
 #include "core/Core.hpp"
+#include "core/GlobalThreadPool.hpp"
+#include "effects/ParticleThreadPool.hpp"
 #include <algorithm>
 #include <filesystem>
+#include <thread>
+#include <chrono>
 
 const int screenWidth = 1920;
 const int screenHeight = 1080;
@@ -33,16 +37,14 @@ Game::Game()
     gameLoop->setRenderCallback([this](float interpolation) { render(interpolation); });
 
     auto& resourceManager = Core::GetResourceManager();
-    
-    // Set up resource search paths
+
     resourceManager.setSearchPaths({"../resources/", "./resources/", "../shader/", "./shader/"});
     
-    // Enable hot-reloading in debug builds
+
     #ifdef DEBUG
     resourceManager.setHotReloadEnabled(true);
     #endif
-    
-    // Load icon using ResourceManager
+
     auto iconHandle = resourceManager.loadTexture(GamePaths::Icon);
     if (iconHandle.isValid()) {
         Image icon = LoadImageFromTexture(*iconHandle.get());
@@ -69,29 +71,37 @@ Game::Game()
 }
 
 Game::~Game() {
-    auto& resourceManager = Core::GetResourceManager();
-    
-    // Wait for map generation thread to complete if it's running
-    // Set completion flags first to signal the thread to finish
+    // Stop map generation if in progress
     mapGenerationInProgress.store(false, std::memory_order_release);
     mapGenerationComplete.store(true, std::memory_order_release);
     
-    if (mapGenerationThread) {
-        if (mapGenerationThread->joinable()) {
-            try {
-                mapGenerationThread->join();
-            } catch (...) {
-                // If join fails, detach as last resort
-                mapGenerationThread->detach();
-            }
+    if (mapGenerationFuture.valid()) {
+        try {
+            mapGenerationFuture.wait();
+        } catch (...) {
+            // Ignore exceptions during shutdown
         }
-        mapGenerationThread.reset();
     }
     
-    // ResourceManager handles cleanup automatically
+    // Clean up game objects first
     camera.reset();
     player.reset();
     map.reset();
+    
+    // Shutdown thread pools
+    GlobalThreadPool::getInstance().shutdown();
+    ParticleThreadPool::getInstance().shutdown();
+    
+    // Only try to access ResourceManager if Core is still initialized
+    if (Core::IsInitialized()) {
+        try {
+            auto& resourceManager = Core::GetResourceManager();
+            // Any resource cleanup if needed
+        } catch (...) {
+            // Ignore exceptions during shutdown
+        }
+    }
+    
     CloseWindow();
 }
 
@@ -160,7 +170,7 @@ void Game::resetGame() {
     mapGenerationInProgress = true;
     mapGenerationComplete = false;
     
-    mapGenerationThread = std::make_unique<std::thread>([this]() {
+    auto mapGenerationTask = [this]() {
         try {
             // Create progress callback to update loading screen
             auto progressCallback = [this](float progress) {
@@ -183,9 +193,7 @@ void Game::resetGame() {
             
             // Spawn enemies using local vectors
             spawner.spawnEnemiesInRooms(*newMap, newScrapHounds, newAutomatons);
-            
-            // Atomically update the main thread objects only after everything is ready
-            // This prevents the main thread from accessing partially constructed objects
+
             map = std::move(newMap);
             player = std::move(newPlayer);
             camera = std::move(newCamera);
@@ -216,7 +224,9 @@ void Game::resetGame() {
             mapGenerationInProgress.store(false, std::memory_order_release);
             mapGenerationComplete.store(true, std::memory_order_release);
         }
-    });
+    };  
+    
+    mapGenerationFuture = GlobalThreadPool::getInstance().getMainPool().enqueue(mapGenerationTask);
 }
 
 void Game::startNewGame() {
@@ -276,22 +286,12 @@ void Game::update(float deltaTime) {
     if (currentState == GameState::LOADING) {
 
         if (mapGenerationComplete.load(std::memory_order_acquire)) {
-            // Simplified thread handling to avoid memory corruption
-            if (mapGenerationThread) {
-                if (mapGenerationThread->joinable()) {
-                    // Simple join with quick timeout check
-                    try {
-                        mapGenerationThread->join();
-                        mapGenerationThread.reset();
-                        currentState = GameState::PLAYING;
-                    } catch (const std::exception&) {
-                        // If join fails, detach and continue
-                        mapGenerationThread->detach();
-                        mapGenerationThread.reset();
-                        currentState = GameState::PLAYING;
-                    }
-                } else {
-                    mapGenerationThread.reset();
+            // Simplified future handling to avoid memory corruption
+            if (mapGenerationFuture.valid()) {
+                try {
+                    mapGenerationFuture.wait();
+                    currentState = GameState::PLAYING;
+                } catch (const std::exception&) {
                     currentState = GameState::PLAYING;
                 }
             } else {

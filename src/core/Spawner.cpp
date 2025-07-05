@@ -2,6 +2,7 @@
 #include "map/Map.hpp" 
 #include "enemies/ScrapHound.hpp" 
 #include "enemies/Automaton.hpp"
+#include "core/GlobalThreadPool.hpp"
 #include <algorithm>
 #include <atomic>
 #include <cstdio>
@@ -33,7 +34,7 @@ void Spawner::spawnEnemiesInRooms(Map& map, std::vector<ScrapHound>& scrapHounds
     std::mutex automatonsMutex;
     std::vector<std::future<void>> futures;
     for (const auto& room : rooms) {
-        futures.push_back(std::async(std::launch::async, [&map, &scrapHounds, &automatons, &gen, &totalScrapHoundsSpawned, &totalAutomatonsSpawned, &scrapHoundsMutex, &automatonsMutex, room]() mutable {
+        futures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&map, &scrapHounds, &automatons, &gen, &totalScrapHoundsSpawned, &totalAutomatonsSpawned, &scrapHoundsMutex, &automatonsMutex, room]() mutable {
             std::vector<Vector2> validScrapHoundSpawns;
             std::vector<Vector2> validAutomatonSpawns;
             for (int y = room.startY + 1; y < room.endY - 1; ++y) {

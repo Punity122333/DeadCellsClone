@@ -3,7 +3,6 @@
 #include "ui/UIController.hpp"
 #include <raylib.h>
 #include <atomic>
-#include <thread>
 #include <vector>
 
 namespace UI {
@@ -54,13 +53,14 @@ namespace UI {
         // Background animation
         BackgroundData bgData[2];
         int currentBgBuffer = 0;
-        std::thread bgAnimThread;
         std::atomic<bool> threadRunning{true};
+        float backgroundAnimTime = 0.0f;
 
-        // Colors matching title screen style
         static const Color COLOR_TITLE;
         static const Color COLOR_LOADING_BAR_BG;
         static const Color COLOR_LOADING_BAR_FILL;
         static const Color COLOR_LOADING_TEXT;
+        
+        void updateBackgroundData();
     };
 }

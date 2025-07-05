@@ -1,5 +1,6 @@
 #include "map/RoomGridGenerator.hpp"
 #include "core/FastRNG.hpp"
+#include "core/GlobalThreadPool.hpp"
 #include <thread>
 #include <mutex>
 #include <future>
@@ -130,7 +131,7 @@ void RoomGridGenerator::createRoomGridOptimized(Map& map, FastRNG& rng, std::vec
     for (size_t i = 0; i < regions.size(); ++i) {
         int thread_id = i % max_threads;
         
-        futures.push_back(std::async(std::launch::async, [&, i, thread_id]() {
+        futures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&, i, thread_id]() {
             processRegion(regions[i], map, local_room_grids[thread_id], 
                          local_room_vectors[thread_id], num_cols, num_rows);
         }));

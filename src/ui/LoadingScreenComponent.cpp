@@ -1,7 +1,6 @@
 #include "ui/LoadingScreenComponent.hpp"
 #include <raylib.h>
 #include <cmath>
-#include <chrono>
 
 #ifndef CYAN
     #define CYAN CLITERAL(Color){ 0, 255, 255, 255 }
@@ -24,85 +23,69 @@ namespace UI {
             bgData[i].vLineColors.resize(NUM_VERTICAL_LINES);
         }
         
-        bgAnimThread = std::thread(&LoadingScreenComponent::updateBackgroundAnimations, this);
+        updateBackgroundData();
     }
 
     LoadingScreenComponent::~LoadingScreenComponent() {
-        // Stop the thread first before any data cleanup
         threadRunning.store(false, std::memory_order_release);
-        
-        if (bgAnimThread.joinable()) {
-            try {
-                bgAnimThread.join();
-            } catch (...) {
-                // If join fails, detach as last resort
-                bgAnimThread.detach();
-            }
-        }
-        
-        // Now it's safe to let vectors be destroyed automatically
     }
 
-    void LoadingScreenComponent::updateBackgroundAnimations() {
-        float localAnimTime = 0.0f;
+    void LoadingScreenComponent::updateBackgroundData() {
+        backgroundAnimTime += 0.016f;
         
-        while (threadRunning.load(std::memory_order_acquire)) {
-            localAnimTime += 0.016f;
+        int nextBuffer = 1 - currentBgBuffer;
+        auto& data = bgData[nextBuffer];
+        
+        for (int i = 0; i < NUM_HORIZONTAL_LINES; ++i) {
+            data.hLinePositions[i] = std::sin(backgroundAnimTime * 0.8f + i * 0.4f) * 50.0f + 
+                                    static_cast<float>(screenHeight) * (i + 1) / static_cast<float>(NUM_HORIZONTAL_LINES + 1);
             
-            int nextBuffer = 1 - currentBgBuffer;
-            auto& data = bgData[nextBuffer];
-            
-            for (int i = 0; i < NUM_HORIZONTAL_LINES; ++i) {
-                data.hLinePositions[i] = std::sin(localAnimTime * 0.8f + i * 0.4f) * 50.0f + 
-                                        static_cast<float>(screenHeight) * (i + 1) / static_cast<float>(NUM_HORIZONTAL_LINES + 1);
-                
-                float intensity = 0.3f + 0.4f * std::sin(localAnimTime * 1.2f + i * 0.6f);
-                data.hLineColors[i] = {
-                    static_cast<unsigned char>(50 + intensity * 100),
-                    static_cast<unsigned char>(150 + intensity * 105),
-                    static_cast<unsigned char>(200 + intensity * 55),
-                    static_cast<unsigned char>(60 + intensity * 120)
-                };
-            }
-            
-            for (int i = 0; i < NUM_VERTICAL_LINES; ++i) {
-                data.vLinePositions[i] = std::cos(localAnimTime * 0.6f + i * 0.5f) * 30.0f + 
-                                        static_cast<float>(screenWidth) * (i + 1) / static_cast<float>(NUM_VERTICAL_LINES + 1);
-                
-                float intensity = 0.2f + 0.3f * std::cos(localAnimTime * 1.5f + i * 0.8f);
-                data.vLineColors[i] = {
-                    static_cast<unsigned char>(30 + intensity * 80),
-                    static_cast<unsigned char>(100 + intensity * 100),
-                    static_cast<unsigned char>(180 + intensity * 75),
-                    static_cast<unsigned char>(40 + intensity * 100)
-                };
-            }
-            
-            data.ready.store(true, std::memory_order_release);
-            std::this_thread::sleep_for(std::chrono::milliseconds(16));
+            float intensity = 0.3f + 0.4f * std::sin(backgroundAnimTime * 1.2f + i * 0.6f);
+            data.hLineColors[i] = {
+                static_cast<unsigned char>(50 + intensity * 100),
+                static_cast<unsigned char>(150 + intensity * 105),
+                static_cast<unsigned char>(200 + intensity * 55),
+                static_cast<unsigned char>(60 + intensity * 120)
+            };
         }
+        
+        for (int i = 0; i < NUM_VERTICAL_LINES; ++i) {
+            data.vLinePositions[i] = std::cos(backgroundAnimTime * 0.6f + i * 0.5f) * 30.0f + 
+                                    static_cast<float>(screenWidth) * (i + 1) / static_cast<float>(NUM_VERTICAL_LINES + 1);
+            
+            float intensity = 0.2f + 0.3f * std::cos(backgroundAnimTime * 1.5f + i * 0.8f);
+            data.vLineColors[i] = {
+                static_cast<unsigned char>(30 + intensity * 80),
+                static_cast<unsigned char>(100 + intensity * 100),
+                static_cast<unsigned char>(180 + intensity * 75),
+                static_cast<unsigned char>(40 + intensity * 100)
+            };
+        }
+        
+        data.ready.store(true, std::memory_order_release);
+        currentBgBuffer = nextBuffer;
     }
 
     void LoadingScreenComponent::update(float dt) {
         titleAnimTime += dt;
         barAnimTime.store(barAnimTime.load(std::memory_order_relaxed) + dt, std::memory_order_relaxed);
         
+        updateBackgroundData();
+        
         if (bgData[1 - currentBgBuffer].ready.load(std::memory_order_acquire)) {
             currentBgBuffer = 1 - currentBgBuffer;
             bgData[currentBgBuffer].ready.store(false, std::memory_order_release);
         }
         
-        // Check if we've been stuck at 100% for too long
         float currentProgress = loadingProgress.load(std::memory_order_acquire);
         if (currentProgress >= 1.0f && !loadingComplete.load(std::memory_order_relaxed)) {
-            // Force completion if we've been at 100% for more than 2 seconds
             timeAt100 += dt;
             if (timeAt100 > 2.0f) {
                 loadingComplete.store(true, std::memory_order_release);
                 timeAt100 = 0.0f;
             }
         } else {
-            timeAt100 = 0.0f; // Reset if not at 100%
+            timeAt100 = 0.0f;
         }
     }
 

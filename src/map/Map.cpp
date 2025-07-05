@@ -1,5 +1,6 @@
 #include "map/Map.hpp"
 #include "map/RoomGenerator.hpp"
+#include "core/GlobalThreadPool.hpp"
 #include <cstdio>
 #include <vector>
 #include <random> 
@@ -72,7 +73,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
                 size_t endTile = std::min(startTile + tilesPerThread, totalTiles);
                 
                 if (startTile < endTile) {
-                    futures.push_back(std::async(std::launch::async, [&, startTile, endTile]() {
+                    futures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&, startTile, endTile]() {
                         for (size_t tileIdx = startTile; tileIdx < endTile; ++tileIdx) {
                             int x = tileIdx % width;
                             int y = tileIdx / width;
@@ -103,7 +104,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
         std::vector<std::future<void>> borderFutures;
         
         // Top and bottom borders
-        borderFutures.push_back(std::async(std::launch::async, [&]() {
+        borderFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&]() {
             for (int x = 0; x < width; x++) {
                 tiles[x][height - 1] = BORDER_TILE_VALUE; 
                 isOriginalSolid[x][height - 1] = true;
@@ -113,7 +114,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
         }));
         
         // Left and right borders  
-        borderFutures.push_back(std::async(std::launch::async, [&]() {
+        borderFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&]() {
             for (int y = 0; y < height; y++) {
                 tiles[width - 1][y] = BORDER_TILE_VALUE; 
                 isOriginalSolid[width - 1][y] = true;
@@ -160,7 +161,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
                 size_t endTile = std::min(startTile + tilesPerThread, totalTiles);
                 
                 if (startTile < endTile) {
-                    conwayFutures.push_back(std::async(std::launch::async, [&, startTile, endTile]() {
+                    conwayFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&, startTile, endTile]() {
                         for (size_t tileIdx = startTile; tileIdx < endTile; ++tileIdx) {
                             int x = tileIdx % width;
                             int y = tileIdx / width;

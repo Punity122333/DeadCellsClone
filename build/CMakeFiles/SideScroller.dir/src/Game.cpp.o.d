@@ -226,12 +226,15 @@ CMakeFiles/SideScroller.dir/src/Game.cpp.o: \
  /usr/include/c++/13/queue /usr/include/c++/13/deque \
  /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
  /usr/include/c++/13/bits/stl_queue.h \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ThreadPool.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/Core.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ResourceManager.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/EventManager.hpp \
- /usr/include/c++/13/typeindex /usr/include/c++/13/algorithm \
+ /usr/include/c++/13/typeindex \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/GlobalThreadPool.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ThreadPool.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ParticleThreadPool.hpp \
+ /usr/include/c++/13/algorithm \
  /usr/include/c++/13/pstl/glue_algorithm_defs.h \
  /usr/include/c++/13/filesystem /usr/include/c++/13/bits/fs_fwd.h \
  /usr/include/c++/13/bits/fs_path.h /usr/include/c++/13/locale \

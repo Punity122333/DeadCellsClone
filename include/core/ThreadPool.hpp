@@ -10,6 +10,7 @@
 #include <future>
 #include <functional>
 #include <stdexcept>
+#include <atomic>
 
 class ThreadPool {
 public:
@@ -21,7 +22,9 @@ public:
         -> std::future<typename std::result_of<F(Args...)>::type>;
 
     void wait();
+    void shutdown();
     size_t size() const { return workers.size(); }
+    bool isShutdown() const { return stop.load(std::memory_order_acquire); }
 
 private:
     std::vector<std::thread> workers;
@@ -31,10 +34,10 @@ private:
     std::condition_variable condition;
     std::condition_variable finished;
     std::atomic<size_t> activeTasks{0};
-    bool stop;
+    std::atomic<bool> stop{false};
 };
 
-inline ThreadPool::ThreadPool(size_t numThreads) : stop(false) {
+inline ThreadPool::ThreadPool(size_t numThreads) {
     if (numThreads == 0) {
         numThreads = std::thread::hardware_concurrency();
         if (numThreads == 0) numThreads = 2;
@@ -47,9 +50,11 @@ inline ThreadPool::ThreadPool(size_t numThreads) : stop(false) {
                 
                 {
                     std::unique_lock<std::mutex> lock(this->queueMutex);
-                    this->condition.wait(lock, [this] { return this->stop || !this->tasks.empty(); });
+                    this->condition.wait(lock, [this] { 
+                        return this->stop.load(std::memory_order_acquire) || !this->tasks.empty(); 
+                    });
                     
-                    if (this->stop && this->tasks.empty()) {
+                    if (this->stop.load(std::memory_order_acquire) && this->tasks.empty()) {
                         return;
                     }
                     
@@ -58,7 +63,10 @@ inline ThreadPool::ThreadPool(size_t numThreads) : stop(false) {
                     ++activeTasks;
                 }
                 
-                task();
+                try {
+                    task();
+                } catch (...) {
+                }
                 
                 {
                     std::lock_guard<std::mutex> lock(this->queueMutex);
@@ -83,7 +91,7 @@ auto ThreadPool::enqueue(F&& f, Args&&... args)
     {
         std::unique_lock<std::mutex> lock(queueMutex);
         
-        if (stop) {
+        if (stop.load(std::memory_order_acquire)) {
             throw std::runtime_error("enqueue on stopped ThreadPool");
         }
         
@@ -98,15 +106,21 @@ inline void ThreadPool::wait() {
     finished.wait(lock, [this] { return tasks.empty() && activeTasks == 0; });
 }
 
-inline ThreadPool::~ThreadPool() {
+inline void ThreadPool::shutdown() {
     {
         std::unique_lock<std::mutex> lock(queueMutex);
-        stop = true;
+        stop.store(true, std::memory_order_release);
     }
     condition.notify_all();
     for (std::thread &worker: workers) {
-        worker.join();
+        if (worker.joinable()) {
+            worker.join();
+        }
     }
+}
+
+inline ThreadPool::~ThreadPool() {
+    shutdown();
 }
 
 #endif // THREAD_POOL_HPP

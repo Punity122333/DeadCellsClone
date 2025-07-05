@@ -369,6 +369,30 @@ src/core/GameStates.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.s
 .PHONY : src/core/GameStates.cpp.s
 
+src/core/GlobalThreadPool.o: src/core/GlobalThreadPool.cpp.o
+.PHONY : src/core/GlobalThreadPool.o
+
+# target to build an object file
+src/core/GlobalThreadPool.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GlobalThreadPool.cpp.o
+.PHONY : src/core/GlobalThreadPool.cpp.o
+
+src/core/GlobalThreadPool.i: src/core/GlobalThreadPool.cpp.i
+.PHONY : src/core/GlobalThreadPool.i
+
+# target to preprocess a source file
+src/core/GlobalThreadPool.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GlobalThreadPool.cpp.i
+.PHONY : src/core/GlobalThreadPool.cpp.i
+
+src/core/GlobalThreadPool.s: src/core/GlobalThreadPool.cpp.s
+.PHONY : src/core/GlobalThreadPool.s
+
+# target to generate assembly for a file
+src/core/GlobalThreadPool.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/core/GlobalThreadPool.cpp.s
+.PHONY : src/core/GlobalThreadPool.cpp.s
+
 src/core/InputManager.o: src/core/InputManager.cpp.o
 .PHONY : src/core/InputManager.o
 
@@ -489,29 +513,29 @@ src/effects/ParticleSystem.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleSystem.cpp.s
 .PHONY : src/effects/ParticleSystem.cpp.s
 
-src/effects/ThreadPool.o: src/effects/ThreadPool.cpp.o
-.PHONY : src/effects/ThreadPool.o
+src/effects/ParticleThreadPool.o: src/effects/ParticleThreadPool.cpp.o
+.PHONY : src/effects/ParticleThreadPool.o
 
 # target to build an object file
-src/effects/ThreadPool.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.o
-.PHONY : src/effects/ThreadPool.cpp.o
+src/effects/ParticleThreadPool.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleThreadPool.cpp.o
+.PHONY : src/effects/ParticleThreadPool.cpp.o
 
-src/effects/ThreadPool.i: src/effects/ThreadPool.cpp.i
-.PHONY : src/effects/ThreadPool.i
+src/effects/ParticleThreadPool.i: src/effects/ParticleThreadPool.cpp.i
+.PHONY : src/effects/ParticleThreadPool.i
 
 # target to preprocess a source file
-src/effects/ThreadPool.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.i
-.PHONY : src/effects/ThreadPool.cpp.i
+src/effects/ParticleThreadPool.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleThreadPool.cpp.i
+.PHONY : src/effects/ParticleThreadPool.cpp.i
 
-src/effects/ThreadPool.s: src/effects/ThreadPool.cpp.s
-.PHONY : src/effects/ThreadPool.s
+src/effects/ParticleThreadPool.s: src/effects/ParticleThreadPool.cpp.s
+.PHONY : src/effects/ParticleThreadPool.s
 
 # target to generate assembly for a file
-src/effects/ThreadPool.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.s
-.PHONY : src/effects/ThreadPool.cpp.s
+src/effects/ParticleThreadPool.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleThreadPool.cpp.s
+.PHONY : src/effects/ParticleThreadPool.cpp.s
 
 src/enemies/automaton/Automaton.o: src/enemies/automaton/Automaton.cpp.o
 .PHONY : src/enemies/automaton/Automaton.o
@@ -1392,6 +1416,9 @@ help:
 	@echo "... src/core/GameStates.o"
 	@echo "... src/core/GameStates.i"
 	@echo "... src/core/GameStates.s"
+	@echo "... src/core/GlobalThreadPool.o"
+	@echo "... src/core/GlobalThreadPool.i"
+	@echo "... src/core/GlobalThreadPool.s"
 	@echo "... src/core/InputManager.o"
 	@echo "... src/core/InputManager.i"
 	@echo "... src/core/InputManager.s"
@@ -1407,9 +1434,9 @@ help:
 	@echo "... src/effects/ParticleSystem.o"
 	@echo "... src/effects/ParticleSystem.i"
 	@echo "... src/effects/ParticleSystem.s"
-	@echo "... src/effects/ThreadPool.o"
-	@echo "... src/effects/ThreadPool.i"
-	@echo "... src/effects/ThreadPool.s"
+	@echo "... src/effects/ParticleThreadPool.o"
+	@echo "... src/effects/ParticleThreadPool.i"
+	@echo "... src/effects/ParticleThreadPool.s"
 	@echo "... src/enemies/automaton/Automaton.o"
 	@echo "... src/enemies/automaton/Automaton.i"
 	@echo "... src/enemies/automaton/Automaton.s"
