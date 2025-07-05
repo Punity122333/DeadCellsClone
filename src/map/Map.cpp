@@ -54,15 +54,12 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
     tileTextures(loadedTileTextures) 
 {
     try {
-        // Report initial progress
         if (progressCallback) progressCallback(0.0f);
         std::random_device rd;
-        std::mt19937 gen(rd());
-
+        std::mt19937 gen(rd());        
         size_t numThreads = std::thread::hardware_concurrency();
         if (numThreads == 0) numThreads = 2;
         
-        // Optimize initial tile setup with better load balancing
         size_t totalTiles = width * height;
         size_t tilesPerThread = (totalTiles + numThreads - 1) / numThreads;
         std::vector<std::future<void>> futures;
@@ -86,7 +83,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
             }
             for (auto& f : futures) f.get();
         } catch (...) {
-            // Fallback to single-threaded execution if async fails
+
             for (int x = 0; x < width; ++x) {
                 for (int y = 0; y < height; ++y) {
                     tiles[x][y] = 0;
@@ -95,15 +92,12 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
                 }
             }
         }
-        
-        // Report progress after initial setup
+
         if (progressCallback) progressCallback(0.15f);
 
 
-        // Parallelize border creation
         std::vector<std::future<void>> borderFutures;
-        
-        // Top and bottom borders
+
         borderFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&]() {
             for (int x = 0; x < width; x++) {
                 tiles[x][height - 1] = BORDER_TILE_VALUE; 
@@ -112,8 +106,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
                 isOriginalSolid[x][0] = true;
             }
         }));
-        
-        // Left and right borders  
+ 
         borderFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&]() {
             for (int y = 0; y < height; y++) {
                 tiles[width - 1][y] = BORDER_TILE_VALUE; 
@@ -122,18 +115,14 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
                 isOriginalSolid[0][y] = true;
             }
         }));
-        
-        // Wait for border creation to complete
+
         for (auto& future : borderFutures) {
             future.get();
         }
 
-        // Report progress after borders
         if (progressCallback) progressCallback(0.25f);
 
-        
 
-        // Optimize chunk creation
         chunks.clear();
         int totalChunks = ((width + CHUNK_SIZE - 1) / CHUNK_SIZE) * ((height + CHUNK_SIZE - 1) / CHUNK_SIZE);
         chunks.reserve(totalChunks);
@@ -148,8 +137,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
                 });
             }
         }
-        
-        // Report progress after chunk creation
+
         if (progressCallback) progressCallback(0.35f);
 
         
@@ -182,7 +170,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
             }
             for (auto& f : conwayFutures) f.get();
         } catch (...) {
-            // Fallback to single-threaded execution if async fails
+
             for (int x = 0; x < width; ++x) {
                 for (int y = 0; y < height; ++y) {
                     if (isOriginalSolid[x][y]) {
@@ -200,17 +188,20 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
             }
         }
         
-        // Report progress after Conway protection setup
+
         if (progressCallback) progressCallback(0.55f);
 
+        printf("[Map] Starting room generation...\n");
         RoomGenerator::generateRoomsAndConnections(*this, gen, progressCallback);
-        
-        // Report completion
+        printf("[Map] Room generation complete\n");
+
         if (progressCallback) progressCallback(1.0f);
+        printf("[Map] Map generation fully complete\n");
     } catch (...) {
-        // Ensure we always report completion even if something fails
+
         if (progressCallback) progressCallback(1.0f);
-        throw; // Re-throw the exception so it can be handled at the game level
+        printf("[Map] Map generation failed with exception\n");
+        throw; 
     }
 }
 

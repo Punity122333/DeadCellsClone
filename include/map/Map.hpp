@@ -7,7 +7,6 @@
 #include <mutex>
 #include <functional>
 
-// Progress callback type for map generation
 using ProgressCallback = std::function<void(float)>;
 
 namespace MapConstants {
@@ -115,7 +114,7 @@ class Map {
     friend class LadderRopePlacer;
     
 public:
-    Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, ProgressCallback progressCallback = nullptr); // Modified constructor
+    Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, ProgressCallback progressCallback = nullptr);
     ~Map();
 
     void placeBorders();
@@ -161,10 +160,10 @@ private:
     std::vector<std::vector<int>> cooldownMap;
     std::vector<std::vector<bool>> isOriginalSolid;
     std::vector<std::vector<bool>> isConwayProtected;
-    std::vector<Texture2D> tileTextures; // This will now store a copy or reference
+    std::vector<Texture2D> tileTextures;
     std::vector<Room> generatedRooms;
     std::vector<TileParticle> particles;
     mutable std::mutex particlesMutex;
 };
 
-#endif // MAP_HPP
+#endif

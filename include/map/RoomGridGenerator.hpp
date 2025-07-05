@@ -11,22 +11,12 @@ public:
     static void createRoomGrid(Map& map, std::mt19937& gen, std::vector<Room>& rooms_vector,
                               std::vector<std::vector<Room*>>& room_grid, int num_cols, int num_rows);
     
-    // New optimized multithreaded version with FastRNG
     static void createRoomGridOptimized(Map& map, FastRNG& rng, std::vector<Room>& rooms_vector,
                                        std::vector<std::vector<Room*>>& room_grid, int num_cols, int num_rows);
     
     static void clearRoomAreas(Map& map, const std::vector<Room>& rooms_vector);
 
 private:
-    struct GridRegion {
-        int start_col, end_col;
-        int start_row, end_row;
-        uint64_t seed;
-    };
-    
-    static void processRegion(const GridRegion& region, Map& map, 
-                             std::vector<std::vector<Room*>>& local_room_grid,
-                             std::vector<Room>& local_rooms, int num_cols, int num_rows);
 };
 
 #endif

@@ -42,36 +42,102 @@ bool Map::isTileEmpty(int x, int y) const {
 
 Vector2 Map::findEmptySpawn() const {
     printf("[Map] Finding spawn position...\n");
+    printf("[Map] Map dimensions: %dx%d\n", width, height);
+
+    int emptyCount = 0;
+    int solidCount = 0;
+    int protectedEmptyCount = 0;
+    int otherCount = 0;
     
-    // Simple approach: just find any empty tile that has solid ground below it
-    // This is much faster and works well for spawn finding
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            if (tiles[x][y] == EMPTY_TILE_VALUE) {
+                emptyCount++;
+            } else if (tiles[x][y] == PROTECTED_EMPTY_TILE_VALUE) {
+                protectedEmptyCount++;
+            } else if (isSolidTile(x, y)) {
+                solidCount++;
+            } else {
+                otherCount++;
+            }
+        }
+    }
+    
+    printf("[Map] Tile counts - Empty: %d, Protected Empty: %d, Solid: %d, Other: %d\n", 
+           emptyCount, protectedEmptyCount, solidCount, otherCount);
+    
+    int searchAreaX = width - 2 * BORDER_OFFSET;
+    int searchAreaY = height - 2 * BORDER_OFFSET - 1;
+    printf("[Map] Search area: %dx%d (excluding borders)\n", searchAreaX, searchAreaY);
+    
+    int checkedTiles = 0;
+    int validEmptyTiles = 0;
+    
     for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET - 1; ++y) {
         for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
-            // Check if this position is empty and has solid ground below
-            if (tiles[x][y] == EMPTY_TILE_VALUE && 
-                y + 1 < height && 
-                isSolidTile(x, y + 1)) {
+            checkedTiles++;
+            
+            if (tiles[x][y] == EMPTY_TILE_VALUE) {
+                validEmptyTiles++;
                 
-                Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
-                printf("[Map] Found spawn position: (%.1f, %.1f)\n", spawn.x, spawn.y);
-                return spawn;
+                if (y + 1 < height && isSolidTile(x, y + 1)) {
+                    Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
+                    printf("[Map] Found spawn position: (%.1f, %.1f) after checking %d tiles\n", spawn.x, spawn.y, checkedTiles);
+                    return spawn;
+                }
+            }
+            
+            if (checkedTiles % 10000 == 0) {
+                printf("[Map] Checked %d tiles, found %d empty tiles so far...\n", checkedTiles, validEmptyTiles);
             }
         }
     }
     
-    // Fallback: just find any empty tile
+    printf("[Map] First pass complete - checked %d tiles, found %d empty tiles\n", checkedTiles, validEmptyTiles);
+    
     printf("[Map] No ground-based spawn found, searching for any empty tile\n");
+    checkedTiles = 0;
+    validEmptyTiles = 0;
+    
     for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET; ++y) {
         for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
+            checkedTiles++;
+            
             if (tiles[x][y] == EMPTY_TILE_VALUE) {
+                validEmptyTiles++;
                 Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
-                printf("[Map] Fallback spawn position: (%.1f, %.1f)\n", spawn.x, spawn.y);
+                printf("[Map] Fallback spawn position: (%.1f, %.1f) after checking %d tiles\n", spawn.x, spawn.y, checkedTiles);
                 return spawn;
+            }
+
+            if (checkedTiles % 10000 == 0) {
+                printf("[Map] Fallback search - checked %d tiles, found %d empty tiles so far...\n", checkedTiles, validEmptyTiles);
             }
         }
     }
     
-    printf("[Map] No valid spawn found, using default position\n");
+    printf("[Map] Second pass complete - checked %d tiles, found %d empty tiles\n", checkedTiles, validEmptyTiles);
+
+    printf("[Map] No empty tiles found, trying protected empty tiles\n");
+    checkedTiles = 0;
+    
+    for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET; ++y) {
+        for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
+            checkedTiles++;
+            
+            if (tiles[x][y] == PROTECTED_EMPTY_TILE_VALUE) {
+                Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
+                printf("[Map] Protected empty spawn position: (%.1f, %.1f) after checking %d tiles\n", spawn.x, spawn.y, checkedTiles);
+                return spawn;
+            }
+
+            if (checkedTiles % 10000 == 0) {
+                printf("[Map] Protected empty search - checked %d tiles so far...\n", checkedTiles);
+            }
+        }
+    }
+    
+    printf("[Map] No valid spawn found anywhere, using default position\n");
     return {DEFAULT_SPAWN_COORD_COMPONENT_FLOAT, DEFAULT_SPAWN_COORD_COMPONENT_FLOAT};
 }
 

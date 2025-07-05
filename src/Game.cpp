@@ -41,9 +41,9 @@ Game::Game()
     resourceManager.setSearchPaths({"../resources/", "./resources/", "../shader/", "./shader/"});
     
 
-    #ifdef DEBUG
+    
     resourceManager.setHotReloadEnabled(true);
-    #endif
+    
 
     auto iconHandle = resourceManager.loadTexture(GamePaths::Icon);
     if (iconHandle.isValid()) {
@@ -71,7 +71,6 @@ Game::Game()
 }
 
 Game::~Game() {
-    // Stop map generation if in progress
     mapGenerationInProgress.store(false, std::memory_order_release);
     mapGenerationComplete.store(true, std::memory_order_release);
     
@@ -79,26 +78,24 @@ Game::~Game() {
         try {
             mapGenerationFuture.wait();
         } catch (...) {
-            // Ignore exceptions during shutdown
         }
     }
     
-    // Clean up game objects first
+    
     camera.reset();
     player.reset();
     map.reset();
     
-    // Shutdown thread pools
+    
     GlobalThreadPool::getInstance().shutdown();
     ParticleThreadPool::getInstance().shutdown();
     
-    // Only try to access ResourceManager if Core is still initialized
+    
     if (Core::IsInitialized()) {
         try {
             auto& resourceManager = Core::GetResourceManager();
-            // Any resource cleanup if needed
+            
         } catch (...) {
-            // Ignore exceptions during shutdown
         }
     }
     
@@ -112,7 +109,7 @@ void Game::initializeResources() {
     Color outerPrussianBlue = { 0, 30, 50, 255 };
     fisheyeBackground = CreateFisheyeGradient(screenWidth, screenHeight, innerCyan, outerPrussianBlue);
 
-    // Load tile textures using ResourceManager
+    
     std::vector<std::string> tilePaths;
     int numTiles = 0;
     for (int i = 0; ; ++i) {
@@ -123,10 +120,10 @@ void Game::initializeResources() {
         numTiles++;
     }
     
-    // Preload all tile textures at once
+    
     resourceManager.preloadBatch(tilePaths);
     
-    // Get the loaded textures
+    
     tileTextureHandles.clear();
     tileTextures.clear();
     for (const auto& path : tilePaths) {
@@ -137,10 +134,10 @@ void Game::initializeResources() {
         }
     }
 
-    // Don't create map yet - this will be done during game start with loading screen
+    
     sceneTexture = LoadRenderTexture(screenWidth, screenHeight);
     
-    // Load shaders using ResourceManager
+    
     bloomShaderHandle = resourceManager.loadShader("", GamePaths::BloomShader);
     chromaticAberrationShaderHandle = resourceManager.loadShader("", GamePaths::ChromaticAberrationShader);
     
@@ -154,45 +151,69 @@ void Game::initializeResources() {
 }
 
 void Game::resetGame() {
-    // Set loading state and reset loading progress
+    
     currentState = GameState::LOADING;
-    loadingStartTime = GetTime(); // Record when loading started
+    loadingStartTime = GetTime(); 
     uiController->getLoadingScreen()->setProgress(0.0f);
     
-    // Clear existing game objects
+    
     scrapHounds.clear();
     automatons.clear();
     automataTimer = 0.0f;
     fadeAlpha = 0.0f;
     fadingToPlay = false;
     
-    // Start async map generation
+    
     mapGenerationInProgress = true;
     mapGenerationComplete = false;
     
     auto mapGenerationTask = [this]() {
         try {
-            // Create progress callback to update loading screen
+            
             auto progressCallback = [this](float progress) {
                 if (uiController && uiController->getLoadingScreen()) {
                     uiController->getLoadingScreen()->setProgress(progress);
                 }
             };
             
-            // Ensure we start with some progress to show the loading has begun
+            
             progressCallback(0.01f);
             
-            // Generate the map with progress tracking
+            
+            printf("[Game] Starting map generation (500x300)...\n");
+            auto start_time = std::chrono::high_resolution_clock::now();
+            
             auto newMap = std::make_unique<Map>(500, 300, tileTextures, progressCallback);
+            
+            auto map_end_time = std::chrono::high_resolution_clock::now();
+            auto map_duration = std::chrono::duration_cast<std::chrono::milliseconds>(map_end_time - start_time);
+            printf("[Game] Map generation completed in %ld ms\n", map_duration.count());
+            
+            printf("[Game] Creating player...\n");
+            auto player_start_time = std::chrono::high_resolution_clock::now();
+            
             auto newPlayer = std::make_unique<Player>(*newMap);
+            
+            auto player_end_time = std::chrono::high_resolution_clock::now();
+            auto player_duration = std::chrono::duration_cast<std::chrono::milliseconds>(player_end_time - player_start_time);
+            printf("[Game] Player creation completed in %ld ms\n", player_duration.count());
+            
+            printf("[Game] Creating camera...\n");
             auto newCamera = std::make_unique<GameCamera>(screenWidth, screenHeight, *newPlayer);
             
-            // Store references to spawner for safe access
+            
             std::vector<ScrapHound> newScrapHounds;
             std::vector<Automaton> newAutomatons;
             
-            // Spawn enemies using local vectors
+            
+            printf("[Game] Spawning enemies...\n");
+            auto spawn_start_time = std::chrono::high_resolution_clock::now();
+            
             spawner.spawnEnemiesInRooms(*newMap, newScrapHounds, newAutomatons);
+            
+            auto spawn_end_time = std::chrono::high_resolution_clock::now();
+            auto spawn_duration = std::chrono::duration_cast<std::chrono::milliseconds>(spawn_end_time - spawn_start_time);
+            printf("[Game] Enemy spawning completed in %ld ms\n", spawn_duration.count());
 
             map = std::move(newMap);
             player = std::move(newPlayer);
@@ -200,24 +221,24 @@ void Game::resetGame() {
             scrapHounds = std::move(newScrapHounds);
             automatons = std::move(newAutomatons);
             
-            // Ensure progress is at 100% before marking as complete
+            
             progressCallback(1.0f);
             
-            // Add a small delay to ensure UI updates are processed
+            
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
             
-            // Mark generation as complete with proper memory ordering - this must be last
+            
             mapGenerationInProgress.store(false, std::memory_order_release);
             mapGenerationComplete.store(true, std::memory_order_release);
         } catch (const std::exception& e) {
-            // Log the error and ensure loading completes even on failure
+            
             if (uiController && uiController->getLoadingScreen()) {
                 uiController->getLoadingScreen()->setProgress(1.0f);
             }
             mapGenerationInProgress.store(false, std::memory_order_release);
             mapGenerationComplete.store(true, std::memory_order_release);
         } catch (...) {
-            // Handle any other exceptions
+            
             if (uiController && uiController->getLoadingScreen()) {
                 uiController->getLoadingScreen()->setProgress(1.0f);
             }
@@ -267,15 +288,14 @@ void Game::update(float deltaTime) {
     inputManager.update(deltaTime);
     eventManager.processEvents();
     
-    // Check for hot-reload in debug builds
-    #ifdef DEBUG
-    resourceManager.checkForHotReload();
-    #endif
     
-    // Display resource statistics when debug key is held
+    
+    resourceManager.checkForHotReload();
+    
+    
     if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) {
         auto stats = resourceManager.getMemoryStats();
-        // Stats can be displayed in debug overlay
+        
     }
     
     if (currentState == GameState::TITLE) {
@@ -286,7 +306,7 @@ void Game::update(float deltaTime) {
     if (currentState == GameState::LOADING) {
 
         if (mapGenerationComplete.load(std::memory_order_acquire)) {
-            // Simplified future handling to avoid memory corruption
+            
             if (mapGenerationFuture.valid()) {
                 try {
                     mapGenerationFuture.wait();
@@ -298,10 +318,10 @@ void Game::update(float deltaTime) {
                 currentState = GameState::PLAYING;
             }
         } else {
-            // Check for timeout
+            
             float loadingTime = GetTime() - loadingStartTime;
             if (loadingTime > loadingTimeoutSeconds) {
-                // Force completion on timeout
+                
                 mapGenerationInProgress.store(false, std::memory_order_release);
                 mapGenerationComplete.store(true, std::memory_order_release);
                 if (uiController && uiController->getLoadingScreen()) {
@@ -428,7 +448,7 @@ void Game::render(float interpolation) {
     }
     
     if (currentState == GameState::PLAYING || currentState == GameState::PAUSED) {
-        // Safety check: don't render game objects if they're not fully initialized
+        
         if (mapGenerationInProgress || !map || !player || !camera) {
             BeginDrawing();
             ClearBackground(BLACK);

@@ -1,9 +1,7 @@
 #ifndef MAP_CONSTANTS_HPP
 #define MAP_CONSTANTS_HPP
 
-#include <random>
 
-// Forward declaration
 class FastRNG;
 
 namespace MapConstants {
@@ -38,24 +36,6 @@ namespace MapConstants {
     constexpr int LADDER_OR_ROPE_ROLL_MAX = 1;
     constexpr int MAX_EXTRA_TREASURES_IN_ROOM = 2;
     constexpr int MAX_EXTRA_SHOP_ITEMS_IN_ROOM = 2;
-    constexpr int LARGE_HALL_CREATION_CHANCE_PERCENT = 15;
-    constexpr int MAX_ROOM_WIDTH_RANDOM_VARIATION = 5;
-    constexpr int ROOM_TYPE_TREASURE_CHANCE_THRESHOLD_PERCENT = 10;
-    constexpr int ROOM_TYPE_SHOP_CHANCE_THRESHOLD_PERCENT = 40;
-
-    constexpr int TILE_TEMP_CREATE_A = 101;
-    constexpr int TILE_TEMP_DELETE = 102;
-    constexpr int TILE_TEMP_CREATE_B = 103;
-
-    constexpr int MIN_CONWAY_CHUNK_SIZE_X = 6;
-    constexpr int MAX_CONWAY_CHUNK_SIZE_X = 12;
-    constexpr int MIN_CONWAY_CHUNK_SIZE_Y = 1;
-    constexpr int MAX_CONWAY_CHUNK_SIZE_Y = 2;
-    constexpr int CHUNK_ALIVE_ROLL_MAX = 9;
-    constexpr int CHUNK_ALIVE_SUCCESS_ROLL = 0;
-
-    int rollPercent(std::mt19937& gen);
-    int rollPercentFast(FastRNG& rng);
 }
 
 #endif

@@ -18,10 +18,21 @@ Image LoadImageAsync(const std::string& path) {
 }
 
 Player::Player(const Map &map) {
+    printf("[Player] Starting player initialization...\n");
     
     const auto& rooms = map.getGeneratedRooms();
+    printf("[Player] Map has %zu generated rooms\n", rooms.size());
+    
+    printf("[Player] Calling findEmptySpawn...\n");
+    auto start_time = std::chrono::high_resolution_clock::now();
     
     position = map.findEmptySpawn();
+    
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    printf("[Player] findEmptySpawn took %ld ms\n", duration.count());
+    
+    printf("[Player] Player spawn position set to: (%.1f, %.1f)\n", position.x, position.y);
     
     velocity = {0, 0};
     health = 100.0f;

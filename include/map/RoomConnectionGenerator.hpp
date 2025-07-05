@@ -7,11 +7,9 @@
 #include <memory>
 #include <limits>
 
-// Forward declarations for optimization data structures
 struct KDNode;
 class UnionFind;
 
-// Span-based drawing for cache efficiency
 struct DrawSpan {
     int x, y, length;
     int tileType;
@@ -36,24 +34,19 @@ public:
                                  std::vector<Rope>& ropes_to_place);
 
 private:
-    // KD-tree for efficient nearest neighbor queries
     static std::unique_ptr<KDNode> buildKDTree(const std::vector<Room*>& rooms, int depth = 0);
     static Room* findNearestRoom(const std::unique_ptr<KDNode>& root, Room* target, Room* best = nullptr, float bestDist = std::numeric_limits<float>::max(), int depth = 0);
     
-    // Union-Find for cycle detection and connectivity
     static std::vector<std::pair<Room*, Room*>> findMinimumSpanningConnections(const std::vector<Room*>& rooms);
     
-    // Parallel corridor generation
     static CorridorTask generateCorridorTask(Room* room1, Room* room2, std::mt19937& gen);
     static void executeCorridorTasks(Map& map, const std::vector<CorridorTask>& tasks,
                                    std::vector<Ladder>& ladders_to_place, std::vector<Rope>& ropes_to_place);
     
-    // Utility functions
     static float getRoomDistance(Room* a, Room* b);
     static Vector2 getRoomCenter(Room* room);
 };
 
-// Union-Find data structure for MST
 class UnionFind {
 private:
     std::vector<int> parent, rank;
@@ -79,11 +72,10 @@ public:
     }
 };
 
-// KD-tree node for 2D spatial queries
 struct KDNode {
     Room* room;
     std::unique_ptr<KDNode> left, right;
-    int axis; // 0 for x, 1 for y
+    int axis;
     
     KDNode(Room* r, int a) : room(r), axis(a) {}
 };
