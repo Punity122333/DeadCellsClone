@@ -137,6 +137,7 @@ public:
     bool isLadderTile(int x, int y) const;
     bool isRopeTile(int x, int y) const;
     bool isTileEmpty(int x, int y) const;
+    int getTileValue(int x, int y) const;
 
     int getHeight() const;
     int getWidth() const;

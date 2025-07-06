@@ -68,7 +68,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -fsanitize=thread -g -O1 -std=gnu++17"
+					"fragment" : "-g -fsanitize=address -g -O1 -std=gnu++17"
 				},
 				{
 					"backtrace" : 2,
@@ -145,7 +145,12 @@
 				49,
 				50,
 				51,
-				52
+				52,
+				53,
+				54,
+				55,
+				56,
+				57
 			]
 		}
 	],
@@ -155,11 +160,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g -fsanitize=thread -g -O1",
+				"fragment" : "-g -fsanitize=address -g -O1",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-fsanitize=thread",
+				"fragment" : "-fsanitize=address",
 				"role" : "flags"
 			},
 			{
@@ -240,7 +245,12 @@
 				49,
 				50,
 				51,
-				52
+				52,
+				53,
+				54,
+				55,
+				56,
+				57
 			]
 		}
 	],
@@ -268,6 +278,30 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/Game.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/GameRendering.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/GameResources.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/GameStates.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/GameUpdate.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -514,6 +548,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/ui/LoadingScreenComponent.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/ui/Minimap.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

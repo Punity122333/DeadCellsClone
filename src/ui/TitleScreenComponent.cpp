@@ -122,7 +122,7 @@ namespace UI {
         }
         
         static const char* TITLE_TEXT = "Cellular Automata";
-        static constexpr float TITLE_Y_POS = 120.0f;
+        static constexpr float TITLE_Y_POS = 350.0f;
         static constexpr float TITLE_Y_AMPLITUDE = 10.0f;
         static constexpr float GLOW_FREQUENCY = 1.2f;
         static constexpr float GLOW_BASE_SIZE = 6.0f;

@@ -58,6 +58,7 @@ namespace UI {
         }
         
         if (targetComponent != activeComponent) {
+            printf("[UIController] Switching from component %d to %d\n", static_cast<int>(activeComponent), static_cast<int>(targetComponent));
             switchToComponent(targetComponent);
         }
         
@@ -68,11 +69,13 @@ namespace UI {
         dataCondition.notify_one();
     }
 
-    UIAction UIController::draw(GameState currentState, const Player* player) {
+    UIAction UIController::draw(GameState currentState, const Player* player, const Map* map) {
         UIAction action = UIAction::NONE;
         
         if (components[activeComponent]) {
-            if (activeComponent == ComponentType::GAME_HUD && player) {
+            if (activeComponent == ComponentType::GAME_HUD && player && map) {
+                static_cast<GameHUDComponent*>(components[activeComponent].get())->drawHUD(*player, *map, currentState);
+            } else if (activeComponent == ComponentType::GAME_HUD && player) {
                 static_cast<GameHUDComponent*>(components[activeComponent].get())->drawHUD(*player, currentState);
             } else {
                 action = components[activeComponent]->draw();

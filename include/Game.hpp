@@ -33,8 +33,8 @@ public:
     void showResourceStats(); // Debug method to display resource usage
     
 private:
-    const int screenWidth = 1280;
-    const int screenHeight = 720;
+    const int screenWidth = 1920;
+    const int screenHeight = 1080;
     
     std::unique_ptr<Core::GameLoop> gameLoop;
     
@@ -60,6 +60,9 @@ private:
     const float automataInterval = 5.0f;
     float fadeAlpha;
     bool fadingToPlay;
+    bool gameOverTriggered;
+    bool resetInProgress;
+    float pauseDebounceTimer;
     
     // Async loading support
     std::future<void> mapGenerationFuture;
@@ -68,15 +71,17 @@ private:
     float loadingStartTime;
     const float loadingTimeoutSeconds = 30.0f; // 30 second timeout
     
+    // Temporary storage for async-generated objects
+    std::unique_ptr<Map> tempMap;
+    std::unique_ptr<Player> tempPlayer;
+    std::unique_ptr<GameCamera> tempCamera;
+    std::vector<ScrapHound> tempScrapHounds;
+    std::vector<Automaton> tempAutomatons;
+    
     void update(float deltaTime);
     void render(float interpolation);
     void handleInput();
     void initializeResources();
     
-    // Note: For more advanced state management, consider using Core::StateManager
-    // instead of the simple GameState enum. This would allow for:
-    // - State stacking (pause over playing)
-    // - Automatic state transitions
-    // - Better separation of concerns
-    // - Debug state information
+
 };

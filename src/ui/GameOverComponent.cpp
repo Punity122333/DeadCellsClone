@@ -41,9 +41,11 @@ namespace UI {
             DrawText(menuText, screenWidth / 2 - menuTextWidth / 2, screenHeight / 2 + 80, MENU_FONT_SIZE, LIGHTGRAY);
             
             if (IsKeyPressed(KEY_R)) {
+                printf("[GameOverComponent] R key pressed - triggering restart\n");
                 return UIAction::RESTART;
             }
             if (IsKeyPressed(KEY_ESCAPE)) {
+                printf("[GameOverComponent] ESC key pressed - quitting to menu\n");
                 return UIAction::QUIT_TO_MENU;
             }
         }

@@ -225,6 +225,102 @@ src/Game.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/Game.cpp.s
 .PHONY : src/Game.cpp.s
 
+src/GameRendering.o: src/GameRendering.cpp.o
+.PHONY : src/GameRendering.o
+
+# target to build an object file
+src/GameRendering.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameRendering.cpp.o
+.PHONY : src/GameRendering.cpp.o
+
+src/GameRendering.i: src/GameRendering.cpp.i
+.PHONY : src/GameRendering.i
+
+# target to preprocess a source file
+src/GameRendering.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameRendering.cpp.i
+.PHONY : src/GameRendering.cpp.i
+
+src/GameRendering.s: src/GameRendering.cpp.s
+.PHONY : src/GameRendering.s
+
+# target to generate assembly for a file
+src/GameRendering.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameRendering.cpp.s
+.PHONY : src/GameRendering.cpp.s
+
+src/GameResources.o: src/GameResources.cpp.o
+.PHONY : src/GameResources.o
+
+# target to build an object file
+src/GameResources.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameResources.cpp.o
+.PHONY : src/GameResources.cpp.o
+
+src/GameResources.i: src/GameResources.cpp.i
+.PHONY : src/GameResources.i
+
+# target to preprocess a source file
+src/GameResources.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameResources.cpp.i
+.PHONY : src/GameResources.cpp.i
+
+src/GameResources.s: src/GameResources.cpp.s
+.PHONY : src/GameResources.s
+
+# target to generate assembly for a file
+src/GameResources.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameResources.cpp.s
+.PHONY : src/GameResources.cpp.s
+
+src/GameStates.o: src/GameStates.cpp.o
+.PHONY : src/GameStates.o
+
+# target to build an object file
+src/GameStates.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameStates.cpp.o
+.PHONY : src/GameStates.cpp.o
+
+src/GameStates.i: src/GameStates.cpp.i
+.PHONY : src/GameStates.i
+
+# target to preprocess a source file
+src/GameStates.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameStates.cpp.i
+.PHONY : src/GameStates.cpp.i
+
+src/GameStates.s: src/GameStates.cpp.s
+.PHONY : src/GameStates.s
+
+# target to generate assembly for a file
+src/GameStates.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameStates.cpp.s
+.PHONY : src/GameStates.cpp.s
+
+src/GameUpdate.o: src/GameUpdate.cpp.o
+.PHONY : src/GameUpdate.o
+
+# target to build an object file
+src/GameUpdate.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameUpdate.cpp.o
+.PHONY : src/GameUpdate.cpp.o
+
+src/GameUpdate.i: src/GameUpdate.cpp.i
+.PHONY : src/GameUpdate.i
+
+# target to preprocess a source file
+src/GameUpdate.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameUpdate.cpp.i
+.PHONY : src/GameUpdate.cpp.i
+
+src/GameUpdate.s: src/GameUpdate.cpp.s
+.PHONY : src/GameUpdate.s
+
+# target to generate assembly for a file
+src/GameUpdate.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/GameUpdate.cpp.s
+.PHONY : src/GameUpdate.cpp.s
+
 src/Pathfinding.o: src/Pathfinding.cpp.o
 .PHONY : src/Pathfinding.o
 
@@ -536,6 +632,30 @@ src/effects/ParticleThreadPool.s: src/effects/ParticleThreadPool.cpp.s
 src/effects/ParticleThreadPool.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ParticleThreadPool.cpp.s
 .PHONY : src/effects/ParticleThreadPool.cpp.s
+
+src/effects/ThreadPool.o: src/effects/ThreadPool.cpp.o
+.PHONY : src/effects/ThreadPool.o
+
+# target to build an object file
+src/effects/ThreadPool.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.o
+.PHONY : src/effects/ThreadPool.cpp.o
+
+src/effects/ThreadPool.i: src/effects/ThreadPool.cpp.i
+.PHONY : src/effects/ThreadPool.i
+
+# target to preprocess a source file
+src/effects/ThreadPool.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.i
+.PHONY : src/effects/ThreadPool.cpp.i
+
+src/effects/ThreadPool.s: src/effects/ThreadPool.cpp.s
+.PHONY : src/effects/ThreadPool.s
+
+# target to generate assembly for a file
+src/effects/ThreadPool.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.s
+.PHONY : src/effects/ThreadPool.cpp.s
 
 src/enemies/automaton/Automaton.o: src/enemies/automaton/Automaton.cpp.o
 .PHONY : src/enemies/automaton/Automaton.o
@@ -1185,6 +1305,30 @@ src/ui/LoadingScreenComponent.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/LoadingScreenComponent.cpp.s
 .PHONY : src/ui/LoadingScreenComponent.cpp.s
 
+src/ui/Minimap.o: src/ui/Minimap.cpp.o
+.PHONY : src/ui/Minimap.o
+
+# target to build an object file
+src/ui/Minimap.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/Minimap.cpp.o
+.PHONY : src/ui/Minimap.cpp.o
+
+src/ui/Minimap.i: src/ui/Minimap.cpp.i
+.PHONY : src/ui/Minimap.i
+
+# target to preprocess a source file
+src/ui/Minimap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/Minimap.cpp.i
+.PHONY : src/ui/Minimap.cpp.i
+
+src/ui/Minimap.s: src/ui/Minimap.cpp.s
+.PHONY : src/ui/Minimap.s
+
+# target to generate assembly for a file
+src/ui/Minimap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/ui/Minimap.cpp.s
+.PHONY : src/ui/Minimap.cpp.s
+
 src/ui/PauseMenuComponent.o: src/ui/PauseMenuComponent.cpp.o
 .PHONY : src/ui/PauseMenuComponent.o
 
@@ -1398,6 +1542,18 @@ help:
 	@echo "... src/Game.o"
 	@echo "... src/Game.i"
 	@echo "... src/Game.s"
+	@echo "... src/GameRendering.o"
+	@echo "... src/GameRendering.i"
+	@echo "... src/GameRendering.s"
+	@echo "... src/GameResources.o"
+	@echo "... src/GameResources.i"
+	@echo "... src/GameResources.s"
+	@echo "... src/GameStates.o"
+	@echo "... src/GameStates.i"
+	@echo "... src/GameStates.s"
+	@echo "... src/GameUpdate.o"
+	@echo "... src/GameUpdate.i"
+	@echo "... src/GameUpdate.s"
 	@echo "... src/Pathfinding.o"
 	@echo "... src/Pathfinding.i"
 	@echo "... src/Pathfinding.s"
@@ -1437,6 +1593,9 @@ help:
 	@echo "... src/effects/ParticleThreadPool.o"
 	@echo "... src/effects/ParticleThreadPool.i"
 	@echo "... src/effects/ParticleThreadPool.s"
+	@echo "... src/effects/ThreadPool.o"
+	@echo "... src/effects/ThreadPool.i"
+	@echo "... src/effects/ThreadPool.s"
 	@echo "... src/enemies/automaton/Automaton.o"
 	@echo "... src/enemies/automaton/Automaton.i"
 	@echo "... src/enemies/automaton/Automaton.s"
@@ -1518,6 +1677,9 @@ help:
 	@echo "... src/ui/LoadingScreenComponent.o"
 	@echo "... src/ui/LoadingScreenComponent.i"
 	@echo "... src/ui/LoadingScreenComponent.s"
+	@echo "... src/ui/Minimap.o"
+	@echo "... src/ui/Minimap.i"
+	@echo "... src/ui/Minimap.s"
 	@echo "... src/ui/PauseMenuComponent.o"
 	@echo "... src/ui/PauseMenuComponent.i"
 	@echo "... src/ui/PauseMenuComponent.s"

@@ -40,6 +40,11 @@ bool Map::isTileEmpty(int x, int y) const {
     return tiles[x][y] == EMPTY_TILE_VALUE || tiles[x][y] == TILE_HIGHLIGHT_CREATE;
 }
 
+int Map::getTileValue(int x, int y) const {
+    if (!isInsideBounds(x, y)) return WALL_TILE_VALUE;
+    return tiles[x][y];
+}
+
 Vector2 Map::findEmptySpawn() const {
     printf("[Map] Finding spawn position...\n");
     printf("[Map] Map dimensions: %dx%d\n", width, height);

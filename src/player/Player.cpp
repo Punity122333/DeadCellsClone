@@ -155,6 +155,12 @@ void Player::takeDamage(int amount) {
 }
 
 Player::~Player() {
+    if (textureLoadedAtomic.load(std::memory_order_acquire) && texture.id > 0) {
+        printf("[Player] Warning: Player destroyed with texture still loaded (ID: %d)\n", texture.id);
+    }
+}
+
+void Player::cleanup() {
     if (imageFuture.valid()) {
         imageFuture.wait(); 
         if (!imageFutureRetrieved.load(std::memory_order_acquire)) {
@@ -163,14 +169,14 @@ Player::~Player() {
                 UnloadImage(loadedImage); 
             }
         }
-    } else {
     }
 
     if (textureLoadedAtomic.load(std::memory_order_acquire)) {
         if (texture.id > 0) { 
+            printf("[Player] Unloading texture with ID: %d\n", texture.id);
             UnloadTexture(texture);
-        } else {
+            texture.id = 0;
         }
-    } else {
     }
+    textureLoadedAtomic.store(false, std::memory_order_release);
 }

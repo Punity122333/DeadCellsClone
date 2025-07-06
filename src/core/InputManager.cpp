@@ -266,6 +266,7 @@ void InputManager::setupDefaultBindings() {
     // System
     bindKey(InputAction::INTERACT, KEY_E);
     bindKey(InputAction::PAUSE, KEY_ESCAPE);
+    bindKey(InputAction::PAUSE, KEY_P);
     bindKey(InputAction::DEBUG_TOGGLE, KEY_TAB);
 
     // Menu navigation

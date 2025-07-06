@@ -17,6 +17,7 @@ class Player {
 public:
     Player(const Map &map);
     ~Player();
+    void cleanup();
     void update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, Core::InputManager& inputManager); 
     void draw() const;
     

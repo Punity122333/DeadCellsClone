@@ -11,6 +11,7 @@
 #include <vector>
 
 enum class GameState;
+class Map;
 
 namespace UI {
     enum class ComponentType {
@@ -58,7 +59,7 @@ namespace UI {
         ~UIController();
         
         void update(float dt, GameState currentState, const Player* player = nullptr);
-        UIAction draw(GameState currentState, const Player* player = nullptr);
+        UIAction draw(GameState currentState, const Player* player = nullptr, const Map* map = nullptr);
         void switchToComponent(ComponentType type);
         void reset();
         

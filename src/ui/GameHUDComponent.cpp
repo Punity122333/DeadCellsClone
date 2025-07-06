@@ -1,12 +1,17 @@
 #include "ui/GameHUDComponent.hpp"
-#include "Game.hpp"
+#include "ui/Minimap.hpp"
+#include "map/Map.hpp"
 #include <raylib.h>
+#include <memory>
 
 namespace UI {
     GameHUDComponent::GameHUDComponent(int w, int h) {
         screenWidth = w;
         screenHeight = h;
+        minimap = std::make_unique<Minimap>(20, 20, 280, 210);
     }
+
+    GameHUDComponent::~GameHUDComponent() = default;
 
     void GameHUDComponent::update(float dt) {
     }
@@ -27,5 +32,14 @@ namespace UI {
         DrawRectangle(barX, barY, static_cast<int>(HEALTH_BAR_WIDTH * healthRatio), static_cast<int>(HEALTH_BAR_HEIGHT), RED);
         DrawRectangleLines(barX, barY, static_cast<int>(HEALTH_BAR_WIDTH), static_cast<int>(HEALTH_BAR_HEIGHT), BLACK);
         DrawText("HEALTH", barX, barY - HEALTH_TEXT_SIZE, HEALTH_TEXT_SIZE, WHITE);
+    }
+
+    void GameHUDComponent::drawHUD(const Player& player, const Map& map, GameState currentState) {
+        drawHUD(player, currentState);
+        
+        if (minimap) {
+            minimap->update(map, player);
+            minimap->draw(map, player);
+        }
     }
 }

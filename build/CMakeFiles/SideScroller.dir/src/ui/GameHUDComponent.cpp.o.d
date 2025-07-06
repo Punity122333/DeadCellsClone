@@ -211,12 +211,5 @@ CMakeFiles/SideScroller.dir/src/ui/GameHUDComponent.cpp.o: \
  /usr/include/c++/13/stdexcept /usr/include/c++/13/bits/atomic_futex.h \
  /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_thread.h \
  /usr/include/c++/13/thread /usr/include/c++/13/bits/this_thread_sleep.h \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Game.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Spawner.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/ScrapHound.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Automaton.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Camera.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/GameLoop.hpp \
- /usr/include/c++/13/chrono \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ResourceManager.hpp
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/ui/Minimap.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp

@@ -115,7 +115,7 @@ namespace UI {
         }
         
         static const char* TITLE_TEXT = "PAUSED";
-        static constexpr float TITLE_Y_POS = 140.0f;
+        static constexpr float TITLE_Y_POS = 400.0f;
         static constexpr float TITLE_Y_AMPLITUDE = 8.0f;
         static constexpr float GLOW_FREQUENCY = 1.0f;
         static constexpr float GLOW_BASE_SIZE = 2.0f;
