@@ -9,6 +9,9 @@ using namespace MapConstants;
 
 void RoomGridGenerator::createRoomGrid(Map& map, std::mt19937& gen, std::vector<Room>& rooms_vector,
                                       std::vector<std::vector<Room*>>& room_grid, int num_cols, int num_rows) {
+    
+    // Reserve removed to prevent potential memory issues
+    
     for (int r_idx = 0; r_idx < num_rows; ++r_idx) {
         for (int c_idx = 0; c_idx < num_cols; ++c_idx) {
             Room* current_grid_room_ptr = room_grid[c_idx][r_idx];
@@ -89,43 +92,42 @@ void RoomGridGenerator::clearRoomAreas(Map& map, const std::vector<Room>& rooms_
 
 void RoomGridGenerator::createRoomGridOptimized(Map& map, FastRNG& rng, std::vector<Room>& rooms_vector,
                                                std::vector<std::vector<Room*>>& room_grid, int num_cols, int num_rows) {
-    // Determine optimal number of threads and chunk size
-    const int hardware_threads = std::thread::hardware_concurrency();
-    const int max_threads = std::max(1, std::min(hardware_threads, 8)); // Cap at 8 threads
+
+    // Reserve removed to prevent potential memory issues
     
-    // Calculate grid chunk size - aim for 4x4 to 8x8 chunks
+    const int hardware_threads = std::thread::hardware_concurrency();
+    const int max_threads = std::max(1, std::min(hardware_threads, 8)); 
+    
     const int target_chunks_per_thread = 2;
     const int total_target_chunks = max_threads * target_chunks_per_thread;
     const int chunk_cols = std::max(1, (num_cols + total_target_chunks - 1) / total_target_chunks);
     const int chunk_rows = std::max(1, (num_rows + total_target_chunks - 1) / total_target_chunks);
-    
-    // Create regions for parallel processing
+  
     std::vector<GridRegion> regions;
     std::vector<std::vector<Room>> local_room_vectors(max_threads);
     std::vector<std::vector<std::vector<Room*>>> local_room_grids(max_threads);
-    
-    // Initialize local grids
+   
     for (int i = 0; i < max_threads; ++i) {
+        local_room_vectors[i].reserve(num_cols * num_rows / max_threads + 1);
         local_room_grids[i].resize(num_cols);
         for (int j = 0; j < num_cols; ++j) {
             local_room_grids[i][j].resize(num_rows, nullptr);
         }
     }
     
-    // Generate unique seeds for each region
+  
     int region_count = 0;
     for (int start_row = 0; start_row < num_rows; start_row += chunk_rows) {
         for (int start_col = 0; start_col < num_cols; start_col += chunk_cols) {
             int end_row = std::min(start_row + chunk_rows, num_rows);
             int end_col = std::min(start_col + chunk_cols, num_cols);
             
-            uint64_t region_seed = rng.next(); // Generate unique seed for this region
+            uint64_t region_seed = rng.next(); 
             regions.push_back({start_col, end_col, start_row, end_row, region_seed});
             region_count++;
         }
     }
     
-    // Process regions in parallel
     std::vector<std::future<void>> futures;
     
     for (size_t i = 0; i < regions.size(); ++i) {
@@ -137,7 +139,6 @@ void RoomGridGenerator::createRoomGridOptimized(Map& map, FastRNG& rng, std::vec
         }));
     }
     
-    // Wait for all regions to complete
     for (auto& future : futures) {
         future.wait();
     }
@@ -231,7 +232,7 @@ void RoomGridGenerator::processRegion(const GridRegion& region, Map& map,
             local_rooms.emplace_back(current_x, current_y, current_x + room_pixel_w - 1, current_y + room_pixel_h - 1, room_type_enum);
             Room* room_ptr = &local_rooms.back();
 
-            // Mark the slots as occupied in the local grid
+
             for (int dr = 0; dr < room_height_slots; ++dr) {
                 for (int dc = 0; dc < room_width_slots; ++dc) {
                     if (c_idx + dc < num_cols && r_idx + dr < num_rows) {

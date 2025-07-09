@@ -5,6 +5,7 @@
 #include "Camera.hpp"
 #include "enemies/ScrapHound.hpp"
 #include "enemies/Automaton.hpp"
+#include "enemies/Detonode.hpp"
 #include "ui/UIController.hpp"
 #include "core/GameLoop.hpp"
 #include "core/ResourceManager.hpp"
@@ -48,6 +49,7 @@ private:
     Shader* activeShader;
     std::vector<ScrapHound> scrapHounds;
     std::vector<Automaton> automatons;
+    std::vector<Detonode> detonodes;
     Spawner spawner;
     GameState currentState;
     std::vector<Texture2D> tileTextures;
@@ -77,6 +79,7 @@ private:
     std::unique_ptr<GameCamera> tempCamera;
     std::vector<ScrapHound> tempScrapHounds;
     std::vector<Automaton> tempAutomatons;
+    std::vector<Detonode> tempDetonodes;
     
     void update(float deltaTime);
     void render(float interpolation);

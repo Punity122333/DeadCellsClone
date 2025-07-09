@@ -115,6 +115,18 @@ void Game::render(float interpolation) {
             }
         }
         
+        for (const auto& detonode : detonodes) {
+            if (detonode.isAlive()) {
+                Rectangle detonodeRect = detonode.getHitbox();
+                if (CheckCollisionRecs(detonodeRect, cameraViewWorld)) {
+                    detonode.draw();
+                    if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) { 
+                        DrawRectangleLines((int)detonodeRect.x, (int)detonodeRect.y, (int)detonodeRect.width, (int)detonodeRect.height, YELLOW);
+                    }
+                }
+            }
+        }
+        
         if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE) && player->isAttacking()) {
             Rectangle swordHitbox = player->getSwordHitbox();
             DrawRectangleRec(swordHitbox, ColorAlpha(GREEN, 0.5f));

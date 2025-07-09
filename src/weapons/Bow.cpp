@@ -1,6 +1,7 @@
 #include "weapons/WeaponTypes.hpp"
 #include "enemies/ScrapHound.hpp"
 #include "enemies/Automaton.hpp"
+#include "enemies/Detonode.hpp"
 #include "effects/ParticleSystem.hpp"
 #include "map/Map.hpp"
 
@@ -216,7 +217,7 @@ void Bow::updateArrows(float dt, const Map& map) {
         activeArrows.end());
 }
 
-void Bow::checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons) {
+void Bow::checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes) {
     for (auto& arrow : activeArrows) {
         if (!arrow.active) continue;
         for (auto& enemy : enemies) {
@@ -231,10 +232,16 @@ void Bow::checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Aut
                 arrow.active = false;
             }
         }
+        for (auto& detonode : detonodes) {
+            if (detonode.isAlive() && CheckCollisionRecs(arrow.getHitbox(), detonode.getHitbox())) {
+                detonode.takeDamage(BOW_DAMAGE);
+                arrow.active = false;
+            }
+        }
     }
 }
 
-void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, int substeps, const Map& map) {
+void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes, int substeps, const Map& map) {
     float substepDt = dt / substeps;
     for (int s = 0; s < substeps; ++s) {
         for (auto& arrow : activeArrows) {
@@ -266,7 +273,7 @@ void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, s
                 arrow.active = false; 
             }
         }
-        checkArrowCollisions(enemies, automatons);
+        checkArrowCollisions(enemies, automatons, detonodes);
     }
     
     activeArrows.erase(

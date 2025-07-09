@@ -3,6 +3,7 @@
 #include "core/GlobalThreadPool.hpp"
 
 #include <raylib.h>
+#include <raymath.h>  // Add raymath.h for Vector2 functions
 #include "weapons/WeaponTypes.hpp"
 #include <future>
 
@@ -55,7 +56,7 @@ Player::Player(const Map &map) {
     hitboxHeight = height * 0.9f;
 }
 
-void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, Core::InputManager& inputManager) {
+void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes, Core::InputManager& inputManager) {
     if (!imageFutureRetrieved.load(std::memory_order_acquire)) {
         if (imageFuture.valid()) {
             auto status = imageFuture.wait_for(std::chrono::seconds(0));
@@ -111,7 +112,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
 
                 if (bow->hasActiveArrows()) {
                     int default_substeps = 1;
-                    bow->updateArrowsWithSubsteps(dt, enemies, automatons, default_substeps, map);
+                    bow->updateArrowsWithSubsteps(dt, enemies, automatons, detonodes, default_substeps, map);
                 }
             }
         } else {
@@ -131,7 +132,7 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, std::v
     } else if (velocity.x < -10.0f || inputManager.isActionHeld(Core::InputAction::MOVE_LEFT)) {
         facingRight = false;
     }
-    checkWeaponHits(enemies, automatons);
+    checkWeaponHits(enemies, automatons, detonodes);
 }
 
 Vector2 Player::getPosition() const {
@@ -179,4 +180,14 @@ void Player::cleanup() {
         }
     }
     textureLoadedAtomic.store(false, std::memory_order_release);
+}
+
+void Player::applyKnockback(Vector2 force) {
+    // Apply knockback force directly to velocity
+    velocity = Vector2Add(velocity, force);
+
+    const float maxKnockbackVelocity = 600.0f;
+    if (Vector2Length(velocity) > maxKnockbackVelocity) {
+        velocity = Vector2Scale(Vector2Normalize(velocity), maxKnockbackVelocity);
+    }
 }

@@ -4,6 +4,7 @@
 #include "weapons/WeaponTypes.hpp"
 #include "enemies/ScrapHound.hpp"
 #include "enemies/Automaton.hpp"
+#include "enemies/Detonode.hpp"
 #include "effects/ParticleSystem.hpp"
 #include "core/GlobalThreadPool.hpp"
 #include <raylib.h>
@@ -44,7 +45,7 @@ void Player::addWeapon(std::unique_ptr<Weapon> weapon) {
     weapons.push_back(std::move(weapon));
 }
 
-void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons) {
+void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes) {
     if (weapons.empty() || currentWeaponIndex >= weapons.size()) {
         return;
     }
@@ -119,6 +120,36 @@ void Player::checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Autom
         }));
     }
     for (auto& f : automatonFutures) {
+        if (f.valid()) f.get();
+    }
+    
+    size_t detonodeChunk = (detonodes.size() + numThreads - 1) / numThreads;
+    std::vector<std::future<void>> detonodeFutures;
+    std::mutex detonodeMutex;
+    for (size_t t = 0; t < numThreads; ++t) {
+        size_t start = t * detonodeChunk;
+        size_t end = std::min(start + detonodeChunk, detonodes.size());
+        if (start >= end) continue;
+        detonodeFutures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&, start, end]() {
+            for (size_t i = start; i < end; ++i) {
+                auto& detonode = detonodes[i];
+                if (detonode.isAlive()) {
+                    Rectangle enemyHitbox = detonode.getHitbox();
+                    if (CheckCollisionRecs(weaponHitbox, enemyHitbox)) {
+                        if (detonode.canTakeDamage()) {
+                            std::lock_guard<std::mutex> lock(detonodeMutex);
+                            detonode.takeDamage(currentWeapon->getDamage());
+                            detonode.applyKnockback(currentWeapon->getKnockback(facingRight));
+                            
+                            Vector2 hitPos = {enemyHitbox.x + enemyHitbox.width/2, enemyHitbox.y + enemyHitbox.height/2};
+                            ParticleSystem::getInstance().createExplosionParticles(hitPos, 6, YELLOW);
+                        }
+                    }
+                }
+            }
+        }));
+    }
+    for (auto& f : detonodeFutures) {
         if (f.valid()) f.get();
     }
 }

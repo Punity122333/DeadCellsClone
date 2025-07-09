@@ -89,6 +89,9 @@ void Game::resetGame() {
             
             auto newPlayer = std::make_unique<Player>(*newMap);
             
+            // Set player reference in map for game mechanics that need access to player
+            newMap->setPlayer(newPlayer.get());
+            
             if (!mapGenerationInProgress.load(std::memory_order_acquire)) {
                 printf("[Game] Map generation cancelled after player creation\n");
                 return;
@@ -103,11 +106,12 @@ void Game::resetGame() {
             
             std::vector<ScrapHound> newScrapHounds;
             std::vector<Automaton> newAutomatons;
+            std::vector<Detonode> newDetonodes;
             
             printf("[Game] Spawning enemies...\n");
             auto spawn_start_time = std::chrono::high_resolution_clock::now();
             
-            spawner.spawnEnemiesInRooms(*newMap, newScrapHounds, newAutomatons);
+            spawner.spawnEnemiesInRooms(*newMap, newScrapHounds, newAutomatons, newDetonodes);
             
             if (!mapGenerationInProgress.load(std::memory_order_acquire)) {
                 printf("[Game] Map generation cancelled after enemy spawning\n");
@@ -131,6 +135,7 @@ void Game::resetGame() {
             tempCamera = std::move(newCamera);
             tempScrapHounds = std::move(newScrapHounds);
             tempAutomatons = std::move(newAutomatons);
+            tempDetonodes = std::move(newDetonodes);
             
             mapGenerationInProgress.store(false, std::memory_order_release);
             mapGenerationComplete.store(true, std::memory_order_release);

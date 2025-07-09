@@ -753,6 +753,102 @@ src/enemies/automaton/AutomatonUpdateHelpers.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/automaton/AutomatonUpdateHelpers.cpp.s
 .PHONY : src/enemies/automaton/AutomatonUpdateHelpers.cpp.s
 
+src/enemies/detonode/Detonode.o: src/enemies/detonode/Detonode.cpp.o
+.PHONY : src/enemies/detonode/Detonode.o
+
+# target to build an object file
+src/enemies/detonode/Detonode.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/Detonode.cpp.o
+.PHONY : src/enemies/detonode/Detonode.cpp.o
+
+src/enemies/detonode/Detonode.i: src/enemies/detonode/Detonode.cpp.i
+.PHONY : src/enemies/detonode/Detonode.i
+
+# target to preprocess a source file
+src/enemies/detonode/Detonode.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/Detonode.cpp.i
+.PHONY : src/enemies/detonode/Detonode.cpp.i
+
+src/enemies/detonode/Detonode.s: src/enemies/detonode/Detonode.cpp.s
+.PHONY : src/enemies/detonode/Detonode.s
+
+# target to generate assembly for a file
+src/enemies/detonode/Detonode.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/Detonode.cpp.s
+.PHONY : src/enemies/detonode/Detonode.cpp.s
+
+src/enemies/detonode/DetonodeCombat.o: src/enemies/detonode/DetonodeCombat.cpp.o
+.PHONY : src/enemies/detonode/DetonodeCombat.o
+
+# target to build an object file
+src/enemies/detonode/DetonodeCombat.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeCombat.cpp.o
+.PHONY : src/enemies/detonode/DetonodeCombat.cpp.o
+
+src/enemies/detonode/DetonodeCombat.i: src/enemies/detonode/DetonodeCombat.cpp.i
+.PHONY : src/enemies/detonode/DetonodeCombat.i
+
+# target to preprocess a source file
+src/enemies/detonode/DetonodeCombat.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeCombat.cpp.i
+.PHONY : src/enemies/detonode/DetonodeCombat.cpp.i
+
+src/enemies/detonode/DetonodeCombat.s: src/enemies/detonode/DetonodeCombat.cpp.s
+.PHONY : src/enemies/detonode/DetonodeCombat.s
+
+# target to generate assembly for a file
+src/enemies/detonode/DetonodeCombat.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeCombat.cpp.s
+.PHONY : src/enemies/detonode/DetonodeCombat.cpp.s
+
+src/enemies/detonode/DetonodeDraw.o: src/enemies/detonode/DetonodeDraw.cpp.o
+.PHONY : src/enemies/detonode/DetonodeDraw.o
+
+# target to build an object file
+src/enemies/detonode/DetonodeDraw.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeDraw.cpp.o
+.PHONY : src/enemies/detonode/DetonodeDraw.cpp.o
+
+src/enemies/detonode/DetonodeDraw.i: src/enemies/detonode/DetonodeDraw.cpp.i
+.PHONY : src/enemies/detonode/DetonodeDraw.i
+
+# target to preprocess a source file
+src/enemies/detonode/DetonodeDraw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeDraw.cpp.i
+.PHONY : src/enemies/detonode/DetonodeDraw.cpp.i
+
+src/enemies/detonode/DetonodeDraw.s: src/enemies/detonode/DetonodeDraw.cpp.s
+.PHONY : src/enemies/detonode/DetonodeDraw.s
+
+# target to generate assembly for a file
+src/enemies/detonode/DetonodeDraw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeDraw.cpp.s
+.PHONY : src/enemies/detonode/DetonodeDraw.cpp.s
+
+src/enemies/detonode/DetonodeUpdateHelpers.o: src/enemies/detonode/DetonodeUpdateHelpers.cpp.o
+.PHONY : src/enemies/detonode/DetonodeUpdateHelpers.o
+
+# target to build an object file
+src/enemies/detonode/DetonodeUpdateHelpers.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeUpdateHelpers.cpp.o
+.PHONY : src/enemies/detonode/DetonodeUpdateHelpers.cpp.o
+
+src/enemies/detonode/DetonodeUpdateHelpers.i: src/enemies/detonode/DetonodeUpdateHelpers.cpp.i
+.PHONY : src/enemies/detonode/DetonodeUpdateHelpers.i
+
+# target to preprocess a source file
+src/enemies/detonode/DetonodeUpdateHelpers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeUpdateHelpers.cpp.i
+.PHONY : src/enemies/detonode/DetonodeUpdateHelpers.cpp.i
+
+src/enemies/detonode/DetonodeUpdateHelpers.s: src/enemies/detonode/DetonodeUpdateHelpers.cpp.s
+.PHONY : src/enemies/detonode/DetonodeUpdateHelpers.s
+
+# target to generate assembly for a file
+src/enemies/detonode/DetonodeUpdateHelpers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeUpdateHelpers.cpp.s
+.PHONY : src/enemies/detonode/DetonodeUpdateHelpers.cpp.s
+
 src/enemies/scraphound/ScrapHound.o: src/enemies/scraphound/ScrapHound.cpp.o
 .PHONY : src/enemies/scraphound/ScrapHound.o
 
@@ -1608,6 +1704,18 @@ help:
 	@echo "... src/enemies/automaton/AutomatonUpdateHelpers.o"
 	@echo "... src/enemies/automaton/AutomatonUpdateHelpers.i"
 	@echo "... src/enemies/automaton/AutomatonUpdateHelpers.s"
+	@echo "... src/enemies/detonode/Detonode.o"
+	@echo "... src/enemies/detonode/Detonode.i"
+	@echo "... src/enemies/detonode/Detonode.s"
+	@echo "... src/enemies/detonode/DetonodeCombat.o"
+	@echo "... src/enemies/detonode/DetonodeCombat.i"
+	@echo "... src/enemies/detonode/DetonodeCombat.s"
+	@echo "... src/enemies/detonode/DetonodeDraw.o"
+	@echo "... src/enemies/detonode/DetonodeDraw.i"
+	@echo "... src/enemies/detonode/DetonodeDraw.s"
+	@echo "... src/enemies/detonode/DetonodeUpdateHelpers.o"
+	@echo "... src/enemies/detonode/DetonodeUpdateHelpers.i"
+	@echo "... src/enemies/detonode/DetonodeUpdateHelpers.s"
 	@echo "... src/enemies/scraphound/ScrapHound.o"
 	@echo "... src/enemies/scraphound/ScrapHound.i"
 	@echo "... src/enemies/scraphound/ScrapHound.s"

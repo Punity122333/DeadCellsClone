@@ -199,6 +199,7 @@ CMakeFiles/SideScroller.dir/src/weapons/Bow.cpp.o: \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/stl_tempbuf.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Detonode.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ParticleSystem.hpp \
  /usr/include/c++/13/queue /usr/include/c++/13/deque \
  /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \

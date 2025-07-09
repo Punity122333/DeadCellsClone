@@ -216,6 +216,7 @@ CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.o: \
  /usr/include/c++/13/atomic \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Automaton.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Detonode.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Player.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/Weapon.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/InputManager.hpp \

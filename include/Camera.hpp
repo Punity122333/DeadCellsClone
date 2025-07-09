@@ -5,10 +5,9 @@
 class GameCamera {
 public:
     GameCamera(int screenWidth, int screenHeight, const Player& player);
-    void update();
+    void update(const Player& player, const Map& map, float deltaTime);
     Camera2D getCamera() const;
 
 private:
     Camera2D cam;
-    const Player& player;
 };

@@ -212,6 +212,7 @@ CMakeFiles/SideScroller.dir/src/player/PlayerCombat.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/ScrapHound.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Automaton.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Detonode.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ParticleSystem.hpp \
  /usr/include/c++/13/queue /usr/include/c++/13/deque \
  /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \

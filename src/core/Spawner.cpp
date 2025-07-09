@@ -2,6 +2,7 @@
 #include "map/Map.hpp" 
 #include "enemies/ScrapHound.hpp" 
 #include "enemies/Automaton.hpp"
+#include "enemies/Detonode.hpp"
 #include "core/GlobalThreadPool.hpp"
 #include <algorithm>
 #include <atomic>
@@ -17,19 +18,22 @@ namespace SpawnerConstants {
     constexpr float ScrapHoundAutomatonMinDist = 64.0f;
     constexpr float BaseSpawnRate = 0.1f;
     constexpr float DistanceMultiplier = 0.0005f;
-    constexpr float MaxSpawnRate = 0.8f;
+    constexpr float MaxSpawnRate = 0.7f;
     constexpr float MinSpawnDistance = 200.0f;
-    constexpr int MaxAutomatonsPerRoom = 2;
-    constexpr int MaxScrapHoundsPerRoom = 3;
+    constexpr int MaxAutomatonsPerRoom = 1;
+    constexpr int MaxScrapHoundsPerRoom = 2;
+    constexpr int MaxDetonodesPerRoom = 1;
+    constexpr float DetonodeSpawnChance = 0.5f;
 }
 
 Spawner::Spawner() {
 }
 
-void Spawner::spawnEnemiesInRooms(Map& map, std::vector<ScrapHound>& scrapHounds, std::vector<Automaton>& automatons) {
+void Spawner::spawnEnemiesInRooms(Map& map, std::vector<ScrapHound>& scrapHounds, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes) {
     const auto& rooms = map.getGeneratedRooms();
     scrapHounds.clear();
     automatons.clear();
+    detonodes.clear();
     printf("[Spawner] Number of rooms: %zu\n", rooms.size());
     
     Vector2 playerSpawn = map.findEmptySpawn();
@@ -39,12 +43,14 @@ void Spawner::spawnEnemiesInRooms(Map& map, std::vector<ScrapHound>& scrapHounds
     std::mt19937 gen(rd());
     std::atomic<int> totalScrapHoundsSpawned{0};
     std::atomic<int> totalAutomatonsSpawned{0};
+    std::atomic<int> totalDetonodesSpawned{0};
     std::mutex scrapHoundsMutex;
     std::mutex automatonsMutex;
+    std::mutex detonodeMutex;
     std::vector<std::future<void>> futures;
     
     for (const auto& room : rooms) {
-        futures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&map, &scrapHounds, &automatons, &gen, &totalScrapHoundsSpawned, &totalAutomatonsSpawned, &scrapHoundsMutex, &automatonsMutex, room, playerSpawn]() mutable {
+        futures.push_back(GlobalThreadPool::getInstance().getMainPool().enqueue([&map, &scrapHounds, &automatons, &detonodes, &gen, &totalScrapHoundsSpawned, &totalAutomatonsSpawned, &totalDetonodesSpawned, &scrapHoundsMutex, &automatonsMutex, &detonodeMutex, room, playerSpawn]() mutable {
             Vector2 roomCenter = {
                 static_cast<float>(room.startX + room.endX) * SpawnerConstants::TileSize * 0.5f,
                 static_cast<float>(room.startY + room.endY) * SpawnerConstants::TileSize * 0.5f
@@ -80,12 +86,9 @@ void Spawner::spawnEnemiesInRooms(Map& map, std::vector<ScrapHound>& scrapHounds
             
             std::shuffle(validSpawns.begin(), validSpawns.end(), gen);
             
-            int maxScrapHounds = static_cast<int>(SpawnerConstants::MaxScrapHoundsPerRoom * spawnRate);
-            int maxAutomatons = static_cast<int>(SpawnerConstants::MaxAutomatonsPerRoom * spawnRate);
-            
             std::vector<Vector2> usedSpawns;
             
-            for (int i = 0; i < maxScrapHounds && !validSpawns.empty(); ++i) {
+            for (int i = 0; i < SpawnerConstants::MaxScrapHoundsPerRoom && !validSpawns.empty(); ++i) {
                 if (spawnChance(gen) <= spawnRate) {
                     Vector2 spawnPos = validSpawns.back();
                     validSpawns.pop_back();
@@ -117,10 +120,11 @@ void Spawner::spawnEnemiesInRooms(Map& map, std::vector<ScrapHound>& scrapHounds
             
             std::shuffle(automatonSpawns.begin(), automatonSpawns.end(), gen);
             
-            for (int i = 0; i < maxAutomatons && !automatonSpawns.empty(); ++i) {
+            for (int i = 0; i < SpawnerConstants::MaxAutomatonsPerRoom && !automatonSpawns.empty(); ++i) {
                 if (spawnChance(gen) <= spawnRate) {
                     Vector2 spawnPos = automatonSpawns.back();
                     automatonSpawns.pop_back();
+                    usedSpawns.push_back(spawnPos);
                     
                     {
                         std::lock_guard<std::mutex> lock(automatonsMutex);
@@ -131,9 +135,33 @@ void Spawner::spawnEnemiesInRooms(Map& map, std::vector<ScrapHound>& scrapHounds
                            spawnPos.x, spawnPos.y, distanceFromPlayer, spawnRate);
                 }
             }
+            
+            if (spawnChance(gen) <= SpawnerConstants::DetonodeSpawnChance && !validSpawns.empty()) {
+                bool canSpawnDetonode = true;
+                for (const auto& spawn : validSpawns) {
+                    bool farEnough = true;
+                    for (const auto& used : usedSpawns) {
+                        if (Vector2Distance(spawn, used) < SpawnerConstants::ScrapHoundAutomatonMinDist) {
+                            farEnough = false;
+                            break;
+                        }
+                    }
+                    if (farEnough) {
+                        {
+                            std::lock_guard<std::mutex> lock(detonodeMutex);
+                            detonodes.emplace_back(spawn);
+                        }
+                        totalDetonodesSpawned.fetch_add(1, std::memory_order_relaxed);
+                        printf("[Spawner] Detonode spawned at (%.1f, %.1f), distance: %.1f\n", 
+                               spawn.x, spawn.y, distanceFromPlayer);
+                        break;
+                    }
+                }
+            }
         }));
     }
     for (auto& f : futures) f.get();
     printf("[Spawner] Total ScrapHounds spawned: %d\n", totalScrapHoundsSpawned.load(std::memory_order_relaxed));
     printf("[Spawner] Total Automatons spawned: %d\n", totalAutomatonsSpawned.load(std::memory_order_relaxed));
+    printf("[Spawner] Total Detonodes spawned: %d\n", totalDetonodesSpawned.load(std::memory_order_relaxed));
 }

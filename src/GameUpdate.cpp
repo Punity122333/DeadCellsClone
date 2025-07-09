@@ -60,18 +60,21 @@ void Game::update(float deltaTime) {
                         std::unique_ptr<GameCamera> oldCamera = std::move(camera);
                         std::vector<ScrapHound> oldScrapHounds = std::move(scrapHounds);
                         std::vector<Automaton> oldAutomatons = std::move(automatons);
+                        std::vector<Detonode> oldDetonodes = std::move(detonodes);
                         
                         map = std::move(tempMap);
                         player = std::move(tempPlayer);
                         camera = std::move(tempCamera);
                         scrapHounds = std::move(tempScrapHounds);
                         automatons = std::move(tempAutomatons);
+                        detonodes = std::move(tempDetonodes);
                         
                         oldMap.reset();
                         oldPlayer.reset();
                         oldCamera.reset();
                         oldScrapHounds.clear();
                         oldAutomatons.clear();
+                        oldDetonodes.clear();
                         
                         printf("[Game] Objects successfully moved to main game state\n");
                     } else {
@@ -116,9 +119,9 @@ void Game::update(float deltaTime) {
         map->updateTransitions(deltaTime);
         map->updateParticles(deltaTime, player->getPosition());
         ParticleSystem::getInstance().update(deltaTime);
-        player->update(deltaTime, *map, camera->getCamera(), scrapHounds, automatons, inputManager);
-        camera->update();
-        player->checkWeaponHits(scrapHounds, automatons);
+        player->update(deltaTime, *map, camera->getCamera(), scrapHounds, automatons, detonodes, inputManager);
+        camera->update(*player, *map, deltaTime);
+        player->checkWeaponHits(scrapHounds, automatons, detonodes);
 
         scrapHounds.erase(
             std::remove_if(scrapHounds.begin(), scrapHounds.end(),
@@ -130,6 +133,12 @@ void Game::update(float deltaTime) {
             std::remove_if(automatons.begin(), automatons.end(),
                 [](const Automaton& enemy) { return !enemy.isAlive(); }),
             automatons.end()
+        );
+
+        detonodes.erase(
+            std::remove_if(detonodes.begin(), detonodes.end(),
+                [](const Detonode& enemy) { return !enemy.isAlive(); }),
+            detonodes.end()
         );
 
         for (auto& enemy : scrapHounds) {
@@ -161,6 +170,12 @@ void Game::update(float deltaTime) {
                 if (CheckCollisionRecs(automatonRect, playerRect) && player->canTakeDamage()) {
                     player->takeDamage(10);
                 }
+            }
+        }
+
+        for (auto& detonode : detonodes) {
+            if (detonode.isAlive()) {
+                detonode.update(*map, player->getPosition(), deltaTime);
             }
         }
 

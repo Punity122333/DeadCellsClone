@@ -215,5 +215,6 @@ CMakeFiles/SideScroller.dir/src/player/Player.cpp.o: \
  /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
  /usr/include/c++/13/bits/stl_queue.h /usr/include/c++/13/thread \
  /usr/include/c++/13/bits/this_thread_sleep.h \
+ /usr/local/include/raymath.h /usr/include/c++/13/math.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/WeaponTypes.hpp \
  /usr/include/c++/13/chrono

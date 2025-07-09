@@ -320,3 +320,9 @@ void Map::createSuctionEffect(Vector2 position) {
         particles.emplace_back(startPos, velocity, color, life, size);
     }
 }
+
+void Map::setTileValue(int x, int y, int value) {
+    if (x >= 0 && x < width && y >= 0 && y < height) {
+        tiles[x][y] = value;
+    }
+}

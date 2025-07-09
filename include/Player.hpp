@@ -10,6 +10,7 @@
 
 class ScrapHound;
 class Automaton;
+class Detonode;
 
 
 
@@ -18,7 +19,7 @@ public:
     Player(const Map &map);
     ~Player();
     void cleanup();
-    void update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, Core::InputManager& inputManager); 
+    void update(float dt, const Map& map, const Camera2D& gameCamera, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes, Core::InputManager& inputManager); 
     void draw() const;
     
     Vector2 getPosition() const;
@@ -33,7 +34,7 @@ public:
     
     void switchWeapon(int index);
     void addWeapon(std::unique_ptr<Weapon> weapon);
-    void checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons);
+    void checkWeaponHits(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes);
     
     
     bool isSwordAttacking() const;
@@ -41,6 +42,7 @@ public:
     
     bool canTakeDamage() const;
     void takeDamage(int amount);
+    void applyKnockback(Vector2 force);
 
     
 

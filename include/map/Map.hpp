@@ -7,6 +7,9 @@
 #include <mutex>
 #include <functional>
 
+// Forward declaration
+class Player;
+
 using ProgressCallback = std::function<void(float)>;
 
 namespace MapConstants {
@@ -144,6 +147,7 @@ public:
     Vector2 findEmptySpawn() const;
     int countEmptyTiles() const;
     int countReachableEmptyTiles(int startX, int startY) const;
+    void setTileValue(int x, int y, int value);
     static constexpr int CHUNK_SIZE = 16;
     struct Chunk {
         int startX, startY;
@@ -152,10 +156,15 @@ public:
     std::vector<Chunk> chunks;
 
     const std::vector<Room>& getGeneratedRooms() const;
+    
+    // Player reference methods
+    void setPlayer(Player* player) { playerRef = player; }
+    Player* getPlayer() const { return playerRef; }
 
 private:
     int width;
     int height;
+    Player* playerRef = nullptr; // Reference to player
     std::vector<std::vector<int>> tiles;
     std::vector<std::vector<float>> transitionTimers;
     std::vector<std::vector<int>> cooldownMap;
