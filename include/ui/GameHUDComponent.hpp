@@ -19,7 +19,7 @@ namespace UI {
         UIAction draw() override;
         void handleInput() override;
         void drawHUD(const Player& player, GameState currentState);
-        void drawHUD(const Player& player, const Map& map, GameState currentState);
+        void drawHUD(const Player& player, const Map& map, GameState currentState, float deltaTime);
         
     private:
         static constexpr float HEALTH_BAR_WIDTH = 300.0f;

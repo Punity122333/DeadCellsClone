@@ -2,6 +2,9 @@ CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeCombat.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/src/enemies/detonode/DetonodeCombat.cpp \
  /usr/include/stdc-predef.h \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Detonode.hpp \
+ /usr/local/include/raylib.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Enemy.hpp \
  /usr/include/c++/13/atomic /usr/include/c++/13/bits/atomic_base.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -86,8 +89,6 @@ CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeCombat.cpp.o: \
  /usr/include/c++/13/ext/atomicity.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h \
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
- /usr/local/include/raylib.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
  /usr/include/c++/13/vector /usr/include/c++/13/bits/stl_algobase.h \
  /usr/include/c++/13/bits/stl_iterator_base_types.h \
  /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
@@ -215,5 +216,6 @@ CMakeFiles/SideScroller.dir/src/enemies/detonode/DetonodeCombat.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/effects/ParticleSystem.hpp \
  /usr/include/c++/13/queue /usr/include/c++/13/deque \
  /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
- /usr/include/c++/13/bits/stl_queue.h /usr/local/include/raymath.h \
- /usr/include/c++/13/math.h
+ /usr/include/c++/13/bits/stl_queue.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Camera.hpp \
+ /usr/local/include/raymath.h /usr/include/c++/13/math.h

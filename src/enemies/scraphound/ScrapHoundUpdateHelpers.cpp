@@ -25,7 +25,24 @@ void ScrapHound::update(const Map& map, Vector2 playerPos, float dt) {
             isMeleeAttacking = false;
         }
     }
+    
     float distanceToPlayer = Vector2Distance(position, playerPos);
+
+    bool shouldPatrol = distanceToPlayer > playerDetectionRange;
+    
+    if (shouldPatrol && !isPatrolling && !isPouncing && !isMeleeAttacking && !isPounceCharging && !isMeleeCharging) {
+
+        isPatrolling = true;
+        {
+            std::lock_guard<std::mutex> lock(pathMutex);
+            path.clear();
+        }
+    } else if (!shouldPatrol && isPatrolling) {
+
+        isPatrolling = false;
+        patrolBoundsInitialized = false;
+    }
+    
     if (!isPouncing && !isMeleeAttacking && !isPounceCharging && distanceToPlayer < meleeTriggerDistance) {
         isMeleeCharging = true;
         meleeCharge += dt;
@@ -81,39 +98,45 @@ void ScrapHound::update(const Map& map, Vector2 playerPos, float dt) {
         isPouncing = false;
         velocity.x = 0;
     }
+
     if (!isPouncing && !isMeleeAttacking && !isMeleeCharging && !isPounceCharging) {
-        static int pathTimer = 0;
-        static Vector2 lastPlayerPos = {0, 0};
-        float playerMoved = Vector2Distance(playerPos, lastPlayerPos);
-        if ((pathTimer++ > 5 || path.empty() || playerMoved > 32.0f) && !pathfindingInProgress) {
-            requestPathAsync(map, position, playerPos);
-            pathTimer = 0;
-            lastPlayerPos = playerPos;
-        }
-        if (pathReady) {
-            std::lock_guard<std::mutex> lock(pathMutex);
-            pathReady = false;
-        }
-        if (!path.empty()) {
-            Vector2 target = path.front();
-            if (Vector2Distance(position, target) < 16.0f) {
+        if (isPatrolling) {
+            updatePatrol(map, dt);
+        } else {
+
+            static int pathTimer = 0;
+            static Vector2 lastPlayerPos = {0, 0};
+            float playerMoved = Vector2Distance(playerPos, lastPlayerPos);
+            if ((pathTimer++ > 5 || path.empty() || playerMoved > 32.0f) && !pathfindingInProgress) {
+                requestPathAsync(map, position, playerPos);
+                pathTimer = 0;
+                lastPlayerPos = playerPos;
+            }
+            if (pathReady) {
                 std::lock_guard<std::mutex> lock(pathMutex);
-                path.erase(path.begin());
+                pathReady = false;
             }
             if (!path.empty()) {
-                float dx = path.front().x - position.x;
-                float dir = 0.0f;
-                if (dx > 0) {
-                    dir = 1.0f;
-                } else if (dx < 0) {
-                    dir = -1.0f;
+                Vector2 target = path.front();
+                if (Vector2Distance(position, target) < 16.0f) {
+                    std::lock_guard<std::mutex> lock(pathMutex);
+                    path.erase(path.begin());
                 }
-                velocity.x = dir * speed;
+                if (!path.empty()) {
+                    float dx = path.front().x - position.x;
+                    float dir = 0.0f;
+                    if (dx > 0) {
+                        dir = 1.0f;
+                    } else if (dx < 0) {
+                        dir = -1.0f;
+                    }
+                    velocity.x = dir * speed;
+                } else {
+                    velocity.x = 0;
+                }
             } else {
                 velocity.x = 0;
             }
-        } else {
-            velocity.x = 0;
         }
     }
     Vector2 nextPos = position;

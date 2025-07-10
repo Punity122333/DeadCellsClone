@@ -211,4 +211,5 @@ CMakeFiles/SideScroller.dir/src/ui/Minimap.cpp.o: \
  /usr/include/c++/13/stdexcept /usr/include/c++/13/bits/atomic_futex.h \
  /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_thread.h \
  /usr/include/c++/13/algorithm \
- /usr/include/c++/13/pstl/glue_algorithm_defs.h
+ /usr/include/c++/13/pstl/glue_algorithm_defs.h \
+ /usr/local/include/raymath.h /usr/include/c++/13/math.h

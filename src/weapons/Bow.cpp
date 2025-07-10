@@ -1,7 +1,6 @@
 #include "weapons/WeaponTypes.hpp"
 #include "enemies/ScrapHound.hpp"
-#include "enemies/Automaton.hpp"
-#include "enemies/Detonode.hpp"
+#include "enemies/EnemyManager.hpp"
 #include "effects/ParticleSystem.hpp"
 #include "map/Map.hpp"
 
@@ -217,31 +216,30 @@ void Bow::updateArrows(float dt, const Map& map) {
         activeArrows.end());
 }
 
-void Bow::checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes) {
+void Bow::checkArrowCollisions(EnemyManager& enemyManager) {
     for (auto& arrow : activeArrows) {
         if (!arrow.active) continue;
-        for (auto& enemy : enemies) {
-            if (enemy.isAlive() && CheckCollisionRecs(arrow.getHitbox(), enemy.getArrowHitbox())) {
-                enemy.takeDamage(BOW_DAMAGE);
-                arrow.active = false;
-            }
-        }
-        for (auto& automaton : automatons) {
-            if (automaton.isAlive() && CheckCollisionRecs(arrow.getHitbox(), automaton.getHitbox())) {
-                automaton.takeDamage(BOW_DAMAGE);
-                arrow.active = false;
-            }
-        }
-        for (auto& detonode : detonodes) {
-            if (detonode.isAlive() && CheckCollisionRecs(arrow.getHitbox(), detonode.getHitbox())) {
-                detonode.takeDamage(BOW_DAMAGE);
-                arrow.active = false;
+        
+        auto enemies = enemyManager.getAllEnemies();
+        for (auto* enemy : enemies) {
+            if (enemy->isAlive()) {
+                Rectangle hitbox = enemy->getHitbox();
+                if (enemy->getType() == EnemyType::SCRAP_HOUND) {
+                    ScrapHound* scrapHound = static_cast<ScrapHound*>(enemy);
+                    hitbox = scrapHound->getArrowHitbox();
+                }
+                
+                if (CheckCollisionRecs(arrow.getHitbox(), hitbox)) {
+                    enemy->takeDamage(BOW_DAMAGE);
+                    arrow.active = false;
+                    break;
+                }
             }
         }
     }
 }
 
-void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes, int substeps, const Map& map) {
+void Bow::updateArrowsWithSubsteps(float dt, EnemyManager& enemyManager, int substeps, const Map& map) {
     float substepDt = dt / substeps;
     for (int s = 0; s < substeps; ++s) {
         for (auto& arrow : activeArrows) {
@@ -252,7 +250,6 @@ void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, s
             arrow.position.y += arrow.direction.y * arrow.speed * substepDt;
             arrow.lifetime -= substepDt;
             
-            // Check for wall collisions
             int tileX = (int)(arrow.position.x / 32);
             int tileY = (int)(arrow.position.y / 32);
             if (map.isSolidTile(tileX, tileY)) {
@@ -260,9 +257,8 @@ void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, s
                 continue;
             }
             
-            // Spawn particles continuously for all arrows
             arrow.particleTimer += substepDt;
-            constexpr float PARTICLE_SPAWN_INTERVAL = 0.05f; // Spawn particles every 0.05 seconds
+            constexpr float PARTICLE_SPAWN_INTERVAL = 0.05f;
             if (arrow.particleTimer >= PARTICLE_SPAWN_INTERVAL) {
                 Color particleColor = arrow.wasFullyCharged ? RED : YELLOW;
                 ParticleSystem::getInstance().createExplosionParticles(arrow.position, 3, particleColor);
@@ -273,7 +269,7 @@ void Bow::updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, s
                 arrow.active = false; 
             }
         }
-        checkArrowCollisions(enemies, automatons, detonodes);
+        checkArrowCollisions(enemyManager);
     }
     
     activeArrows.erase(

@@ -31,8 +31,7 @@ void Game::resetGame() {
     loadingStartTime = GetTime(); 
     uiController->getLoadingScreen()->setProgress(0.0f);
     
-    scrapHounds.clear();
-    automatons.clear();
+    enemyManager.clearEnemies();
     automataTimer = 0.0f;
     fadeAlpha = 0.0f;
     fadingToPlay = false;
@@ -46,8 +45,7 @@ void Game::resetGame() {
     tempMap.reset();
     tempPlayer.reset();
     tempCamera.reset();
-    tempScrapHounds.clear();
-    tempAutomatons.clear();
+    tempEnemyManager.clearEnemies();
     
     printf("[Game] Starting new map generation...\n");
     mapGenerationInProgress = true;
@@ -88,8 +86,7 @@ void Game::resetGame() {
             auto player_start_time = std::chrono::high_resolution_clock::now();
             
             auto newPlayer = std::make_unique<Player>(*newMap);
-            
-            // Set player reference in map for game mechanics that need access to player
+
             newMap->setPlayer(newPlayer.get());
             
             if (!mapGenerationInProgress.load(std::memory_order_acquire)) {
@@ -104,14 +101,12 @@ void Game::resetGame() {
             printf("[Game] Creating camera...\n");
             auto newCamera = std::make_unique<GameCamera>(screenWidth, screenHeight, *newPlayer);
             
-            std::vector<ScrapHound> newScrapHounds;
-            std::vector<Automaton> newAutomatons;
-            std::vector<Detonode> newDetonodes;
+            EnemyManager newEnemyManager;
             
             printf("[Game] Spawning enemies...\n");
             auto spawn_start_time = std::chrono::high_resolution_clock::now();
             
-            spawner.spawnEnemiesInRooms(*newMap, newScrapHounds, newAutomatons, newDetonodes);
+            spawner.spawnEnemiesInRooms(*newMap, newEnemyManager);
             
             if (!mapGenerationInProgress.load(std::memory_order_acquire)) {
                 printf("[Game] Map generation cancelled after enemy spawning\n");
@@ -133,9 +128,7 @@ void Game::resetGame() {
             tempMap = std::move(newMap);
             tempPlayer = std::move(newPlayer);
             tempCamera = std::move(newCamera);
-            tempScrapHounds = std::move(newScrapHounds);
-            tempAutomatons = std::move(newAutomatons);
-            tempDetonodes = std::move(newDetonodes);
+            tempEnemyManager = std::move(newEnemyManager);
             
             mapGenerationInProgress.store(false, std::memory_order_release);
             mapGenerationComplete.store(true, std::memory_order_release);

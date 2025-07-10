@@ -147,6 +147,7 @@ public:
     Vector2 findEmptySpawn() const;
     int countEmptyTiles() const;
     int countReachableEmptyTiles(int startX, int startY) const;
+    int estimateReachabilityFast(int startX, int startY) const;
     void setTileValue(int x, int y, int value);
     static constexpr int CHUNK_SIZE = 16;
     struct Chunk {

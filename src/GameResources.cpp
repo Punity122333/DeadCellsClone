@@ -9,6 +9,7 @@ namespace GamePaths {
     constexpr const char* Tile = "../resources/tiles/tile%03d.png";
     constexpr const char* BloomShader = "../shader/bloom.fs";
     constexpr const char* ChromaticAberrationShader = "../shader/chromatic_aberration.fs";
+    constexpr const char* ScreenshakeShader = "../shader/screenshake.fs";
 }
 
 void Game::initializeResources() {
@@ -44,6 +45,7 @@ void Game::initializeResources() {
     
     bloomShaderHandle = resourceManager.loadShader("", GamePaths::BloomShader);
     chromaticAberrationShaderHandle = resourceManager.loadShader("", GamePaths::ChromaticAberrationShader);
+    screenshakeShaderHandle = resourceManager.loadShader("", GamePaths::ScreenshakeShader);
     
     if (bloomShaderHandle.isValid()) {
         bloomShader = *bloomShaderHandle.get();
@@ -51,6 +53,9 @@ void Game::initializeResources() {
     }
     if (chromaticAberrationShaderHandle.isValid()) {
         chromaticAberrationShader = *chromaticAberrationShaderHandle.get();
+    }
+    if (screenshakeShaderHandle.isValid()) {
+        screenshakeShader = *screenshakeShaderHandle.get();
     }
 }
 

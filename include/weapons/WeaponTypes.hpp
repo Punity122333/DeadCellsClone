@@ -3,9 +3,8 @@
 #include <vector>
 #include <raylib.h>
 
-class ScrapHound;
-class Automaton;
-class Detonode;
+class Enemy;
+class EnemyManager;
 class Map;
 
 class Sword : public Weapon {
@@ -55,9 +54,9 @@ public:
     bool isFullyCharged() const;
     void fireArrow(Vector2 position, Vector2 direction);
     void updateArrows(float dt, const Map& map);
-    void updateArrowsWithSubsteps(float dt, std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes, int substeps, const Map& map);
+    void updateArrowsWithSubsteps(float dt, EnemyManager& enemyManager, int substeps, const Map& map);
     void drawArrows() const;
-    void checkArrowCollisions(std::vector<ScrapHound>& enemies, std::vector<Automaton>& automatons, std::vector<Detonode>& detonodes);
+    void checkArrowCollisions(EnemyManager& enemyManager);
     void updatePosition(Vector2 newPosition);
     bool hasActiveArrows() const;
     Vector2 getKnockback(bool facingRight) const override;

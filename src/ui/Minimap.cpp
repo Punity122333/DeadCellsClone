@@ -1,10 +1,13 @@
 #include "ui/Minimap.hpp"
 #include <algorithm>
 #include <cmath>
+#include <raymath.h>
 
 namespace UI {
     Minimap::Minimap(int x, int y, int w, int h) 
-        : posX(x), posY(y), width(w), height(h), lastPlayerPos({-1000, -1000}) {
+        : posX(x), posY(y), width(w), height(h), lastPlayerPos({-1000, -1000}), 
+          currentPlayerPos({-1000, -1000}), interpolatedPlayerPos({-1000, -1000}), 
+          interpolationTimer(0.0f), needsUpdate(true) {
         minimapTexture = LoadRenderTexture(width, height);
     }
     
@@ -23,34 +26,51 @@ namespace UI {
         UnloadRenderTexture(minimapTexture);
         minimapTexture = LoadRenderTexture(width, height);
         lastPlayerPos = {-1000, -1000}; 
+        currentPlayerPos = {-1000, -1000};
+        interpolatedPlayerPos = {-1000, -1000};
+        needsUpdate = true;
     }
     
-    void Minimap::update(const Map& map, const Player& player) {
-        Vector2 currentPlayerPos = player.getPosition();
-        
-        
-        
-        updateMinimapTexture(map, player);
-        lastPlayerPos = currentPlayerPos;
-        
+    void Minimap::update(const Map& map, const Player& player, float deltaTime) {
+        Vector2 newPlayerPos = player.getPosition();
+
+        if (Vector2Distance(newPlayerPos, currentPlayerPos) > UPDATE_THRESHOLD) {
+            lastPlayerPos = currentPlayerPos;
+            currentPlayerPos = newPlayerPos;
+            interpolationTimer = 0.0f;
+            needsUpdate = true;
+        }
+
+        if (interpolationTimer < 1.0f) {
+            interpolationTimer += deltaTime * INTERPOLATION_SPEED;
+            interpolationTimer = std::min(interpolationTimer, 1.0f);
+
+            interpolatedPlayerPos = lerp(lastPlayerPos, currentPlayerPos, interpolationTimer);
+            needsUpdate = true;
+        } else {
+            interpolatedPlayerPos = currentPlayerPos;
+        }
+
+        if (needsUpdate) {
+            updateMinimapTexture(map, player);
+            needsUpdate = false;
+        }
     }
     
     void Minimap::updateMinimapTexture(const Map& map, const Player& player) {
         BeginTextureMode(minimapTexture);
         ClearBackground(BLACK);
-        
-        Vector2 playerPos = player.getPosition();
+
+        Vector2 playerPos = interpolatedPlayerPos;
         int playerTileX = static_cast<int>(playerPos.x / 32.0f);
         int playerTileY = static_cast<int>(playerPos.y / 32.0f);
         
         int textureWidth = minimapTexture.texture.width;
         int textureHeight = minimapTexture.texture.height;
         
-
         int tilesWidth = textureWidth / MINIMAP_SCALE;
         int tilesHeight = textureHeight / MINIMAP_SCALE;
         
-
         int viewRadius = std::min(VIEW_RADIUS, std::min(tilesWidth, tilesHeight) / 2);
         int startX = playerTileX - viewRadius;
         int startY = playerTileY - viewRadius;
@@ -102,7 +122,6 @@ namespace UI {
     }
     
     void Minimap::draw(const Map& map, const Player& player) {
-
         Color shadowColor = ColorAlpha(BLACK, 0.5f);
         DrawRectangle(posX + SHADOW_OFFSET, posY + SHADOW_OFFSET, width, height, shadowColor);
 
@@ -119,5 +138,12 @@ namespace UI {
         
         DrawCircle(centerX, centerY, PLAYER_DOT_SIZE, RED);
         DrawCircleLines(centerX, centerY, PLAYER_DOT_SIZE, WHITE);
+    }
+    
+    Vector2 Minimap::lerp(Vector2 start, Vector2 end, float t) const {
+        return {
+            start.x + (end.x - start.x) * t,
+            start.y + (end.y - start.y) * t
+        };
     }
 }

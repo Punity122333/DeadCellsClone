@@ -10,9 +10,7 @@
 
 namespace Core {
 
-/**
- * @brief Resource handle for automatic resource management
- */
+
 template<typename T>
 class ResourceHandle {
 public:
@@ -30,17 +28,7 @@ private:
     std::string m_id;
 };
 
-/**
- * @brief Production-ready resource manager with automatic loading and caching
- * 
- * Features:
- * - Automatic resource loading and caching
- * - Reference counting for memory management
- * - Async loading support
- * - Resource preloading and batching
- * - Memory usage tracking
- * - Hot-reloading for development
- */
+
 class ResourceManager {
 public:
     using TextureLoader = std::function<Texture2D(const std::string&)>;
@@ -88,9 +76,7 @@ public:
                      const std::vector<std::string>& soundPaths = {},
                      const std::vector<std::string>& musicPaths = {});
 
-    /**
-     * @brief Unload all resources of a specific type
-     */
+   
     void unloadAllTextures();
     void unloadAllSounds();
     void unloadAllMusic();
@@ -98,9 +84,7 @@ public:
     void unloadAllFonts();
     void unloadAll();
 
-    /**
-     * @brief Get memory usage statistics
-     */
+    
     struct MemoryStats {
         size_t textureMemory = 0;
         size_t soundMemory = 0;
@@ -114,49 +98,30 @@ public:
     
     MemoryStats getMemoryStats() const;
 
-    /**
-     * @brief Enable or disable hot-reloading (development feature)
-     * 
-     * @param enabled Hot-reload state
-     */
+    
     void setHotReloadEnabled(bool enabled);
 
-    /**
-     * @brief Check for file changes and reload if necessary
-     */
+    
     void checkForHotReload();
 
-    /**
-     * @brief Set custom loaders for different resource types
-     */
+    
     void setTextureLoader(TextureLoader loader);
     void setSoundLoader(SoundLoader loader);
     void setMusicLoader(MusicLoader loader);
     void setShaderLoader(ShaderLoader loader);
     void setFontLoader(FontLoader loader);
 
-    /**
-     * @brief Check if a resource exists
-     */
+    
     bool hasTexture(const std::string& path) const;
     bool hasSound(const std::string& path) const;
     bool hasMusic(const std::string& path) const;
     bool hasShader(const std::string& path) const;
     bool hasFont(const std::string& path) const;
 
-    /**
-     * @brief Set resource search paths
-     * 
-     * @param paths Vector of search paths in priority order
-     */
+   
     void setSearchPaths(const std::vector<std::string>& paths);
 
-    /**
-     * @brief Find a file in the search paths
-     * 
-     * @param filename Filename to search for
-     * @return std::string Full path if found, empty string if not found
-     */
+  
     std::string findFile(const std::string& filename) const;
 
 private:
@@ -196,9 +161,9 @@ private:
     void decrementReference(std::unordered_map<std::string, ResourceEntry<T>>& container, const std::string& path);
 };
 
-// Singleton accessor for global resource manager
+
 ResourceManager& GetResourceManager();
 
-} // namespace Core
+}
 
-#endif // CORE_RESOURCEMANAGER_HPP
+#endif 

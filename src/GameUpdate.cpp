@@ -2,7 +2,8 @@
 #include "core/Core.hpp"
 #include "effects/ParticleSystem.hpp"
 #include "ui/LoadingScreenComponent.hpp"
-#include <algorithm>
+#include "enemies/Automaton.hpp"
+
 
 void Game::update(float deltaTime) {
     Core::GetInputManager().update(deltaTime);
@@ -21,8 +22,7 @@ void Game::update(float deltaTime) {
     auto& inputManager = Core::GetInputManager();
     auto& eventManager = Core::GetEventManager();
     auto& resourceManager = Core::GetResourceManager();
-    
-    // Update pause debounce timer
+
     if (pauseDebounceTimer > 0.0f) {
         pauseDebounceTimer -= deltaTime;
     }
@@ -58,23 +58,17 @@ void Game::update(float deltaTime) {
                         std::unique_ptr<Map> oldMap = std::move(map);
                         std::unique_ptr<Player> oldPlayer = std::move(player);
                         std::unique_ptr<GameCamera> oldCamera = std::move(camera);
-                        std::vector<ScrapHound> oldScrapHounds = std::move(scrapHounds);
-                        std::vector<Automaton> oldAutomatons = std::move(automatons);
-                        std::vector<Detonode> oldDetonodes = std::move(detonodes);
+                        EnemyManager oldEnemyManager = std::move(enemyManager);
                         
                         map = std::move(tempMap);
                         player = std::move(tempPlayer);
                         camera = std::move(tempCamera);
-                        scrapHounds = std::move(tempScrapHounds);
-                        automatons = std::move(tempAutomatons);
-                        detonodes = std::move(tempDetonodes);
+                        enemyManager = std::move(tempEnemyManager);
                         
                         oldMap.reset();
                         oldPlayer.reset();
                         oldCamera.reset();
-                        oldScrapHounds.clear();
-                        oldAutomatons.clear();
-                        oldDetonodes.clear();
+                        oldEnemyManager.clearEnemies();
                         
                         printf("[Game] Objects successfully moved to main game state\n");
                     } else {
@@ -119,63 +113,39 @@ void Game::update(float deltaTime) {
         map->updateTransitions(deltaTime);
         map->updateParticles(deltaTime, player->getPosition());
         ParticleSystem::getInstance().update(deltaTime);
-        player->update(deltaTime, *map, camera->getCamera(), scrapHounds, automatons, detonodes, inputManager);
+        player->update(deltaTime, *map, camera->getCamera(), enemyManager, inputManager);
         camera->update(*player, *map, deltaTime);
-        player->checkWeaponHits(scrapHounds, automatons, detonodes);
 
-        scrapHounds.erase(
-            std::remove_if(scrapHounds.begin(), scrapHounds.end(),
-                [](const ScrapHound& enemy) { return !enemy.isAlive(); }),
-            scrapHounds.end()
-        );
+        enemyManager.updateEnemies(*map, player->getPosition(), deltaTime, *camera);
+        enemyManager.removeDeadEnemies();
 
-        automatons.erase(
-            std::remove_if(automatons.begin(), automatons.end(),
-                [](const Automaton& enemy) { return !enemy.isAlive(); }),
-            automatons.end()
-        );
-
-        detonodes.erase(
-            std::remove_if(detonodes.begin(), detonodes.end(),
-                [](const Detonode& enemy) { return !enemy.isAlive(); }),
-            detonodes.end()
-        );
-
-        for (auto& enemy : scrapHounds) {
-            enemy.update(*map, player->getPosition(), deltaTime);
+        auto scrapHounds = enemyManager.getEnemiesOfType(EnemyType::SCRAP_HOUND);
+        for (auto* enemy : scrapHounds) {
+            Vector2 enemyPos = enemy->getPosition();
+            Rectangle enemyRect = { enemyPos.x, enemyPos.y, 32, 32 };
             
-            if (enemy.isAlive()) {
-                Vector2 enemyPos = enemy.getPosition();
-                Rectangle enemyRect = { enemyPos.x, enemyPos.y, 32, 32 };
-                
-                Vector2 playerPos = player->getPosition();
-                Rectangle playerRect = { playerPos.x, playerPos.y, 32, 32 };
-                
-                if (CheckCollisionRecs(enemyRect, playerRect) && player->canTakeDamage()) {
-                    player->takeDamage(5);
-                }
+            Vector2 playerPos = player->getPosition();
+            Rectangle playerRect = { playerPos.x, playerPos.y, 32, 32 };
+            
+            if (CheckCollisionRecs(enemyRect, playerRect) && player->canTakeDamage()) {
+                player->takeDamage(5);
+                camera->addScreenshake(0.3f, 0.2f);
             }
         }
 
-        for (auto& automaton : automatons) {
-            automaton.update(*map, player->getPosition(), deltaTime);
-            automaton.checkProjectileCollisions(*player);
+        auto automatons = enemyManager.getEnemiesOfType(EnemyType::AUTOMATON);
+        for (auto* enemy : automatons) {
+            Automaton* automaton = static_cast<Automaton*>(enemy);
+            automaton->checkProjectileCollisions(*player, *camera);
             
-            if (automaton.isAlive()) {
-                Rectangle automatonRect = automaton.getHitbox();
-                
-                Vector2 playerPos = player->getPosition();
-                Rectangle playerRect = { playerPos.x, playerPos.y, 32, 32 };
-                
-                if (CheckCollisionRecs(automatonRect, playerRect) && player->canTakeDamage()) {
-                    player->takeDamage(10);
-                }
-            }
-        }
-
-        for (auto& detonode : detonodes) {
-            if (detonode.isAlive()) {
-                detonode.update(*map, player->getPosition(), deltaTime);
+            Rectangle automatonRect = automaton->getHitbox();
+            
+            Vector2 playerPos = player->getPosition();
+            Rectangle playerRect = { playerPos.x, playerPos.y, 32, 32 };
+            
+            if (CheckCollisionRecs(automatonRect, playerRect) && player->canTakeDamage()) {
+                player->takeDamage(10);
+                camera->addScreenshake(0.5f, 0.3f);
             }
         }
 

@@ -34,11 +34,11 @@ namespace UI {
         DrawText("HEALTH", barX, barY - HEALTH_TEXT_SIZE, HEALTH_TEXT_SIZE, WHITE);
     }
 
-    void GameHUDComponent::drawHUD(const Player& player, const Map& map, GameState currentState) {
+    void GameHUDComponent::drawHUD(const Player& player, const Map& map, GameState currentState, float deltaTime) {
         drawHUD(player, currentState);
         
         if (minimap) {
-            minimap->update(map, player);
+            minimap->update(map, player, deltaTime);
             minimap->draw(map, player);
         }
     }

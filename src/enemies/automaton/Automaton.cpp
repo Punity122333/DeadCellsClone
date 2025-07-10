@@ -1,6 +1,7 @@
 #include "enemies/Automaton.hpp"
 #include "Pathfinding.hpp"
 #include "Player.hpp"
+#include "Camera.hpp"
 #include <raymath.h>
 #include <cmath>
 #include <thread>
@@ -16,60 +17,26 @@ namespace AutomatonConstants {
 }
 
 Automaton::Automaton(Vector2 pos) 
-    : position(pos), 
-      velocity{0, 0}, 
-      health(40),
-      maxHealth(40),
-      alive(true),
-      invincibilityTimer(0.0f), 
-      hitEffectTimer(0.0f), 
-      currentColor(ORANGE),
+    : Enemy(pos, 40, 40, 100.0f),
       shootCooldown(0.0f),
-      shootInterval(1.5f),
-      pathfindingInProgress(false),
-      pathReady(false),
-      speed(100.0f) {
+      shootInterval(1.5f) {
+    currentColor = ORANGE;
     printf("[Automaton] Constructed at (%.1f, %.1f)\n", pos.x, pos.y);
 }
 
 Automaton::Automaton(Automaton&& other) noexcept
-    : position(other.position),
-      velocity(other.velocity),
-      health(other.health),
-      maxHealth(other.maxHealth),
-      alive(other.alive),
-      invincibilityTimer(other.invincibilityTimer),
-      hitEffectTimer(other.hitEffectTimer),
-      currentColor(other.currentColor),
+    : Enemy(std::move(other)),
       shootCooldown(other.shootCooldown),
       shootInterval(other.shootInterval),
-      projectiles(std::move(other.projectiles)),
-      pathfindingInProgress(other.pathfindingInProgress.load()),
-      pathReady(other.pathReady.load()),
-      speed(other.speed) {
-    std::lock_guard<std::mutex> lock(other.pathMutex);
-    path = std::move(other.path);
+      projectiles(std::move(other.projectiles)) {
 }
 
 Automaton& Automaton::operator=(Automaton&& other) noexcept {
     if (this != &other) {
-        std::lock_guard<std::mutex> lock1(pathMutex);
-        std::lock_guard<std::mutex> lock2(other.pathMutex);
-
-        position = other.position;
-        velocity = other.velocity;
-        health = other.health;
-        maxHealth = other.maxHealth;
-        alive = other.alive;
-        invincibilityTimer = other.invincibilityTimer;
-        hitEffectTimer = other.hitEffectTimer;
-        currentColor = other.currentColor;
+        Enemy::operator=(std::move(other));
         shootCooldown = other.shootCooldown;
         shootInterval = other.shootInterval;
         projectiles = std::move(other.projectiles);
-        path = std::move(other.path);
-        pathfindingInProgress = other.pathfindingInProgress.load();
-        pathReady = other.pathReady.load();
     }
     return *this;
 }
@@ -90,7 +57,7 @@ void Automaton::requestPathAsync(const Map& map, Vector2 start, Vector2 goal) {
     }).detach();
 }
 
-void Automaton::checkProjectileCollisions(class Player& player) {
+void Automaton::checkProjectileCollisions(class Player& player, class GameCamera& camera) {
     if (!player.canTakeDamage()) return;
     
     Vector2 playerPos = player.getPosition();
@@ -108,7 +75,13 @@ void Automaton::checkProjectileCollisions(class Player& player) {
         if (CheckCollisionRecs(playerHitbox, projectileHitbox)) {
             player.takeDamage(AutomatonConstants::ProjectileDamage);
             projectile.active = false;
+
+            camera.addScreenshake(0.4f, 0.25f);
             break; 
         }
     }
+}
+
+EnemySpawnConfig Automaton::getSpawnConfig() const {
+    return {0.4f, 1, true};
 }

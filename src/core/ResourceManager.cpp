@@ -375,19 +375,25 @@ void ResourceManager::setSearchPaths(const std::vector<std::string>& paths) {
 }
 
 std::string ResourceManager::findFile(const std::string& filename) const {
+    std::cout << "[ResourceManager] Looking for file: " << filename << std::endl;
+    
     // First try the filename as-is
     if (std::filesystem::exists(filename)) {
+        std::cout << "[ResourceManager] Found file directly: " << filename << std::endl;
         return filename;
     }
     
     // Then try each search path
     for (const auto& searchPath : m_searchPaths) {
         std::string fullPath = searchPath + filename;
+        std::cout << "[ResourceManager] Trying path: " << fullPath << std::endl;
         if (std::filesystem::exists(fullPath)) {
+            std::cout << "[ResourceManager] Found file: " << fullPath << std::endl;
             return fullPath;
         }
     }
     
+    std::cout << "[ResourceManager] File not found: " << filename << std::endl;
     return ""; // Not found
 }
 

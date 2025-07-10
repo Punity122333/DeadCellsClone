@@ -1,50 +1,44 @@
 #pragma once
-#include <atomic>
-#include <mutex>
 #include <raylib.h>
-#include <vector>
+#include "enemies/Enemy.hpp"
 
 class Map;
 
-class ScrapHound {
+class ScrapHound : public Enemy {
 public:
     ScrapHound(const ScrapHound&) = delete;
     ScrapHound& operator=(const ScrapHound&) = delete;
     ScrapHound(ScrapHound&&) noexcept;
     ScrapHound& operator=(ScrapHound&&) noexcept;
+
     ScrapHound(Vector2 pos);
-    void update(const Map& map, Vector2 playerPos, float dt);
-    void draw() const;
-    Vector2 getPosition() const;
-    float getHealth() const { return health; }
-    float getMaxHealth() const { return maxHealth; }
+    void update(const Map& map, Vector2 playerPos, float dt) override;
+    void draw() const override;
+    void takeDamage(int amount) override;
+    void applyKnockback(Vector2 force) override;
+    Rectangle getHitbox() const override;
+    EnemyType getType() const override { return EnemyType::SCRAP_HOUND; }
+    EnemySpawnConfig getSpawnConfig() const override;
+    void requestPathAsync(const Map& map, Vector2 start, Vector2 goal) override;
+
     Rectangle getArrowHitbox() const;
-
-    
-    bool isAlive() const { return alive; }
-    bool canTakeDamage() const; // Added declaration
-    void takeDamage(int amount);
-    void applyKnockback(Vector2 force);
-
-    mutable std::mutex pathMutex;
-    std::atomic<bool> pathfindingInProgress = false;
-    std::atomic<bool> pathReady = false;
-    void requestPathAsync(const Map& map, Vector2 start, Vector2 goal);
+    bool canTakeDamage() const;
 
 private:
-    float health = 100.0f;
-    float maxHealth = 100.0f;
-    Vector2 position;
-    Vector2 velocity;
-    bool alive = true;
-    float invincibilityTimer = 0.0f;
-    float hitEffectTimer = 0.0f;
-    Color currentColor = WHITE;
-
-    std::vector<Vector2> path;
+    // Patrol system
+    bool isPatrolling = false;
+    float patrolLeftBound = 0.0f;
+    float patrolRightBound = 0.0f;
+    int patrolDirection = 1; // 1 for right, -1 for left
+    float playerDetectionRange = 350.0f;
+    bool patrolBoundsInitialized = false;
+    
+    void initializePatrolBounds(const Map& map);
+    void updatePatrol(const Map& map, float dt);
+    float findPlatformLeftEdge(const Map& map, float startX, float y) const;
+    float findPlatformRightEdge(const Map& map, float startX, float y) const;
 
     const float gravity = 800.0f;
-    const float speed = 100.0f;
 
     bool isPouncing;
     bool isPounceCharging = false;

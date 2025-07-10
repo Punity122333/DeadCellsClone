@@ -76,6 +76,8 @@ namespace UI {
         std::unordered_map<ComponentType, std::unique_ptr<UIComponent>> components;
         ComponentType activeComponent;
         
+        float lastDeltaTime = 0.0f; // Store deltaTime for use in draw method
+        
         std::thread backgroundThread;
         std::atomic<bool> threadRunning{true};
         std::mutex dataMutex;

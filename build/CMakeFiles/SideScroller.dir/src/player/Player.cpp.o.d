@@ -208,7 +208,10 @@ CMakeFiles/SideScroller.dir/src/player/Player.cpp.o: \
  /usr/include/c++/13/condition_variable /usr/include/c++/13/system_error \
  /usr/include/c++/13/stdexcept /usr/include/c++/13/bits/atomic_futex.h \
  /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_thread.h \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/EnemyManager.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Enemy.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/ScrapHound.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Detonode.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/GlobalThreadPool.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/ThreadPool.hpp \
  /usr/include/c++/13/queue /usr/include/c++/13/deque \

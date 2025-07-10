@@ -43,7 +43,7 @@ bool Detonode::hasLineOfSight(const Map& map, Vector2 start, Vector2 end) const 
     return true;
 }
 
-void Detonode::update(Map& map, Vector2 playerPos, float dt) {
+void Detonode::update(Map& map, Vector2 playerPos, float dt, class GameCamera& camera) {
     if (!alive) return;
 
     // Distance-based update optimization - skip detailed updates if too far from player
@@ -181,7 +181,7 @@ void Detonode::update(Map& map, Vector2 playerPos, float dt) {
             break;
 
         case EXPLODING:
-            explode(map);
+            explode(map, camera);
             alive = false;
             break;
 

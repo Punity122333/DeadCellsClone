@@ -657,6 +657,54 @@ src/effects/ThreadPool.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/effects/ThreadPool.cpp.s
 .PHONY : src/effects/ThreadPool.cpp.s
 
+src/enemies/Enemy.o: src/enemies/Enemy.cpp.o
+.PHONY : src/enemies/Enemy.o
+
+# target to build an object file
+src/enemies/Enemy.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Enemy.cpp.o
+.PHONY : src/enemies/Enemy.cpp.o
+
+src/enemies/Enemy.i: src/enemies/Enemy.cpp.i
+.PHONY : src/enemies/Enemy.i
+
+# target to preprocess a source file
+src/enemies/Enemy.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Enemy.cpp.i
+.PHONY : src/enemies/Enemy.cpp.i
+
+src/enemies/Enemy.s: src/enemies/Enemy.cpp.s
+.PHONY : src/enemies/Enemy.s
+
+# target to generate assembly for a file
+src/enemies/Enemy.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/Enemy.cpp.s
+.PHONY : src/enemies/Enemy.cpp.s
+
+src/enemies/EnemyManager.o: src/enemies/EnemyManager.cpp.o
+.PHONY : src/enemies/EnemyManager.o
+
+# target to build an object file
+src/enemies/EnemyManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/EnemyManager.cpp.o
+.PHONY : src/enemies/EnemyManager.cpp.o
+
+src/enemies/EnemyManager.i: src/enemies/EnemyManager.cpp.i
+.PHONY : src/enemies/EnemyManager.i
+
+# target to preprocess a source file
+src/enemies/EnemyManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/EnemyManager.cpp.i
+.PHONY : src/enemies/EnemyManager.cpp.i
+
+src/enemies/EnemyManager.s: src/enemies/EnemyManager.cpp.s
+.PHONY : src/enemies/EnemyManager.s
+
+# target to generate assembly for a file
+src/enemies/EnemyManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/enemies/EnemyManager.cpp.s
+.PHONY : src/enemies/EnemyManager.cpp.s
+
 src/enemies/automaton/Automaton.o: src/enemies/automaton/Automaton.cpp.o
 .PHONY : src/enemies/automaton/Automaton.o
 
@@ -1692,6 +1740,12 @@ help:
 	@echo "... src/effects/ThreadPool.o"
 	@echo "... src/effects/ThreadPool.i"
 	@echo "... src/effects/ThreadPool.s"
+	@echo "... src/enemies/Enemy.o"
+	@echo "... src/enemies/Enemy.i"
+	@echo "... src/enemies/Enemy.s"
+	@echo "... src/enemies/EnemyManager.o"
+	@echo "... src/enemies/EnemyManager.i"
+	@echo "... src/enemies/EnemyManager.s"
 	@echo "... src/enemies/automaton/Automaton.o"
 	@echo "... src/enemies/automaton/Automaton.i"
 	@echo "... src/enemies/automaton/Automaton.s"

@@ -209,4 +209,5 @@ CMakeFiles/SideScroller.dir/src/Camera.cpp.o: \
  /usr/include/c++/13/condition_variable /usr/include/c++/13/system_error \
  /usr/include/c++/13/stdexcept /usr/include/c++/13/bits/atomic_futex.h \
  /usr/include/c++/13/atomic /usr/include/c++/13/bits/std_thread.h \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
+ /usr/local/include/raymath.h /usr/include/c++/13/math.h

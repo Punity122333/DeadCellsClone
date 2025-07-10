@@ -86,44 +86,19 @@ void Game::render(float interpolation) {
             bottomRightWorld.y - topLeftWorld.y
         };
 
-        for (const auto& enemy : scrapHounds) {
-            if (enemy.isAlive()) {
-                Rectangle enemyRect = { 
-                    enemy.getPosition().x, 
-                    enemy.getPosition().y, 
-                    32.0f, 
-                    32.0f  
-                }; 
-                if (CheckCollisionRecs(enemyRect, cameraViewWorld)) {
-                    enemy.draw();
-                    if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) { 
-                        DrawRectangleLines((int)enemy.getPosition().x, (int)enemy.getPosition().y, 32, 32, RED);
-                    }
-                }
-            }
-        }
+        enemyManager.drawEnemies();
         
-        for (const auto& automaton : automatons) {
-            if (automaton.isAlive()) {
-                Rectangle automatonRect = automaton.getHitbox();
-                if (CheckCollisionRecs(automatonRect, cameraViewWorld)) {
-                    automaton.draw();
-                    if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) { 
-                        DrawRectangleLines((int)automatonRect.x, (int)automatonRect.y, (int)automatonRect.width, (int)automatonRect.height, BLUE);
-                    }
+        if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) {
+            auto allEnemies = enemyManager.getAllEnemies();
+            for (auto* enemy : allEnemies) {
+                Rectangle enemyRect = enemy->getHitbox();
+                Color debugColor = RED;
+                if (enemy->getType() == EnemyType::AUTOMATON) {
+                    debugColor = BLUE;
+                } else if (enemy->getType() == EnemyType::DETONODE) {
+                    debugColor = YELLOW;
                 }
-            }
-        }
-        
-        for (const auto& detonode : detonodes) {
-            if (detonode.isAlive()) {
-                Rectangle detonodeRect = detonode.getHitbox();
-                if (CheckCollisionRecs(detonodeRect, cameraViewWorld)) {
-                    detonode.draw();
-                    if (inputManager.isActionHeld(Core::InputAction::DEBUG_TOGGLE)) { 
-                        DrawRectangleLines((int)detonodeRect.x, (int)detonodeRect.y, (int)detonodeRect.width, (int)detonodeRect.height, YELLOW);
-                    }
-                }
+                DrawRectangleLines((int)enemyRect.x, (int)enemyRect.y, (int)enemyRect.width, (int)enemyRect.height, debugColor);
             }
         }
         
@@ -137,7 +112,22 @@ void Game::render(float interpolation) {
         
         BeginDrawing();
         ClearBackground(BLACK);
-        BeginShaderMode(*activeShader);
+
+        Shader* currentShader = activeShader;
+        if (camera->getShakeIntensity() > 0.0f && screenshakeShaderHandle.isValid()) {
+            currentShader = &screenshakeShader;
+
+            Vector2 shakeOffset = camera->getShakeOffset();
+            float shakeIntensity = camera->getShakeIntensity();
+            
+            int shakeOffsetLoc = GetShaderLocation(screenshakeShader, "shakeOffset");
+            int shakeIntensityLoc = GetShaderLocation(screenshakeShader, "shakeIntensity");
+            
+            SetShaderValue(screenshakeShader, shakeOffsetLoc, &shakeOffset, SHADER_UNIFORM_VEC2);
+            SetShaderValue(screenshakeShader, shakeIntensityLoc, &shakeIntensity, SHADER_UNIFORM_FLOAT);
+        }
+        
+        BeginShaderMode(*currentShader);
 
         Rectangle src = { 0, 0, (float)sceneTexture.texture.width, -(float)sceneTexture.texture.height };
         Rectangle dst = { 0, 0, (float)screenWidth, (float)screenHeight };

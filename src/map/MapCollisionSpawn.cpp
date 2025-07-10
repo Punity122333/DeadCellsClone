@@ -2,6 +2,12 @@
 #include <stack>
 #include <vector>
 #include <cstdio>
+#include <cmath>
+#include <algorithm>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 using namespace MapConstants;
 
@@ -46,104 +52,112 @@ int Map::getTileValue(int x, int y) const {
 }
 
 Vector2 Map::findEmptySpawn() const {
-    printf("[Map] Finding spawn position...\n");
-    printf("[Map] Map dimensions: %dx%d\n", width, height);
+    printf("[Map] Smart spawn finding initiated...\n");
 
-    int emptyCount = 0;
-    int solidCount = 0;
-    int protectedEmptyCount = 0;
-    int otherCount = 0;
+    const int totalEmptyTiles = countEmptyTiles();
+    const int targetReachability = static_cast<int>(totalEmptyTiles * MIN_REACHABLE_SPAWN_PERCENTAGE);
     
-    for (int y = 0; y < height; ++y) {
-        for (int x = 0; x < width; ++x) {
-            if (tiles[x][y] == EMPTY_TILE_VALUE) {
-                emptyCount++;
-            } else if (tiles[x][y] == PROTECTED_EMPTY_TILE_VALUE) {
-                protectedEmptyCount++;
-            } else if (isSolidTile(x, y)) {
-                solidCount++;
-            } else {
-                otherCount++;
+    printf("[Map] Total empty tiles: %d, Target reachability: %d\n", totalEmptyTiles, targetReachability);
+
+    std::vector<std::pair<int, int>> candidates;
+    const int SAMPLE_STEP = 8; 
+
+    for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET - 1; y += SAMPLE_STEP) {
+        for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; x += SAMPLE_STEP) {
+            if (tiles[x][y] == EMPTY_TILE_VALUE && 
+                y + 1 < height && isSolidTile(x, y + 1)) {
+                candidates.push_back({x, y});
             }
         }
     }
+    printf("[Map] Found %zu ground-based candidates with fast sampling\n", candidates.size());
+
+    std::vector<std::pair<int, std::pair<int, int>>> candidatesWithScore;
     
-    printf("[Map] Tile counts - Empty: %d, Protected Empty: %d, Solid: %d, Other: %d\n", 
-           emptyCount, protectedEmptyCount, solidCount, otherCount);
+    for (const auto& candidate : candidates) {
+        int x = candidate.first;
+        int y = candidate.second;
+        int fastScore = estimateReachabilityFast(x, y);
+        candidatesWithScore.push_back({fastScore, {x, y}});
+    }
+
+    std::sort(candidatesWithScore.begin(), candidatesWithScore.end(), 
+              [](const auto& a, const auto& b) { return a.first > b.first; });
     
-    int searchAreaX = width - 2 * BORDER_OFFSET;
-    int searchAreaY = height - 2 * BORDER_OFFSET - 1;
-    printf("[Map] Search area: %dx%d (excluding borders)\n", searchAreaX, searchAreaY);
+    printf("[Map] Pre-screened candidates, testing top performers thoroughly\n");
     
-    int checkedTiles = 0;
-    int validEmptyTiles = 0;
+    int bestReachability = 0;
+    Vector2 bestSpawn = {DEFAULT_SPAWN_COORD_COMPONENT_FLOAT, DEFAULT_SPAWN_COORD_COMPONENT_FLOAT};
+
+    const size_t MAX_CANDIDATES_TO_TEST = std::min(candidatesWithScore.size(), size_t(10));
     
-    for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET - 1; ++y) {
-        for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
-            checkedTiles++;
+    for (size_t i = 0; i < MAX_CANDIDATES_TO_TEST; ++i) {
+        int x = candidatesWithScore[i].second.first;
+        int y = candidatesWithScore[i].second.second;
+        
+        int reachability = countReachableEmptyTiles(x, y);
+        
+        if (reachability > bestReachability) {
+            bestReachability = reachability;
+            bestSpawn = {static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT};
+
+            if (reachability >= targetReachability) {
+                printf("[Map] Excellent spawn found at (%.1f, %.1f) with %d/%d reachability\n", 
+                       bestSpawn.x, bestSpawn.y, reachability, totalEmptyTiles);
+                return bestSpawn;
+            }
+        }
+    }
+  
+    if (bestReachability > totalEmptyTiles / 4) { 
+        printf("[Map] Good spawn found at (%.1f, %.1f) with %d/%d reachability\n", 
+               bestSpawn.x, bestSpawn.y, bestReachability, totalEmptyTiles);
+        return bestSpawn;
+    }
+
+    printf("[Map] No good ground spawn found, searching center area with finer sampling\n");
+    
+    int centerX = width / 2;
+    int centerY = height / 2;
+    int searchRadius = std::min(width, height) / 4;
+    
+    for (int radius = 1; radius <= searchRadius; radius += 2) {
+        for (int angle = 0; angle < 360; angle += 30) { // Sample every 30 degrees
+            int x = centerX + static_cast<int>(radius * cos(angle * M_PI / 180.0));
+            int y = centerY + static_cast<int>(radius * sin(angle * M_PI / 180.0));
             
-            if (tiles[x][y] == EMPTY_TILE_VALUE) {
-                validEmptyTiles++;
-                
-                if (y + 1 < height && isSolidTile(x, y + 1)) {
-                    Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
-                    printf("[Map] Found spawn position: (%.1f, %.1f) after checking %d tiles\n", spawn.x, spawn.y, checkedTiles);
-                    return spawn;
+            if (isInsideBounds(x, y) && tiles[x][y] == EMPTY_TILE_VALUE) {
+                int reachability = countReachableEmptyTiles(x, y);
+                if (reachability > bestReachability) {
+                    bestReachability = reachability;
+                    bestSpawn = {static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT};
+                }
+
+                if (reachability >= targetReachability / 2) {
+                    printf("[Map] Center spawn found at (%.1f, %.1f) with %d/%d reachability\n", 
+                           bestSpawn.x, bestSpawn.y, reachability, totalEmptyTiles);
+                    return bestSpawn;
                 }
             }
-            
-            if (checkedTiles % 10000 == 0) {
-                printf("[Map] Checked %d tiles, found %d empty tiles so far...\n", checkedTiles, validEmptyTiles);
+        }
+    }
+
+    if (bestReachability == 0) {
+        printf("[Map] Last resort: finding any empty tile\n");
+        for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET; y += 4) {
+            for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; x += 4) {
+                if (tiles[x][y] == EMPTY_TILE_VALUE) {
+                    bestSpawn = {static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT};
+                    printf("[Map] Fallback spawn at (%.1f, %.1f)\n", bestSpawn.x, bestSpawn.y);
+                    return bestSpawn;
+                }
             }
         }
     }
     
-    printf("[Map] First pass complete - checked %d tiles, found %d empty tiles\n", checkedTiles, validEmptyTiles);
-    
-    printf("[Map] No ground-based spawn found, searching for any empty tile\n");
-    checkedTiles = 0;
-    validEmptyTiles = 0;
-    
-    for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET; ++y) {
-        for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
-            checkedTiles++;
-            
-            if (tiles[x][y] == EMPTY_TILE_VALUE) {
-                validEmptyTiles++;
-                Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
-                printf("[Map] Fallback spawn position: (%.1f, %.1f) after checking %d tiles\n", spawn.x, spawn.y, checkedTiles);
-                return spawn;
-            }
-
-            if (checkedTiles % 10000 == 0) {
-                printf("[Map] Fallback search - checked %d tiles, found %d empty tiles so far...\n", checkedTiles, validEmptyTiles);
-            }
-        }
-    }
-    
-    printf("[Map] Second pass complete - checked %d tiles, found %d empty tiles\n", checkedTiles, validEmptyTiles);
-
-    printf("[Map] No empty tiles found, trying protected empty tiles\n");
-    checkedTiles = 0;
-    
-    for (int y = BORDER_OFFSET; y < height - BORDER_OFFSET; ++y) {
-        for (int x = BORDER_OFFSET; x < width - BORDER_OFFSET; ++x) {
-            checkedTiles++;
-            
-            if (tiles[x][y] == PROTECTED_EMPTY_TILE_VALUE) {
-                Vector2 spawn = { static_cast<float>(x) * TILE_SIZE_FLOAT, static_cast<float>(y) * TILE_SIZE_FLOAT };
-                printf("[Map] Protected empty spawn position: (%.1f, %.1f) after checking %d tiles\n", spawn.x, spawn.y, checkedTiles);
-                return spawn;
-            }
-
-            if (checkedTiles % 10000 == 0) {
-                printf("[Map] Protected empty search - checked %d tiles so far...\n", checkedTiles);
-            }
-        }
-    }
-    
-    printf("[Map] No valid spawn found anywhere, using default position\n");
-    return {DEFAULT_SPAWN_COORD_COMPONENT_FLOAT, DEFAULT_SPAWN_COORD_COMPONENT_FLOAT};
+    printf("[Map] Final spawn selected at (%.1f, %.1f) with %d/%d reachability\n", 
+           bestSpawn.x, bestSpawn.y, bestReachability, totalEmptyTiles);
+    return bestSpawn;
 }
 
 int Map::countEmptyTiles() const {
@@ -159,37 +173,75 @@ int Map::countEmptyTiles() const {
 }
 
 int Map::countReachableEmptyTiles(int startX, int startY) const {
-    std::vector<std::vector<bool>> visited(width, std::vector<bool>(height, false));
-    std::stack<std::pair<int, int>> s;
-    
+
     if (!isInsideBounds(startX, startY) || tiles[startX][startY] != EMPTY_TILE_VALUE) {
         return 0;
     }
+
+    std::vector<std::vector<bool>> visited(width, std::vector<bool>(height, false));
+    std::stack<std::pair<int, int>> s;
 
     s.push({startX, startY});
     visited[startX][startY] = true;
     int reachable = 0;
 
+    static const int dx[] = {0, 0, 1, -1, 1, -1, 1, -1}; 
+    static const int dy[] = {1, -1, 0, 0, 1, -1, -1, 1};
+
     while (!s.empty()) {
-        auto current_tile_coords = s.top(); 
+        auto [current_x, current_y] = s.top();
         s.pop();
-        int current_x = current_tile_coords.first;
-        int current_y = current_tile_coords.second;
         
         reachable++;
 
-        const int dx[] = {0, 0, 1, -1};
-        const int dy[] = {1, -1, 0, 0};
+        if (reachable > 10000) { 
+            return reachable;
+        }
 
-        for (int i = 0; i < 4; ++i) {
+        
+        for (int i = 0; i < 8; ++i) {
             int next_x = current_x + dx[i];
             int next_y = current_y + dy[i];
 
-            if (isInsideBounds(next_x, next_y) && !visited[next_x][next_y] && tiles[next_x][next_y] == EMPTY_TILE_VALUE) {
-                visited[next_x][next_y] = true;
-                s.push({next_x, next_y});
+            if (isInsideBounds(next_x, next_y) && !visited[next_x][next_y]) {
+                
+                if (tiles[next_x][next_y] == EMPTY_TILE_VALUE || 
+                    tiles[next_x][next_y] == PLATFORM_TILE_VALUE) {
+                    visited[next_x][next_y] = true;
+                    s.push({next_x, next_y});
+                }
             }
         }
     }
+    
     return reachable;
+}
+
+int Map::estimateReachabilityFast(int startX, int startY) const {
+    
+    if (!isInsideBounds(startX, startY) || tiles[startX][startY] != EMPTY_TILE_VALUE) {
+        return 0;
+    }
+    
+    int estimate = 0;
+    const int SAMPLE_RADIUS = 20; 
+    
+    
+    for (int dy = -SAMPLE_RADIUS; dy <= SAMPLE_RADIUS; dy += 2) {
+        for (int dx = -SAMPLE_RADIUS; dx <= SAMPLE_RADIUS; dx += 2) {
+            int x = startX + dx;
+            int y = startY + dy;
+            
+            if (isInsideBounds(x, y) && 
+                (tiles[x][y] == EMPTY_TILE_VALUE || tiles[x][y] == PLATFORM_TILE_VALUE)) {
+                estimate++;
+            }
+        }
+    }
+    
+    
+    float localDensity = static_cast<float>(estimate) / (static_cast<float>(SAMPLE_RADIUS * 2 * SAMPLE_RADIUS * 2) / 4.0f);
+    int totalEstimate = static_cast<int>(localDensity * countEmptyTiles());
+    
+    return std::min(totalEstimate, countEmptyTiles()); 
 }

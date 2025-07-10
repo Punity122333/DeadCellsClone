@@ -217,9 +217,9 @@ CMakeFiles/SideScroller.dir/src/ui/UIController.cpp.o: \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/ui/LoadingScreenComponent.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Game.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Spawner.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/EnemyManager.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Enemy.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/ScrapHound.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Automaton.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Detonode.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Camera.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/core/GameLoop.hpp \

@@ -212,10 +212,10 @@ CMakeFiles/SideScroller.dir/src/core/GameStates.cpp.o: \
  /usr/include/c++/13/bits/random.tcc /usr/include/c++/13/numeric \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/ScrapHound.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/EnemyManager.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Enemy.hpp \
  /usr/include/c++/13/atomic \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Automaton.hpp \
- /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/map/Map.hpp \
+ /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/ScrapHound.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/enemies/Detonode.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/Player.hpp \
  /home/pxnity/Code/C++/DeadCellsClone/DeadCellsClone/include/weapons/Weapon.hpp \

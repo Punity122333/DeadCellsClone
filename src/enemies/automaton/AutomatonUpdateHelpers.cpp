@@ -3,6 +3,8 @@
 #include <cmath>
 #include <mutex>
 
+using namespace MapConstants;
+
 namespace AutomatonConstants {
     constexpr float ProjectileSpeed = 250.0f;
     constexpr int PathTimerThreshold = 30;
@@ -15,6 +17,7 @@ namespace AutomatonConstants {
 }
 
 void Automaton::update(const Map& map, Vector2 playerPos, float dt) {
+
     if (!alive) return;
     if (invincibilityTimer > 0.0f) invincibilityTimer -= dt;
     if (hitEffectTimer > 0.0f) {
@@ -25,9 +28,12 @@ void Automaton::update(const Map& map, Vector2 playerPos, float dt) {
     }
     shootCooldown -= dt;
     if (shootCooldown <= 0.0f) {
-        Vector2 dir = Vector2Subtract(playerPos, position);
-        dir = Vector2Normalize(dir);
-        projectiles.emplace_back(position, Vector2Scale(dir, AutomatonConstants::ProjectileSpeed));
+
+        if (hasLineOfSight(map, position, playerPos)) {
+            Vector2 dir = Vector2Subtract(playerPos, position);
+            dir = Vector2Normalize(dir);
+            projectiles.emplace_back(position, Vector2Scale(dir, AutomatonConstants::ProjectileSpeed));
+        }
         shootCooldown = shootInterval;
     }
     static int pathTimer = 0;
@@ -76,19 +82,67 @@ void Automaton::update(const Map& map, Vector2 playerPos, float dt) {
         velocity.x = 0;
     }
     position = nextPos;
-    updateProjectiles(dt);
+    updateProjectiles(dt, map);
 }
 
-void Automaton::updateProjectiles(float dt) {
+void Automaton::updateProjectiles(float dt, const Map& map) {
     for (auto& proj : projectiles) {
-        proj.update(dt);
+        proj.update(dt, map);
     }
 }
 
-void AutomatonProjectile::update(float dt) {
+void AutomatonProjectile::update(float dt, const Map& map) {
     if (!active) return;
+    
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
     age += dt;
+
+    int tileX = (int)(position.x / 32);
+    int tileY = (int)(position.y / 32);
+    if (map.isSolidTile(tileX, tileY)) {
+        active = false;
+        return;
+    }
+    
     if (age > lifetime) active = false;
+}
+
+bool Automaton::hasLineOfSight(const Map& map, Vector2 start, Vector2 end) const {
+
+    int startX = static_cast<int>(start.x / 32.0f);
+    int startY = static_cast<int>(start.y / 32.0f);
+    int endX = static_cast<int>(end.x / 32.0f);
+    int endY = static_cast<int>(end.y / 32.0f);
+
+    int dx = abs(endX - startX);
+    int dy = abs(endY - startY);
+    int x = startX;
+    int y = startY;
+    int n = 1 + dx + dy;
+    int x_inc = (endX > startX) ? 1 : -1;
+    int y_inc = (endY > startY) ? 1 : -1;
+    int error = dx - dy;
+
+    dx *= 2;
+    dy *= 2;
+
+    for (; n > 0; --n) {
+
+        int tileValue = map.getTileValue(x, y);
+        if (tileValue == WALL_TILE_VALUE || 
+            tileValue == TILE_HIGHLIGHT_DELETE) {
+            return false;
+        }
+
+        if (error > 0) {
+            x += x_inc;
+            error -= dy;
+        } else {
+            y += y_inc;
+            error += dx;
+        }
+    }
+
+    return true;
 }

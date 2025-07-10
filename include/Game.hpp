@@ -3,9 +3,7 @@
 #include "map/Map.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
-#include "enemies/ScrapHound.hpp"
-#include "enemies/Automaton.hpp"
-#include "enemies/Detonode.hpp"
+#include "enemies/EnemyManager.hpp"
 #include "ui/UIController.hpp"
 #include "core/GameLoop.hpp"
 #include "core/ResourceManager.hpp"
@@ -46,16 +44,16 @@ private:
     RenderTexture2D sceneTexture;
     Texture2D fisheyeBackground;
     Shader chromaticAberrationShader;
+    Shader screenshakeShader;
     Shader* activeShader;
-    std::vector<ScrapHound> scrapHounds;
-    std::vector<Automaton> automatons;
-    std::vector<Detonode> detonodes;
+    EnemyManager enemyManager;
     Spawner spawner;
     GameState currentState;
     std::vector<Texture2D> tileTextures;
     std::vector<Core::ResourceHandle<Texture2D>> tileTextureHandles;
     Core::ResourceHandle<Shader> bloomShaderHandle;
     Core::ResourceHandle<Shader> chromaticAberrationShaderHandle;
+    Core::ResourceHandle<Shader> screenshakeShaderHandle;
     std::unique_ptr<UI::UIController> uiController;
     
     float automataTimer;
@@ -66,20 +64,17 @@ private:
     bool resetInProgress;
     float pauseDebounceTimer;
     
-    // Async loading support
+
     std::future<void> mapGenerationFuture;
     std::atomic<bool> mapGenerationInProgress{false};
     std::atomic<bool> mapGenerationComplete{false};
     float loadingStartTime;
-    const float loadingTimeoutSeconds = 30.0f; // 30 second timeout
-    
-    // Temporary storage for async-generated objects
+    const float loadingTimeoutSeconds = 30.0f;
+
     std::unique_ptr<Map> tempMap;
     std::unique_ptr<Player> tempPlayer;
     std::unique_ptr<GameCamera> tempCamera;
-    std::vector<ScrapHound> tempScrapHounds;
-    std::vector<Automaton> tempAutomatons;
-    std::vector<Detonode> tempDetonodes;
+    EnemyManager tempEnemyManager;
     
     void update(float deltaTime);
     void render(float interpolation);

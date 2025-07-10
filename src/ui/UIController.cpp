@@ -66,6 +66,8 @@ namespace UI {
             components[activeComponent]->update(dt);
         }
         
+        lastDeltaTime = dt; 
+        
         dataCondition.notify_one();
     }
 
@@ -74,7 +76,7 @@ namespace UI {
         
         if (components[activeComponent]) {
             if (activeComponent == ComponentType::GAME_HUD && player && map) {
-                static_cast<GameHUDComponent*>(components[activeComponent].get())->drawHUD(*player, *map, currentState);
+                static_cast<GameHUDComponent*>(components[activeComponent].get())->drawHUD(*player, *map, currentState, lastDeltaTime);
             } else if (activeComponent == ComponentType::GAME_HUD && player) {
                 static_cast<GameHUDComponent*>(components[activeComponent].get())->drawHUD(*player, currentState);
             } else {

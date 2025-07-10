@@ -18,14 +18,7 @@ static float Heuristic(int x1, int y1, int x2, int y2) {
 
 
 ScrapHound::ScrapHound(Vector2 pos)
-    : position(pos),
-      velocity{0, 0},
-      health(100.0f),
-      maxHealth(100.0f),
-      alive(true),
-      invincibilityTimer(0.0f),
-      hitEffectTimer(0.0f),
-      currentColor(WHITE),
+    : Enemy(pos, 100, 100, 100.0f),
       isPounceCharging(false),
       isPouncing(false),
       pounceCharge(0.0f),
@@ -44,20 +37,18 @@ ScrapHound::ScrapHound(Vector2 pos)
       meleeTriggerDistance(30.0f),
       meleeChargeTime(0.3f),
       meleeDuration(0.2f),
-      pathfindingInProgress(false),
-      pathReady(false),
-      speed(150.0f),
-      gravity(800.0f),
       pounceAnimRadius(0.0f),
-      pounceAnimFade(0.0f)
+      pounceAnimFade(0.0f),
+      isPatrolling(false),
+      patrolLeftBound(0.0f),
+      patrolRightBound(0.0f),
+      patrolDirection(1),
+      playerDetectionRange(350.0f),
+      patrolBoundsInitialized(false)
 {}
 
 ScrapHound::ScrapHound(ScrapHound&& other) noexcept
-    : position(other.position),
-      velocity(other.velocity),
-      health(other.health),
-      maxHealth(other.maxHealth),
-      alive(other.alive),
+    : Enemy(std::move(other)),
       isPounceCharging(other.isPounceCharging),
       isPouncing(other.isPouncing),
       pounceCharge(other.pounceCharge),
@@ -76,13 +67,14 @@ ScrapHound::ScrapHound(ScrapHound&& other) noexcept
       meleeTriggerDistance(other.meleeTriggerDistance),
       meleeChargeTime(other.meleeChargeTime),
       meleeDuration(other.meleeDuration),
-      pathfindingInProgress(other.pathfindingInProgress.load()),
-      pathReady(other.pathReady.load()),
       pounceAnimRadius(other.pounceAnimRadius),
       pounceAnimFade(other.pounceAnimFade),
-      invincibilityTimer(other.invincibilityTimer),
-      hitEffectTimer(other.hitEffectTimer),
-      currentColor(other.currentColor)
+      isPatrolling(other.isPatrolling),
+      patrolLeftBound(other.patrolLeftBound),
+      patrolRightBound(other.patrolRightBound),
+      patrolDirection(other.patrolDirection),
+      playerDetectionRange(other.playerDetectionRange),
+      patrolBoundsInitialized(other.patrolBoundsInitialized)
 {
     std::lock_guard<std::mutex> lock(other.pathMutex);
     path = std::move(other.path);
@@ -90,17 +82,7 @@ ScrapHound::ScrapHound(ScrapHound&& other) noexcept
 
 ScrapHound& ScrapHound::operator=(ScrapHound&& other) noexcept {
     if (this != &other) {
-        std::lock_guard<std::mutex> lock1(pathMutex);
-        std::lock_guard<std::mutex> lock2(other.pathMutex);
-
-        position = other.position;
-        velocity = other.velocity;
-        health = other.health;
-        maxHealth = other.maxHealth;
-        alive = other.alive;
-        invincibilityTimer = other.invincibilityTimer;
-        hitEffectTimer = other.hitEffectTimer;
-        currentColor = other.currentColor;
+        Enemy::operator=(std::move(other));
         
         isPounceCharging = other.isPounceCharging;
         isPouncing = other.isPouncing;
@@ -125,6 +107,12 @@ ScrapHound& ScrapHound::operator=(ScrapHound&& other) noexcept {
         pathReady = other.pathReady.load();
         pounceAnimRadius = other.pounceAnimRadius;
         pounceAnimFade = other.pounceAnimFade;
+        isPatrolling = other.isPatrolling;
+        patrolLeftBound = other.patrolLeftBound;
+        patrolRightBound = other.patrolRightBound;
+        patrolDirection = other.patrolDirection;
+        playerDetectionRange = other.playerDetectionRange;
+        patrolBoundsInitialized = other.patrolBoundsInitialized;
     }
     return *this;
 }
@@ -145,8 +133,17 @@ void ScrapHound::requestPathAsync(const Map& map, Vector2 start, Vector2 goal) {
     }).detach();
 }
 
-Vector2 ScrapHound::getPosition() const {
-    return position;
+Rectangle ScrapHound::getHitbox() const {
+    return Rectangle{
+        position.x - 16.0f,
+        position.y - 16.0f,
+        32.0f,
+        32.0f
+    };
+}
+
+EnemySpawnConfig ScrapHound::getSpawnConfig() const {
+    return {0.6f, 2, false};
 }
 
 Rectangle ScrapHound::getArrowHitbox() const {
@@ -161,4 +158,113 @@ Rectangle ScrapHound::getArrowHitbox() const {
 
 bool ScrapHound::canTakeDamage() const {
     return invincibilityTimer <= 0.0f;
+}
+
+void ScrapHound::initializePatrolBounds(const Map& map) {
+    if (patrolBoundsInitialized) return;
+    
+    float groundY = position.y + 32.0f; 
+    patrolLeftBound = findPlatformLeftEdge(map, position.x, groundY);
+    patrolRightBound = findPlatformRightEdge(map, position.x, groundY);
+
+    patrolLeftBound += 16.0f;
+    patrolRightBound -= 16.0f;
+
+    if (patrolRightBound - patrolLeftBound < 32.0f) {
+        float center = (patrolLeftBound + patrolRightBound) * 0.5f;
+        patrolLeftBound = center - 16.0f;
+        patrolRightBound = center + 16.0f;
+    }
+    
+    patrolBoundsInitialized = true;
+}
+
+float ScrapHound::findPlatformLeftEdge(const Map& map, float startX, float y) const {
+    float checkX = startX;
+    const float TILE_SIZE = 32.0f;
+    const float MIN_BOUND = 0.0f;
+
+    while (checkX > MIN_BOUND) {
+
+        bool hasGround = map.collidesWithGround({checkX, y});
+
+        bool hasGroundAhead = map.collidesWithGround({checkX - TILE_SIZE, y});
+        
+        if (hasGround && !hasGroundAhead) {
+
+            return checkX;
+        }
+        
+        if (!hasGround) {
+
+            return checkX + TILE_SIZE;
+        }
+        
+        checkX -= TILE_SIZE;
+    }
+    
+    return MIN_BOUND;
+}
+
+float ScrapHound::findPlatformRightEdge(const Map& map, float startX, float y) const {
+    float checkX = startX;
+    const float TILE_SIZE = 32.0f;
+    const float MAX_BOUND = map.getWidth() * TILE_SIZE;
+    
+
+    while (checkX < MAX_BOUND) {
+
+        bool hasGround = map.collidesWithGround({checkX, y});
+
+        bool hasGroundAhead = map.collidesWithGround({checkX + TILE_SIZE, y});
+        
+        if (hasGround && !hasGroundAhead) {
+
+            return checkX;
+        }
+        
+        if (!hasGround) {
+
+            return checkX - TILE_SIZE;
+        }
+        
+        checkX += TILE_SIZE;
+    }
+    
+    return MAX_BOUND;
+}
+
+void ScrapHound::updatePatrol(const Map& map, float dt) {
+    if (!patrolBoundsInitialized) {
+        initializePatrolBounds(map);
+    }
+
+    velocity.x = patrolDirection * speed * 0.5f; 
+
+    bool shouldTurn = false;
+    
+    if (patrolDirection > 0) {
+
+        if (position.x >= patrolRightBound) {
+            shouldTurn = true;
+        }
+
+        else if (map.collidesWithGround({position.x + 32.0f + 16.0f, position.y + 16.0f})) {
+            shouldTurn = true;
+        }
+    } else {
+
+        if (position.x <= patrolLeftBound) {
+            shouldTurn = true;
+        }
+
+        else if (map.collidesWithGround({position.x - 16.0f, position.y + 16.0f})) {
+            shouldTurn = true;
+        }
+    }
+    
+    if (shouldTurn) {
+        patrolDirection *= -1;
+        velocity.x = patrolDirection * speed * 0.5f;
+    }
 }
