@@ -58,6 +58,7 @@ private:
     float health = 100.0f;
     float maxHealth = 100.0f;
     float invincibilityTimer = 0.0f;
+    float lavaDamageTimer = 0.0f;
     Vector2 position;
     bool ledgeGrabbed = false;
     Vector2 ledgeGrabPos = {0};

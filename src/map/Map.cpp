@@ -47,6 +47,7 @@ Map::Map(int w, int h, const std::vector<Texture2D>& loadedTileTextures, Progres
     width(w),
     height(h),
     tiles(w, std::vector<int>(h, 0)),
+    lavaGrid(w, std::vector<LavaCell>(h)),
     transitionTimers(w, std::vector<float>(h, 0.0f)),
     cooldownMap(w, std::vector<int>(h, 0)),
     isOriginalSolid(w, std::vector<bool>(h, false)),

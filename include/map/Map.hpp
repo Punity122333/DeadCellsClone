@@ -64,6 +64,10 @@ namespace MapConstants {
     constexpr int CHUNK_ALIVE_SUCCESS_ROLL = 0;
     constexpr int FLOOR_TILE_VALUE = 13;
     constexpr int PROTECTED_EMPTY_TILE_VALUE = 14;
+    constexpr int LAVA_TILE_VALUE = 15;
+    constexpr int LAVA_POCKET_CHANCE_PERCENT = 20;
+    constexpr float LAVA_DAMAGE_PER_SECOND = 25.0f;
+    constexpr float LAVA_DAMAGE_INTERVAL = 0.5f;
 
     int rollPercent(std::mt19937& gen);
 }
@@ -78,6 +82,22 @@ struct TileParticle {
     
     TileParticle(Vector2 pos, Vector2 vel, Color col, float lifetime, float sz)
         : position(pos), velocity(vel), color(col), life(lifetime), maxLife(lifetime), size(sz) {}
+};
+
+struct LavaCell {
+    float mass;
+    float flow;
+    bool settled;
+    
+    LavaCell() : mass(0.0f), flow(0.0f), settled(false) {}
+    LavaCell(float m) : mass(m), flow(0.0f), settled(false) {}
+};
+
+struct FluidVertex {
+    Vector2 position;
+    Color color;
+    
+    FluidVertex(Vector2 pos, Color col) : position(pos), color(col) {}
 };
 
 struct Room {
@@ -127,11 +147,15 @@ public:
     void generateTreasureRoomContent(const Room& room, std::mt19937& gen);
     void generateShopRoomContent(const Room& room, std::mt19937& gen);    
     void draw(const Camera2D& camera) const;
+    void drawLavaFluid(const Camera2D& camera) const;
     void applyConwayAutomata();
     void updateTransitions(float dt);
+    void updateLavaFlow(float dt);
     void updateParticles(float dt, Vector2 playerPosition = {0, 0});
     void createPopEffect(Vector2 position);
     void createSuctionEffect(Vector2 position);
+    bool isLavaTile(int x, int y) const;
+    bool checkPlayerLavaContact(Vector2 playerPos, float playerWidth, float playerHeight) const;
 
     bool isInsideBounds(int x, int y) const;
 
@@ -167,6 +191,7 @@ private:
     int height;
     Player* playerRef = nullptr; // Reference to player
     std::vector<std::vector<int>> tiles;
+    std::vector<std::vector<LavaCell>> lavaGrid;
     std::vector<std::vector<float>> transitionTimers;
     std::vector<std::vector<int>> cooldownMap;
     std::vector<std::vector<bool>> isOriginalSolid;
@@ -175,6 +200,12 @@ private:
     std::vector<Room> generatedRooms;
     std::vector<TileParticle> particles;
     mutable std::mutex particlesMutex;
+    
+    // Lava simulation constants
+    static constexpr float LAVA_FLOW_RATE = 0.8f;
+    static constexpr float LAVA_MIN_FLOW = 0.01f;
+    static constexpr float LAVA_MAX_MASS = 1.0f;
+    static constexpr float LAVA_MIN_MASS = 0.01f;
 };
 
 #endif

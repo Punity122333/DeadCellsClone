@@ -14,6 +14,7 @@ private:
     static void generatePlatforms(Map& map, const Room& room, std::mt19937& gen);
     static void generateWalls(Map& map, const Room& room, std::mt19937& gen);
     static void generateLaddersAndRopes(Map& map, const Room& room, std::mt19937& gen);
+    static void generateLavaPockets(Map& map, const Room& room, std::mt19937& gen);
 };
 
 #endif

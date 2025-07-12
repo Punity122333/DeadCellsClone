@@ -111,6 +111,7 @@ void Game::update(float deltaTime) {
         }
 
         map->updateTransitions(deltaTime);
+        map->updateLavaFlow(deltaTime);
         map->updateParticles(deltaTime, player->getPosition());
         ParticleSystem::getInstance().update(deltaTime);
         player->update(deltaTime, *map, camera->getCamera(), enemyManager, inputManager);

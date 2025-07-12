@@ -21,6 +21,7 @@ bool Map::collidesWithGround(Vector2 pos) const {
     int tx = static_cast<int>(pos.x / TILE_SIZE_INT);
     int ty = static_cast<int>(pos.y / TILE_SIZE_INT);
     if (tx >= 0 && tx < width && ty >= 0 && ty < height) {
+        // Lava tiles don't block movement but will be handled by damage system
         return tiles[tx][ty] == WALL_TILE_VALUE || tiles[tx][ty] == PLATFORM_TILE_VALUE || tiles[tx][ty] == TILE_HIGHLIGHT_DELETE;
     }
     return false;
@@ -44,6 +45,28 @@ bool Map::isRopeTile(int x, int y) const {
 bool Map::isTileEmpty(int x, int y) const {
     if (!isInsideBounds(x,y)) return false;
     return tiles[x][y] == EMPTY_TILE_VALUE || tiles[x][y] == TILE_HIGHLIGHT_CREATE;
+}
+
+bool Map::isLavaTile(int x, int y) const {
+    if (!isInsideBounds(x, y)) return false;
+    return tiles[x][y] == LAVA_TILE_VALUE;
+}
+
+bool Map::checkPlayerLavaContact(Vector2 playerPos, float playerWidth, float playerHeight) const {
+    // Check the player's hitbox area for lava contact
+    int leftTile = static_cast<int>(playerPos.x / 32);
+    int rightTile = static_cast<int>((playerPos.x + playerWidth) / 32);
+    int topTile = static_cast<int>(playerPos.y / 32);
+    int bottomTile = static_cast<int>((playerPos.y + playerHeight) / 32);
+    
+    for (int x = leftTile; x <= rightTile; ++x) {
+        for (int y = topTile; y <= bottomTile; ++y) {
+            if (isLavaTile(x, y) && lavaGrid[x][y].mass > LAVA_MIN_MASS) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 int Map::getTileValue(int x, int y) const {
@@ -122,7 +145,7 @@ Vector2 Map::findEmptySpawn() const {
     int searchRadius = std::min(width, height) / 4;
     
     for (int radius = 1; radius <= searchRadius; radius += 2) {
-        for (int angle = 0; angle < 360; angle += 30) { // Sample every 30 degrees
+        for (int angle = 0; angle < 360; angle += 30) {
             int x = centerX + static_cast<int>(radius * cos(angle * M_PI / 180.0));
             int y = centerY + static_cast<int>(radius * sin(angle * M_PI / 180.0));
             
@@ -206,7 +229,8 @@ int Map::countReachableEmptyTiles(int startX, int startY) const {
             if (isInsideBounds(next_x, next_y) && !visited[next_x][next_y]) {
                 
                 if (tiles[next_x][next_y] == EMPTY_TILE_VALUE || 
-                    tiles[next_x][next_y] == PLATFORM_TILE_VALUE) {
+                    tiles[next_x][next_y] == PLATFORM_TILE_VALUE ||
+                    tiles[next_x][next_y] == LAVA_TILE_VALUE) { // Lava is traversable but dangerous
                     visited[next_x][next_y] = true;
                     s.push({next_x, next_y});
                 }
@@ -233,7 +257,9 @@ int Map::estimateReachabilityFast(int startX, int startY) const {
             int y = startY + dy;
             
             if (isInsideBounds(x, y) && 
-                (tiles[x][y] == EMPTY_TILE_VALUE || tiles[x][y] == PLATFORM_TILE_VALUE)) {
+                (tiles[x][y] == EMPTY_TILE_VALUE || 
+                 tiles[x][y] == PLATFORM_TILE_VALUE ||
+                 tiles[x][y] == LAVA_TILE_VALUE)) { // Include lava in reachability
                 estimate++;
             }
         }

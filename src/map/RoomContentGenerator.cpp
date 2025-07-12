@@ -11,6 +11,9 @@ void RoomContentGenerator::generateRoomContent(Map& map, const Room& room, std::
     generatePlatforms(map, room, gen);
     generateWalls(map, room, gen);
     generateLaddersAndRopes(map, room, gen);
+    
+    // Generate lava pockets in every room for testing
+    generateLavaPockets(map, room, gen);
 }
 
 void RoomContentGenerator::generatePlatforms(Map& map, const Room& room, std::mt19937& gen) {
@@ -253,6 +256,61 @@ void RoomContentGenerator::generateShopRoomContent(Map& map, const Room& room, s
         if (map.tiles[x_coord][y_coord] == EMPTY_TILE_VALUE) {
             map.tiles[x_coord][y_coord] = SHOP_TILE_VALUE;
             map.isOriginalSolid[x_coord][y_coord] = false;
+        }
+    }
+}
+
+void RoomContentGenerator::generateLavaPockets(Map& map, const Room& room, std::mt19937& gen) {
+    const int room_width = room.endX - room.startX;
+    const int room_height = room.endY - room.startY;
+    
+    // Create 1-2 lava pockets per room
+    std::uniform_int_distribution<> pocketCountDist(1, 2);
+    int numPockets = pocketCountDist(gen);
+    
+    for (int pocket = 0; pocket < numPockets; ++pocket) {
+        // Determine pocket size (3x2 to 6x3)
+        std::uniform_int_distribution<> widthDist(3, std::min(6, room_width / 2));
+        std::uniform_int_distribution<> heightDist(2, std::min(3, room_height / 3));
+        int pocketWidth = widthDist(gen);
+        int pocketHeight = heightDist(gen);
+        
+        // Find a suitable location for the pocket
+        int maxStartX = room.endX - pocketWidth - 2;
+        int maxStartY = room.endY - pocketHeight - 2;
+        
+        if (maxStartX <= room.startX + 2 || maxStartY <= room.startY + 2) {
+            continue; // Room too small for pocket
+        }
+        
+        std::uniform_int_distribution<> startXDist(room.startX + 2, maxStartX);
+        std::uniform_int_distribution<> startYDist(room.startY + 2, maxStartY);
+        int startX = startXDist(gen);
+        int startY = startYDist(gen);
+        
+        // Create the lava pocket container with platform tiles
+        for (int x = startX; x < startX + pocketWidth; ++x) {
+            for (int y = startY; y < startY + pocketHeight; ++y) {
+                // Create the container walls/bottom with platform tiles
+                if (x == startX || x == startX + pocketWidth - 1 || 
+                    y == startY + pocketHeight - 1) {
+                    if (map.tiles[x][y] == EMPTY_TILE_VALUE) {
+                        map.tiles[x][y] = PLATFORM_TILE_VALUE;
+                        map.isOriginalSolid[x][y] = false;
+                    }
+                } else {
+                    // Fill interior with lava
+                    if (map.tiles[x][y] == EMPTY_TILE_VALUE) {
+                        map.tiles[x][y] = LAVA_TILE_VALUE;
+                        map.isOriginalSolid[x][y] = false;
+                        
+                        // Initialize lava cell with full mass
+                        if (map.lavaGrid.size() > x && map.lavaGrid[x].size() > y) {
+                            map.lavaGrid[x][y] = LavaCell(Map::LAVA_MAX_MASS);
+                        }
+                    }
+                }
+            }
         }
     }
 }

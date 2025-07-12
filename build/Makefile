@@ -1137,6 +1137,30 @@ src/map/MapGeneration.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.s
 .PHONY : src/map/MapGeneration.cpp.s
 
+src/map/MapLavaSimulation.o: src/map/MapLavaSimulation.cpp.o
+.PHONY : src/map/MapLavaSimulation.o
+
+# target to build an object file
+src/map/MapLavaSimulation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapLavaSimulation.cpp.o
+.PHONY : src/map/MapLavaSimulation.cpp.o
+
+src/map/MapLavaSimulation.i: src/map/MapLavaSimulation.cpp.i
+.PHONY : src/map/MapLavaSimulation.i
+
+# target to preprocess a source file
+src/map/MapLavaSimulation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapLavaSimulation.cpp.i
+.PHONY : src/map/MapLavaSimulation.cpp.i
+
+src/map/MapLavaSimulation.s: src/map/MapLavaSimulation.cpp.s
+.PHONY : src/map/MapLavaSimulation.s
+
+# target to generate assembly for a file
+src/map/MapLavaSimulation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SideScroller.dir/build.make CMakeFiles/SideScroller.dir/src/map/MapLavaSimulation.cpp.s
+.PHONY : src/map/MapLavaSimulation.cpp.s
+
 src/map/MapRendering.o: src/map/MapRendering.cpp.o
 .PHONY : src/map/MapRendering.o
 
@@ -1800,6 +1824,9 @@ help:
 	@echo "... src/map/MapGeneration.o"
 	@echo "... src/map/MapGeneration.i"
 	@echo "... src/map/MapGeneration.s"
+	@echo "... src/map/MapLavaSimulation.o"
+	@echo "... src/map/MapLavaSimulation.i"
+	@echo "... src/map/MapLavaSimulation.s"
 	@echo "... src/map/MapRendering.o"
 	@echo "... src/map/MapRendering.i"
 	@echo "... src/map/MapRendering.s"

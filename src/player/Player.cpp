@@ -84,6 +84,20 @@ void Player::update(float dt, const Map& map, const Camera2D& gameCamera, EnemyM
     if (invincibilityTimer > 0.0f) {
         invincibilityTimer -= dt;
     }
+    
+    // Check for lava damage
+    if (lavaDamageTimer > 0.0f) {
+        lavaDamageTimer -= dt;
+    }
+    
+    if (map.checkPlayerLavaContact(position, hitboxWidth, hitboxHeight)) {
+        if (lavaDamageTimer <= 0.0f && canTakeDamage()) {
+            takeDamage(static_cast<int>(MapConstants::LAVA_DAMAGE_PER_SECOND * MapConstants::LAVA_DAMAGE_INTERVAL));
+            lavaDamageTimer = MapConstants::LAVA_DAMAGE_INTERVAL;
+            printf("[Player] Taking lava damage! Health: %.1f\n", health);
+        }
+    }
+    
     applyGravity(dt, inputManager);
     updateLadderState(map);
     updateWallState(map);
