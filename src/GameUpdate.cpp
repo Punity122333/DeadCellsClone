@@ -65,6 +65,8 @@ void Game::update(float deltaTime) {
                         camera = std::move(tempCamera);
                         enemyManager = std::move(tempEnemyManager);
                         
+
+                        
                         oldMap.reset();
                         oldPlayer.reset();
                         oldCamera.reset();
@@ -112,6 +114,9 @@ void Game::update(float deltaTime) {
 
         map->updateTransitions(deltaTime);
         map->updateLavaFlow(deltaTime);
+
+
+        
         map->updateParticles(deltaTime, player->getPosition());
         ParticleSystem::getInstance().update(deltaTime);
         player->update(deltaTime, *map, camera->getCamera(), enemyManager, inputManager);

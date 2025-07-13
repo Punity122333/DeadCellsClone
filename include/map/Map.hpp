@@ -189,7 +189,7 @@ public:
 private:
     int width;
     int height;
-    Player* playerRef = nullptr; // Reference to player
+    Player* playerRef = nullptr;
     std::vector<std::vector<int>> tiles;
     std::vector<std::vector<LavaCell>> lavaGrid;
     std::vector<std::vector<float>> transitionTimers;
@@ -200,8 +200,7 @@ private:
     std::vector<Room> generatedRooms;
     std::vector<TileParticle> particles;
     mutable std::mutex particlesMutex;
-    
-    // Lava simulation constants
+
     static constexpr float LAVA_FLOW_RATE = 0.8f;
     static constexpr float LAVA_MIN_FLOW = 0.01f;
     static constexpr float LAVA_MAX_MASS = 1.0f;

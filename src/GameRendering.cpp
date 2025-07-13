@@ -73,6 +73,9 @@ void Game::render(float interpolation) {
         DrawTexture(fisheyeBackground, 0, 0, WHITE);
         BeginMode2D(camera->getCamera());
         map->draw(camera->getCamera());
+        
+
+        
         player->draw();
         ParticleSystem::getInstance().draw();
 

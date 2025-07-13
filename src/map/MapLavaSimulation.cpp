@@ -19,7 +19,9 @@ void Map::updateLavaFlow(float dt) {
     static constexpr float GRAVITY_ACCELERATION = 0.15f;
     static constexpr float FLOW_DAMPING = 0.98f;
     static constexpr float MIN_FLOW_THRESHOLD = 0.0001f;
-    static constexpr float PRESSURE_EQUALIZATION = 0.05f;
+    static constexpr float PRESSURE_EQUALIZATION = 0.15f;
+    static constexpr float HORIZONTAL_FLOW_RATE = 0.8f;
+    static constexpr float HORIZONTAL_SPREAD_RATE = 0.6f;
     static constexpr float MAX_COMPRESSION = 1.02f;
     static constexpr float EVAPORATION_RATE = 0.9999f;
     
@@ -80,7 +82,7 @@ void Map::updateLavaFlow(float dt) {
         }
     }
     
-    for (int pass = 0; pass < 3; ++pass) {
+    for (int pass = 0; pass < 6; ++pass) {
         for (int x = 1; x < width - 1; ++x) {
             for (int y = 0; y < height; ++y) {
                 if (!isLavaTile(x, y) || newMass[x][y] <= LAVA_MIN_MASS) continue;
@@ -88,11 +90,9 @@ void Map::updateLavaFlow(float dt) {
                 bool hasSupport = false;
                 if (y + 1 < height) {
                     hasSupport = isSolidTile(x, y + 1) || 
-                                (isLavaTile(x, y + 1) && newMass[x][y + 1] > 0.1f);
+                                (isLavaTile(x, y + 1) && newMass[x][y + 1] > 0.01f);
                 }
                 if (y >= height - 1) hasSupport = true;
-                
-                if (!hasSupport && newMass[x][y] < 0.5f) continue;
                 
                 for (int dx = -1; dx <= 1; dx += 2) {
                     int neighborX = x + dx;
@@ -107,11 +107,11 @@ void Map::updateLavaFlow(float dt) {
                         bool neighborHasSupport = false;
                         if (y + 1 < height) {
                             neighborHasSupport = isSolidTile(neighborX, y + 1) || 
-                                               (isLavaTile(neighborX, y + 1) && newMass[neighborX][y + 1] > 0.1f);
+                                               (isLavaTile(neighborX, y + 1) && newMass[neighborX][y + 1] > 0.01f);
                         }
                         if (y >= height - 1) neighborHasSupport = true;
                         
-                        if (neighborHasSupport) {
+                        if (neighborHasSupport || newMass[x][y] > 0.05f) {
                             canFlowSideways = true;
                             neighborMass = 0.0f;
                         }
@@ -123,16 +123,22 @@ void Map::updateLavaFlow(float dt) {
                     if (canFlowSideways) {
                         float heightDiff = newMass[x][y] - neighborMass;
                         
-                        if (heightDiff > MIN_FLOW_THRESHOLD * 4.0f) {
-                            float flowAmount = heightDiff * PRESSURE_EQUALIZATION * dt;
-                            flowAmount = std::min(flowAmount, newMass[x][y] * 0.2f);
+                        if (heightDiff > MIN_FLOW_THRESHOLD) {
+                            float flowAmount = heightDiff * HORIZONTAL_FLOW_RATE * dt;
+                            
+                            if (hasSupport) {
+                                flowAmount = std::min(flowAmount, newMass[x][y] * 0.7f);
+                            } else {
+                                flowAmount = std::min(flowAmount, newMass[x][y] * 0.5f);
+                            }
+                            
                             flowAmount = std::min(flowAmount, LAVA_MAX_MASS - neighborMass);
                             
                             if (flowAmount > MIN_FLOW_THRESHOLD) {
                                 newMass[x][y] -= flowAmount;
                                 newMass[neighborX][y] += flowAmount;
                                 newFlow[x][y] = std::max(newFlow[x][y], flowAmount);
-                                newFlow[neighborX][y] = flowAmount;
+                                newFlow[neighborX][y] = std::max(newFlow[neighborX][y], flowAmount);
                                 
                                 int neighborTile = tiles[neighborX][y];
                                 if ((neighborTile == EMPTY_TILE_VALUE || neighborTile == PROTECTED_EMPTY_TILE_VALUE || 
@@ -147,6 +153,43 @@ void Map::updateLavaFlow(float dt) {
                 }
             }
         }
+        
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                if (isLavaTile(x, y) && newMass[x][y] > 0.03f) {
+                    
+                    for (int dx = -1; dx <= 1; dx += 2) {
+                        int neighborX = x + dx;
+                        if (neighborX < 0 || neighborX >= width) continue;
+                        
+                        int neighborTile = tiles[neighborX][y];
+                        if (neighborTile == EMPTY_TILE_VALUE || neighborTile == PROTECTED_EMPTY_TILE_VALUE || 
+                            neighborTile == LADDER_TILE_VALUE || neighborTile == ROPE_TILE_VALUE) {
+                            
+                            bool neighborCanReceive = true;
+                            if (y + 1 < height) {
+                                neighborCanReceive = isSolidTile(neighborX, y + 1) || 
+                                                   (isLavaTile(neighborX, y + 1) && newMass[neighborX][y + 1] > 0.01f) ||
+                                                   newMass[x][y] > 0.08f;
+                            }
+                            
+                            if (neighborCanReceive && newMass[x][y] > 0.05f) {
+                                float spreadAmount = newMass[x][y] * HORIZONTAL_SPREAD_RATE * dt;
+                                spreadAmount = std::min(spreadAmount, newMass[x][y] * 0.6f);
+                                
+                                newMass[x][y] -= spreadAmount;
+                                newMass[neighborX][y] += spreadAmount;
+                                newFlow[x][y] = std::max(newFlow[x][y], spreadAmount);
+                                newFlow[neighborX][y] = std::max(newFlow[neighborX][y], spreadAmount);
+                                
+                                tiles[neighborX][y] = LAVA_TILE_VALUE;
+                                isOriginalSolid[neighborX][y] = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     for (int x = 0; x < width; ++x) {
@@ -155,11 +198,11 @@ void Map::updateLavaFlow(float dt) {
                 newMass[x][y] = std::min(newMass[x][y], LAVA_MAX_MASS * MAX_COMPRESSION);
                 newFlow[x][y] *= FLOW_DAMPING;
                 
-                if (newMass[x][y] < LAVA_MIN_MASS * 1.5f) {
+                if (newMass[x][y] < LAVA_MIN_MASS * 0.5f) {
                     newMass[x][y] *= EVAPORATION_RATE;
                 }
                 
-                if (newMass[x][y] < LAVA_MIN_MASS * 0.5f) {
+                if (newMass[x][y] < LAVA_MIN_MASS * 0.15f) {
                     tiles[x][y] = EMPTY_TILE_VALUE;
                     newMass[x][y] = 0.0f;
                     newFlow[x][y] = 0.0f;

@@ -83,6 +83,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SideScroller.dir/src/map/MapConstants.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o"
   "CMakeFiles/SideScroller.dir/src/map/MapGeneration.cpp.o.d"
+  "CMakeFiles/SideScroller.dir/src/map/MapLavaRendering.cpp.o"
+  "CMakeFiles/SideScroller.dir/src/map/MapLavaRendering.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/map/MapLavaSimulation.cpp.o"
   "CMakeFiles/SideScroller.dir/src/map/MapLavaSimulation.cpp.o.d"
   "CMakeFiles/SideScroller.dir/src/map/MapRendering.cpp.o"
